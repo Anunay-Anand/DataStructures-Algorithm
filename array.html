@@ -50,4 +50,25 @@ class myArray {
     
 }
 
+// 2) Reverse a string
+
+    function reverseString(str) {
+        //convert it into array
+        const array1 = str.split('');
+        const length = array1.length;
+        //In order to complete this in O(n) time with O(1) space complexity we will use a loop with 2 indexes
+        for(let i=0, j = length - 1; i <= length/2, j > length/2; i++, j--) {
+            let temp = array1[i];
+            array1[i] = array1[j];
+            array1[j] = temp;
+        }   
+        //Now return string instead of array
+        str = array1.join('');
+        return str;
+    }
+
+
+
+    let name = 'My name is Anunay Anand';
+    console.log(reverseString(name));
 </script>
