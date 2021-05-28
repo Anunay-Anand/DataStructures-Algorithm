@@ -1,0 +1,53 @@
+<script>
+//Pratising Array Questions
+
+// 1) Building your own Array
+// Key points :- An array has length property, it has insert(push), delete(pop), delete(anywhere)
+
+class myArray {
+    constructor() {
+        this.data = {};
+        this.length = 0;
+    }
+
+    get(index) {
+        return this.data[index];
+    }
+
+    push(value) {
+        //this is another method to access object property
+        this.data[this.length] = value;
+        this.length++;
+        return this;
+    }
+
+    pop() {
+        //we need to return the deleted item
+        const lastItem = this.data[this.length - 1];
+        //delete keyword deletes the property (key: value) both of the object
+        delete this.data[this.length - 1];
+        this.length--;
+        return lastItem;
+    }
+
+    delete(index) {
+        const item = this.data[index];
+        //Shift all items
+        this.shiftItems(index);
+        return item;
+    }
+
+    shiftItems(index) {
+        for(let i = index; i < this.length - 1; i++) {
+            this.data[i] = this.data[i + 1];
+        }
+        //Now as the last element is no longer needed.
+        //It is copied to previous index
+        delete this.data[this.length - 1];
+        //decrement of length
+        this.length--;
+    }
+    
+}
+
+</script>
