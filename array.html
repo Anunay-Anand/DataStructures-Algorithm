@@ -66,9 +66,47 @@ class myArray {
         str = array1.join('');
         return str;
     }
-
-
-
     let name = 'My name is Anunay Anand';
-    console.log(reverseString(name));
+    reverseString(name);
+
+// 3) Merge two Sorted Array
+
+    function mergeArray(array1, array2) {
+        
+        //Check for input
+        if(!array1.length) {
+            return array2;
+        }
+        else if(!array2.length) {
+            return array1;
+        }
+        else {
+            const mergedArray = [];
+            //pop first element of both array for comparison
+            let array1Item = array1[0];
+            let array2Item = array2[0];
+            //i be index of elements
+            let i = 1;
+            let j = 1;
+            //loop constantly over the arrays until both are empty
+            while(array1Item || array2Item) {
+                //undefined is considered as "falsy" in JavaScript
+                // if(3 < undefined or vicerversa it gives undefined)
+                if(array1Item <= array2Item || !array2Item) {
+                    mergedArray.push(array1Item);
+                    array1Item = array1[i];
+                    i++;
+                }else{
+                    mergedArray.push(array2Item);
+                    array2Item = array2[j];
+                    j++;
+                }
+            }
+            return mergedArray;
+        }
+
+    }
+
+    console.log(mergeArray([0, 3, 4, 29], [4, 6, 30]));
+
 </script>
