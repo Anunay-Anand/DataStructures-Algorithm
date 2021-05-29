@@ -1,67 +1,67 @@
 <script>
-//Pratising Array Questions
+    //Pratising Array Questions
 
-// 1) Building your own Array
-// Key points :- An array has length property, it has insert(push), delete(pop), delete(anywhere)
+    // 1) Building your own Array
+    // Key points :- An array has length property, it has insert(push), delete(pop), delete(anywhere)
 
-class myArray {
-    constructor() {
-        this.data = {};
-        this.length = 0;
-    }
-
-    get(index) {
-        return this.data[index];
-    }
-
-    push(value) {
-        //this is another method to access object property
-        this.data[this.length] = value;
-        this.length++;
-        return this;
-    }
-
-    pop() {
-        //we need to return the deleted item
-        const lastItem = this.data[this.length - 1];
-        //delete keyword deletes the property (key: value) both of the object
-        delete this.data[this.length - 1];
-        this.length--;
-        return lastItem;
-    }
-
-    delete(index) {
-        const item = this.data[index];
-        //Shift all items
-        this.shiftItems(index);
-        return item;
-    }
-
-    shiftItems(index) {
-        for(let i = index; i < this.length - 1; i++) {
-            this.data[i] = this.data[i + 1];
+    class myArray {
+        constructor() {
+            this.data = {};
+            this.length = 0;
         }
-        //Now as the last element is no longer needed.
-        //It is copied to previous index
-        delete this.data[this.length - 1];
-        //decrement of length
-        this.length--;
-    }
-    
-}
 
-// 2) Reverse a string
+        get(index) {
+            return this.data[index];
+        }
+
+        push(value) {
+            //this is another method to access object property
+            this.data[this.length] = value;
+            this.length++;
+            return this;
+        }
+
+        pop() {
+            //we need to return the deleted item
+            const lastItem = this.data[this.length - 1];
+            //delete keyword deletes the property (key: value) both of the object
+            delete this.data[this.length - 1];
+            this.length--;
+            return lastItem;
+        }
+
+        delete(index) {
+            const item = this.data[index];
+            //Shift all items
+            this.shiftItems(index);
+            return item;
+        }
+
+        shiftItems(index) {
+            for (let i = index; i < this.length - 1; i++) {
+                this.data[i] = this.data[i + 1];
+            }
+            //Now as the last element is no longer needed.
+            //It is copied to previous index
+            delete this.data[this.length - 1];
+            //decrement of length
+            this.length--;
+        }
+
+    }
+
+    // 2) Reverse a string
 
     function reverseString(str) {
         //convert it into array
         const array1 = str.split('');
         const length = array1.length;
         //In order to complete this in O(n) time with O(1) space complexity we will use a loop with 2 indexes
-        for(let i=0, j = length - 1; i <= length/2, j > length/2; i++, j--) {
+        for (let i = 0, j = length - 1; i <= length / 2, j > length / 2; i++, j--) {
             let temp = array1[i];
             array1[i] = array1[j];
             array1[j] = temp;
-        }   
+        }
         //Now return string instead of array
         str = array1.join('');
         return str;
@@ -69,18 +69,16 @@ class myArray {
     let name = 'My name is Anunay Anand';
     reverseString(name);
 
-// 3) Merge two Sorted Array
+    // 3) Merge two Sorted Array
 
     function mergeArray(array1, array2) {
-        
+
         //Check for input
-        if(!array1.length) {
+        if (!array1.length) {
             return array2;
-        }
-        else if(!array2.length) {
+        } else if (!array2.length) {
             return array1;
-        }
-        else {
+        } else {
             const mergedArray = [];
             //pop first element of both array for comparison
             let array1Item = array1[0];
@@ -89,14 +87,14 @@ class myArray {
             let i = 1;
             let j = 1;
             //loop constantly over the arrays until both are empty
-            while(array1Item || array2Item) {
+            while (array1Item || array2Item) {
                 //undefined is considered as "falsy" in JavaScript
                 // if(3 < undefined or vicerversa it gives undefined)
-                if(array1Item <= array2Item || !array2Item) {
+                if (array1Item <= array2Item || !array2Item) {
                     mergedArray.push(array1Item);
                     array1Item = array1[i];
                     i++;
-                }else{
+                } else {
                     mergedArray.push(array2Item);
                     array2Item = array2[j];
                     j++;
@@ -107,6 +105,80 @@ class myArray {
 
     }
 
-    console.log(mergeArray([0, 3, 4, 29], [4, 6, 30]));
+    mergeArray([0, 3, 4, 29], [4, 6, 30]);
 
+    // 4) Two Sum 
+
+    // var twoSum = function (nums, target) {
+    //     const number = [];
+    //     for (let i = 0; i < nums.length; i++) {
+    //         for (let j = i + 1; j < nums.length; j++) {
+    //             if (i != j && nums[i] + nums[j] === target) {
+    //                 number.push(i, j);
+    //                 return number;
+    //             }
+    //         }
+    //     }
+    //     return undefined;
+    // };
+
+
+    //This solution gives a wrong index thus not a solution due to sort
+    // var twoSum = function (nums, target) {
+    //     //sort the array for better comparison method
+    //     const original = nums;
+    //     nums.sort((a, b) => a - b);
+    //     //run a loop comparing
+    //     const length = nums.length;
+    //     for(i=0, j = length - 1; i < length - 1, j > 0;) {
+    //         if(nums[i] + nums[j] < target) {
+    //             i++;
+    //         } else if (nums[i] + nums[j] > target) {
+    //             j--;
+    //         }
+    //         else if (nums[i] + nums[j] === target){
+    //             return [i,j];
+    //         }
+    //     }
+    //     return undefined;
+    // }
+
+    //Faster Solution using hash table in 2 runs O(1) time complexity
+
+    // let twoSum = function (nums, target) {
+    //     const indices = {}; 
+    //     //We will create an object with keys being the variable and value being index
+    //     //We store the index as values as we need to pass them as solution
+    //     for (let i = 0; i < nums.length; i++) { //O(n)
+    //         indices[nums[i]] = i;
+    //     }
+
+    //     for (let index = 0; index < nums.length; j++) { //O(n)
+    //         let constraint = target - nums[index];
+    //         //Now let us understang it this way constaint + num[index] = target
+    //         //As all elements are already stored as keys
+    //         //Thus contraint if it exists in the object we will take it's index and the sol = [index, indicies[constraint]]
+    //         //the second condition is checked to make sure the element with same index aren't accecpted as soln   
+    //         if (indices[constraint] !== undefined && indices[constraint] !== index) {
+    //             return [index, indices[constraint]];
+    //         }
+    //     }
+    // }
+
+    //Fastest solution in single Run
+
+    let twoSum = function(nums, target) {
+        const indices = {};
+        for(let index = 0; index < nums.length; index++) {
+            let complement = target - nums[index];
+            //Now check if complement exist
+            if(complement in indices) {
+                return [index, indices[complement]]
+            }
+            //storing key as array value and index as values
+            indices[nums[index]] = index;
+        }
+    }
+
+    console.log(twoSum([1, 15, 22, 10, 4], 11));
 </script>
