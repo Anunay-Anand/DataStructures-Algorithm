@@ -167,12 +167,12 @@
 
     //Fastest solution in single Run
 
-    let twoSum = function(nums, target) {
+    let twoSum = function (nums, target) {
         const indices = {};
-        for(let index = 0; index < nums.length; index++) {
+        for (let index = 0; index < nums.length; index++) {
             let complement = target - nums[index];
             //Now check if complement exist
-            if(complement in indices) {
+            if (complement in indices) {
                 return [index, indices[complement]]
             }
             //storing key as array value and index as values
@@ -180,5 +180,59 @@
         }
     }
 
-    console.log(twoSum([1, 15, 22, 10, 4], 11));
+    twoSum([1, 15, 22, 10, 4], 11);
+
+    //5) Maximum Sub Array
+
+    //All we need to return is one sum. So what we need to understand is what is our input
+    //what is the expected outcome.
+    // const maxSubArray = function (nums) {
+    //     let sum = 0;
+    //     //We take this as we are given that the array might have -ve digit to 10th position
+    //     //This gives us the least number possible
+    //     let result = Number.MIN_SAFE_INTEGER;
+    //     for (let i = 0; i < nums.length; i++) {
+    //         //We add the next element to sum to know if the overall result is +ve
+    //         sum += nums[i];
+    //         //We select the maximum of sum or result to return
+    //         result = Math.max(sum, result);
+    //         //If the sum goes below 0 then that sequence is terminated
+    //         if(sum < 0) {
+    //             sum = 0;
+    //         }
+    //     }
+    //     return result;
+    // }
+
+    //recursive solution for the same
+    
+    const maxSubArray = function(nums) {
+        let sum = 0;
+        let index = 0;
+        let result = Number.MIN_SAFE_INTEGER;
+        return comparison(nums, sum, result, index);
+    }
+
+    function comparison(nums, sum, result, index) {
+                if(index === nums.length) {
+                    return result;
+                }
+                sum += nums[index];
+                result = Math.max(sum, result);
+                sum = sum < 0 ? 0 : sum;
+                index++;
+                return comparison(nums, sum, result, index);
+    }
+
+    maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]);
+
+    // 6) Move Zeroes
+
+    function moveZeroes(nums) {
+        
+    }
+
+    moveZeroes([0,1,0,3,12]);
+
+
 </script>
