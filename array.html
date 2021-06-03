@@ -285,27 +285,48 @@
 
     //Fastest Solution
 
-    function moveZeroes(nums) {    
-    //checking for input
-        if(nums.length <= 1) {
+    function moveZeroes(nums) {
+        //checking for input
+        if (nums.length <= 1) {
             return nums;
         }
-    let nonZeroPlace = 0;
-    //Run a loop over the array for all non zero elements
-    for(let i = 0; i < nums.length; i++){
-        //Check for non zero elements
-        if(nums[i] !== 0) {
-        nums[nonZeroPlace] = nums[i];
-        //Increment nonZeroPlace
-        nonZeroPlace++;    
+        let nonZeroPlace = 0;
+        //Run a loop over the array for all non zero elements
+        for (let i = 0; i < nums.length; i++) {
+            //Check for non zero elements
+            if (nums[i] !== 0) {
+                nums[nonZeroPlace] = nums[i];
+                //Increment nonZeroPlace
+                nonZeroPlace++;
+            }
         }
-    }
-    //Now place zero in remaining array
-    for(let i = nonZeroPlace; i < nums.length; i++ ) {
-        nums[i] = 0;
-    }
+        //Now place zero in remaining array
+        for (let i = nonZeroPlace; i < nums.length; i++) {
+            nums[i] = 0;
+        }
         return nums;
     }
 
-  moveZeroes([3,1,0,5,0,4]); // 1 0 0 3 12 // 1 3 0 0 12
+    moveZeroes([3, 1, 0, 5, 0, 4]); // 1 0 0 3 12 // 1 3 0 0 12
+
+    //7) Duplicate Element 
+
+    function containsDuplicate(nums) {
+        //fill all elements in hash/objects
+        if(nums.length <= 1){
+            return false;
+        }
+        let elements = {};
+        for (let i = 0; i < nums.length; i++) {
+            //Checking for num[i] in elements
+            if (nums[i] in elements) {
+                return true;
+            }
+            //Storing the array elements as keys and index as value
+            elements[nums[i]] = i;
+        }
+        return false;
+    };
+
+    console.log(containsDuplicate([1,2,3,4]));
 </script>
