@@ -205,8 +205,8 @@
     // }
 
     //recursive solution for the same
-    
-    const maxSubArray = function(nums) {
+    //kadane algorithm
+    const maxSubArray = function (nums) {
         let sum = 0;
         let index = 0;
         let result = Number.MIN_SAFE_INTEGER;
@@ -214,25 +214,98 @@
     }
 
     function comparison(nums, sum, result, index) {
-                if(index === nums.length) {
-                    return result;
-                }
-                sum += nums[index];
-                result = Math.max(sum, result);
-                sum = sum < 0 ? 0 : sum;
-                index++;
-                return comparison(nums, sum, result, index);
+        if (index === nums.length) {
+            return result;
+        }
+        sum += nums[index];
+        result = Math.max(sum, result);
+        sum = sum < 0 ? 0 : sum;
+        index++;
+        return comparison(nums, sum, result, index);
     }
 
     maxSubArray([-2, 1, -3, 4, -1, 2, 1, -5, 4]);
 
     // 6) Move Zeroes
 
-    function moveZeroes(nums) {
-        
+    //We needed to maintain the order too it's wrong
+    // function moveZeroes(nums) {
+    //     for (let i = 0, j = nums.length - 1; i < this.length - 1, j > 0;) {
+    //         if (i <= j) {    
+    //             if (nums[i] === 0 && nums[j] !== 0) {
+    //                 let temp = nums[i];
+    //                 nums[i] = nums[j];
+    //                 nums[j] = temp;
+    //                 i++;
+    //                 j--;
+    //             } else if (nums[i] !== 0 && nums[j] === 0 || nums[i] === 0 && nums[j] === 0) {
+    //                 j--;
+    //             } else if (nums[i] !== 0 && nums[j] !== 0) {
+    //                 i++;
+    //             }  
+    //         } else {
+    //             return nums;
+    //         }
+    //     }
+    // }
+
+    //Correct but a very slow solution
+    // function moveZeroes(nums) {
+    //     //checking for input
+    //     if(nums.length <= 1) {
+    //         return nums;
+    //     }
+    //     let i = 0;
+    //     let j = 1;
+    //     return traverse(i, j, nums);
+    // }
+
+    // function traverse(i, j, nums) {
+    //     debugger;
+    //     if (j < nums.length) {
+    //         if (nums[i] === 0 && nums[j] !== 0) {
+    //             let temp = nums[i];
+    //             nums[i] = nums[j];
+    //             nums[j] = temp;
+    //             i++;
+    //             j++;
+    //         } else if (nums[i] === 0 && nums[j] === 0) {
+    //             j++;
+    //         } else if (nums[i] !== 0 && nums[j] === 0) {
+    //             i++;
+    //         } else if(nums[i] !== 0 && nums[j] !== 0){
+    //             i++;
+    //             j++;
+    //         }
+    //         return traverse(i, j, nums);
+    //     } else {
+    //         return nums;
+    //     }
+    // }
+
+    //Fastest Solution
+
+    function moveZeroes(nums) {    
+    //checking for input
+        if(nums.length <= 1) {
+            return nums;
+        }
+    let nonZeroPlace = 0;
+    //Run a loop over the array for all non zero elements
+    for(let i = 0; i < nums.length; i++){
+        //Check for non zero elements
+        if(nums[i] !== 0) {
+        nums[nonZeroPlace] = nums[i];
+        //Increment nonZeroPlace
+        nonZeroPlace++;    
+        }
+    }
+    //Now place zero in remaining array
+    for(let i = nonZeroPlace; i < nums.length; i++ ) {
+        nums[i] = 0;
+    }
+        return nums;
     }
 
-    moveZeroes([0,1,0,3,12]);
-
-
+  moveZeroes([3,1,0,5,0,4]); // 1 0 0 3 12 // 1 3 0 0 12
 </script>
