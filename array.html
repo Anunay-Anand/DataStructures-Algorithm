@@ -313,7 +313,7 @@
 
     function containsDuplicate(nums) {
         //fill all elements in hash/objects
-        if(nums.length <= 1){
+        if (nums.length <= 1) {
             return false;
         }
         let elements = {};
@@ -328,5 +328,99 @@
         return false;
     };
 
-    console.log(containsDuplicate([1,2,3,4]));
+    containsDuplicate([1, 2, 3, 4]);
+
+    // 8) Rotate Array (189 Leetcode) Medium
+
+    //Brute Force
+    // function rotate(nums, k) {
+    //     for (let i = 0; i < k; i++) {
+    //         let temp = nums.pop();
+    //         nums.unshift(temp);
+    //     }
+    //     return nums;
+    // };
+
+    //OPtimal solution 2 pass 
+    function rotate(nums, k) {
+        //1st loop to copy array first elements[no of elements = k]
+        for (let i = nums.length - 1; i >= 0; i--) {
+            //Copy the entire array within the array at higher indexes
+            nums[k + i] = nums[i];
+        }
+        //2nd loop now pop the last elements which are extra and insert at top
+        for (let i = k - 1; i >= 0; i--) {
+            let last = nums.pop();
+            nums[i] = last;
+        }
+        return nums;
+    };
+
+    rotate([1, 2, 3, 4, 5, 6, 7], 3);
+
+    // 9) Longest Word in String
+    function longestString(str) {
+        //Convert it into array
+        // const elements = str.split('');
+        str = str + '$';
+        let longestWord = 0;
+        let word = "";
+        for (let i = 0, j = 0; i, j < str.length; j++) {
+            if (str[j] === " " || str[j] === '$') {
+                if (j - i > longestWord) {
+                    longestWord = j - i;
+                    word = str.slice(i, j);
+                }
+                i = j + 1;
+            }
+        }
+        return word;
+    }
+
+    longestString("I a  love Anunay he is a superstar 122212124888");
+
+    // 10) Median of two sorted Arrays
+
+    function findMedianSortedArrays(nums1, nums2) {
+        //Length of two array;
+        let m = nums1.length;
+        let n = nums2.length;
+        let mergedArray = [];
+        //Check for input
+        if (!m && n === 1) {
+            return nums2[0];
+        } else if (!n && m === 1) {
+            return nums1[m - 1];
+        } else {
+            //Create two indexes
+            let i = 0;
+            let j = 0;
+            //Until both of them are empty
+            while (i < m || j < n) {
+                //Conditions are important or the code will break 
+                //This if condition was added just because !0 = true as in javascript 0 === false
+                //So if nums2[j] === 0 the code would break
+                if(nums2[j] === 0) {
+                    mergedArray.push(nums2[j]);
+                    j++;
+                }
+                else if ((nums1[i] <= nums2[j] || !nums2[j]) && nums1[i] !== undefined) {
+                    mergedArray.push(nums1[i]);
+                    i++;
+                } else {
+                    mergedArray.push(nums2[j]);
+                    j++;
+                }
+            }
+            console.log(mergedArray);
+            //Now find median by mid elements
+            let length = mergedArray.length;
+            let mid1 = mergedArray[Math.floor(length/2)];
+            let mid2 = mergedArray[Math.floor((length-1)/2)];
+            let median = (mid1 + mid2)/2;
+            return median;
+        }
+    }
+
+    console.log(findMedianSortedArrays([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22],[0,6]))
 </script>
