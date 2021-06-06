@@ -400,11 +400,10 @@
                 //Conditions are important or the code will break 
                 //This if condition was added just because !0 = true as in javascript 0 === false
                 //So if nums2[j] === 0 the code would break
-                if(nums2[j] === 0) {
+                if (nums2[j] === 0) {
                     mergedArray.push(nums2[j]);
                     j++;
-                }
-                else if ((nums1[i] <= nums2[j] || !nums2[j]) && nums1[i] !== undefined) {
+                } else if ((nums1[i] <= nums2[j] || !nums2[j]) && nums1[i] !== undefined) {
                     mergedArray.push(nums1[i]);
                     i++;
                 } else {
@@ -412,15 +411,78 @@
                     j++;
                 }
             }
-            console.log(mergedArray);
             //Now find median by mid elements
             let length = mergedArray.length;
-            let mid1 = mergedArray[Math.floor(length/2)];
-            let mid2 = mergedArray[Math.floor((length-1)/2)];
-            let median = (mid1 + mid2)/2;
+            let mid1 = mergedArray[Math.floor(length / 2)];
+            let mid2 = mergedArray[Math.floor((length - 1) / 2)];
+            let median = (mid1 + mid2) / 2;
             return median;
         }
     }
 
-    console.log(findMedianSortedArrays([1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22],[0,6]))
+    findMedianSortedArrays([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22], [0, 6]);
+
+    // 11) Remove duplicates from an Array 
+
+    function removeDuplicates(nums) {
+        //Check for Input
+        if (!nums.length) {
+            return 0;
+        }
+        // 1) length index variable count the unique element
+        // 2) Each time a new element is found our index element is updated
+        // 3) We first copy the unique element at that place
+        let index = 1;
+        for (let i = 0; i < nums.length - 1; i++) {
+            //As Array is sorted the very next element is compared.
+            //If it is new that element is copied at index
+            //We compare less than length - 1 as we compare last index on the second last step
+            if (nums[i] !== nums[i + 1]) {
+                nums[index] = nums[i + 1];
+                index++;
+            }
+        }
+        return index;
+    }
+
+    //Fastest or Optimal solution
+
+    // function removeDuplicates(nums) {
+//         if (!nums.length) {
+//             return 0;
+//         }
+//         let length = 1;
+//         for (let i = 0, j = 1, z = 1; j < nums.length; j++, i++) {
+//             if (nums[i] != nums[j]) {
+//                 length++;
+//                 nums[z] = nums[j];
+//                 z++;
+//             }
+//         }
+//         return length;
+//     }
+
+    removeDuplicates([0,0,1,1,1,2,2,3,3,4]);
+
+    //12) Reverse String Optimum solution 100%
+
+    function reverseString(s) {
+    const len = s.length/2
+    for(let i = 0, j = s.length - 1; i <= len, j > len; i++, j--) {
+        let temp = s[i];
+        s[i] = s[j];
+        s[j] = temp;
+    }
+    return s;
+};
+
+    reverseString(["A"," ","m","a","n",","," ","a"," ","p","l","a","n",","," ","a"," ","c","a","n","a","l",":"," ","P","a","n","a","m","a"]);
+
+    //13) FizzBuzz
+
+//     const fizzBuzz = n =>
+// //   Array.from(Array(n), (_, i, x = i + 1) =>
+// //     !(x % 15) ? 'FizzBuzz' : !(x % 5) ? 'Buzz' : !(x % 3) ? 'Fizz' : x.toString())
+
+
 </script>
