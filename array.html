@@ -448,41 +448,70 @@
     //Fastest or Optimal solution
 
     // function removeDuplicates(nums) {
-//         if (!nums.length) {
-//             return 0;
-//         }
-//         let length = 1;
-//         for (let i = 0, j = 1, z = 1; j < nums.length; j++, i++) {
-//             if (nums[i] != nums[j]) {
-//                 length++;
-//                 nums[z] = nums[j];
-//                 z++;
-//             }
-//         }
-//         return length;
-//     }
+    //         if (!nums.length) {
+    //             return 0;
+    //         }
+    //         let length = 1;
+    //         for (let i = 0, j = 1, z = 1; j < nums.length; j++, i++) {
+    //             if (nums[i] != nums[j]) {
+    //                 length++;
+    //                 nums[z] = nums[j];
+    //                 z++;
+    //             }
+    //         }
+    //         return length;
+    //     }
 
-    removeDuplicates([0,0,1,1,1,2,2,3,3,4]);
+    removeDuplicates([0, 0, 1, 1, 1, 2, 2, 3, 3, 4]);
 
     //12) Reverse String Optimum solution 100%
 
     function reverseString(s) {
-    const len = s.length/2
-    for(let i = 0, j = s.length - 1; i <= len, j > len; i++, j--) {
-        let temp = s[i];
-        s[i] = s[j];
-        s[j] = temp;
-    }
-    return s;
-};
+        const len = s.length / 2
+        for (let i = 0, j = s.length - 1; i <= len, j > len; i++, j--) {
+            let temp = s[i];
+            s[i] = s[j];
+            s[j] = temp;
+        }
+        return s;
+    };
 
-    reverseString(["A"," ","m","a","n",","," ","a"," ","p","l","a","n",","," ","a"," ","c","a","n","a","l",":"," ","P","a","n","a","m","a"]);
+    reverseString(["A", " ", "m", "a", "n", ",", " ", "a", " ", "p", "l", "a", "n", ",", " ", "a", " ", "c", "a", "n",
+        "a", "l", ":", " ", "P", "a", "n", "a", "m", "a"
+    ]);
 
     //13) FizzBuzz
 
-//     const fizzBuzz = n =>
-// //   Array.from(Array(n), (_, i, x = i + 1) =>
-// //     !(x % 15) ? 'FizzBuzz' : !(x % 5) ? 'Buzz' : !(x % 3) ? 'Fizz' : x.toString())
+    //     const fizzBuzz = n =>
+    // //   Array.from(Array(n), (_, i, x = i + 1) =>
+    // //     !(x % 15) ? 'FizzBuzz' : !(x % 5) ? 'Buzz' : !(x % 3) ? 'Fizz' : x.toString())
 
+    // 14) Return Single Number (136)
 
+    //HASH SOLUTION/Object Solution
+    function singleNumber(nums) {
+        let items = {};
+        for (let i = 0; i < nums.length; i++) {
+            if(nums[i] in items) {
+                delete(items[nums[i]]);
+            } else{
+            items[[nums[i]]] = i;
+            }
+        }
+        //Now fetch all object values by ES6 Method
+        for(let key of Object.keys(items)){
+            if(items[key] !== undefined) {
+                return key;
+            }
+                
+        }
+    }
+
+    //SUPER SOLUTION
+    // const singleNumber = (nums) => {
+    //     debugger;
+    //     return nums.reduce((acc, num) => acc ^ num)
+    // };
+
+    console.log(singleNumber([4, 1, 2, 1, 2]));
 </script>
