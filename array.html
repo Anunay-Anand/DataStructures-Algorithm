@@ -492,18 +492,18 @@
     function singleNumber(nums) {
         let items = {};
         for (let i = 0; i < nums.length; i++) {
-            if(nums[i] in items) {
+            if (nums[i] in items) {
                 delete(items[nums[i]]);
-            } else{
-            items[[nums[i]]] = i;
+            } else {
+                items[[nums[i]]] = i;
             }
         }
         //Now fetch all object values by ES6 Method
-        for(let key of Object.keys(items)){
-            if(items[key] !== undefined) {
+        for (let key of Object.keys(items)) {
+            if (items[key] !== undefined) {
                 return key;
             }
-                
+
         }
     }
 
@@ -513,5 +513,43 @@
     //     return nums.reduce((acc, num) => acc ^ num)
     // };
 
-    console.log(singleNumber([4, 1, 2, 1, 2]));
+    singleNumber([4, 1, 2, 1, 2]);
+
+    //14) Sum of two number without + and - operators
+
+    function getSum(a, b) {
+        let sum = 0;
+        debugger;
+        if (a > 0) {
+            sum = incrementer(a, sum);
+        } else {
+            sum = decrementer(a, sum);
+        }
+        if (b > 0) {
+            sum = incrementer(b, sum);
+        } else {
+            sum = decrementer(b, sum);
+        }
+        return sum;
+    };
+
+    function incrementer(num, sum) {
+        for (let i = 0; i < num; i++) {
+            sum++;
+            debugger;
+        }
+        return sum;
+    }
+
+    function decrementer(num, sum) {
+        for (let i = num; i < 0; i++) {
+            sum--;
+            debugger;
+        }
+        return sum;
+    }
+
+    getSum(-1, 1);
+
+    
 </script>
