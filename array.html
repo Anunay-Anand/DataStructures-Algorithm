@@ -519,7 +519,6 @@
 
     function getSum(a, b) {
         let sum = 0;
-        debugger;
         if (a > 0) {
             sum = incrementer(a, sum);
         } else {
@@ -536,7 +535,6 @@
     function incrementer(num, sum) {
         for (let i = 0; i < num; i++) {
             sum++;
-            debugger;
         }
         return sum;
     }
@@ -544,12 +542,72 @@
     function decrementer(num, sum) {
         for (let i = num; i < 0; i++) {
             sum--;
-            debugger;
         }
         return sum;
     }
 
     getSum(-1, 1);
 
-    
+    //15) Third Maximum Number
+
+    function thirdMax(nums) {
+        let max = 0;
+        let items = {};
+        for (let i = 0; i < nums.length; i++) {
+            items[nums[i]] = nums[i];
+        }
+        nums = Object.keys(items);
+        // max = nums.length > 6 ? nums[2] : nums[nums.length - 3];
+        max = nums.length > 6 ? nums[2] : nums.length >= 3 ? nums[nums.length - 3] : nums[nums.length - 1];
+        return max;
+    }
+
+    thirdMax([-2147483648, 1, 1])
+
+    //16) Find the duplicate element - 287
+
+    //1st Solution is sort and then compare O(nlogn)
+
+    //2nd fastest solution
+    // function findDuplicate(nums) {
+    //     let items = {};
+    //     for(let i = 0; i < nums.length; i++) {
+    //         if(nums[i] in items){
+    //             return nums[i];
+    //         }
+    //         items[nums[i]] = i;
+    //     }
+    //     return undefined;
+    // };
+
+    //3rd solution O(n) time and O(1) space
+    const findDuplicate = function (nums) {
+        //define
+        let rabbit = 0;
+        let tortoise = 0;
+        let round1 = true;
+        let round2 = false;
+
+        //detect
+        while (round1) {
+            debugger;
+            if (nums[tortoise] === nums[rabbit] && round2) {
+                tortoise = 0;
+                round1 = false;
+            } else {
+                tortoise = nums[tortoise];
+                rabbit = nums[nums[rabbit]];
+                round2 = true;
+            }
+        }
+
+        //locate
+        while (round2) {
+            if (nums[tortoise] === nums[rabbit]) return nums[tortoise];
+            tortoise = nums[tortoise];
+            rabbit = nums[rabbit];
+        }
+    };
+
+    console.log(findDuplicate([1,2,3,2,4]));
 </script>
