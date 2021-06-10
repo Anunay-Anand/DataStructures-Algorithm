@@ -590,7 +590,6 @@
 
         //detect
         while (round1) {
-            debugger;
             if (nums[tortoise] === nums[rabbit] && round2) {
                 tortoise = 0;
                 round1 = false;
@@ -609,5 +608,34 @@
         }
     };
 
-    console.log(findDuplicate([1,2,3,2,4]));
+    findDuplicate([1, 2, 3, 2, 4]);
+
+    // 16) Sort Colors
+
+    function sortColors(nums) {
+        //count for each color or num
+        let red = 0;
+        let white = 0;
+        let blue = 0;
+        const n = nums.length;
+        for (let i = 0; i < n; i++) {
+            nums[i] === 0 ? red++ : nums[i] === 1 ? white++ : blue++;
+        }
+        for(let i = 0; i < nums.length; i++) {
+            if(red!==0){
+                nums[i] = 0;
+                red--;     
+            } else if(white!==0){
+                nums[i] = 1;
+                white--;
+            } else{
+                nums[i] = 2;
+            }
+        }
+        return nums;
+    }
+
+    sortColors([2, 0, 2, 1, 1, 0]);
+
+
 </script>
