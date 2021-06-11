@@ -689,8 +689,59 @@
         }
     }
 
-
-
-
     firstMissingPositive([3,4,-1,1]);
+
+    //18) Majority Element // This solution is O(n) space and time
+    //NOTE A VERY IMP CONDIIDITON THE MAJORITY ELEMENT 2N times of all other elements
+    //SO if all other elements add upto 6 there will be 12 occurence of najority
+    // function majorityElement(nums) {
+    //     //We will hash in this to store all keys with number of occurence
+    //     let items = {};
+    //     for(let i = 0; i < nums.length; i++) {
+    //         if(nums[i] in items) {
+    //             items[nums[i]] = items[nums[i]] + 1;
+    //         } else {
+    //         items[[nums[i]]] = 1;
+    //         }
+    //     }
+
+    //     //2nd pass find the max element
+    //     let occurence = 0;
+    //     let max = 0;
+    //     for(let key of Object.keys(items)) {
+    //         if(occurence < items[key]) {
+    //             max = key;
+    //             occurence = items[key];
+    //         }
+    //     }
+    //     return max;
+    // }
+
+    //2) Second solution is by using .sort and then n/2 element passsing O(nlogn)O(1)space
+
+    // function majorityElement(nums) {
+    //     if(nums.length === 1) {
+    //         return nums[0];
+    //     }
+    //     nums.sort(function(a,b){return a - b});
+    //     return nums[Math.floor(nums.length/2)];
+    // }
+
+    //3)  Boyer-Moore Voting Algorithm it's absolute solution O(n) time O(1) space
+    function majorityElement(nums) {
+        let count = 1;
+        let maj = 0;
+        for(let i = 1; i < nums.length; i++) {
+            debugger;
+            nums[i] === nums[maj] ? count++ : count--;
+            if(count === 0) {
+                maj = i;
+                count = 1;
+            } 
+        }
+        return nums[maj];
+    }
+
+
+    console.log(majorityElement([4,5,4]));
 </script>
