@@ -621,14 +621,14 @@
         for (let i = 0; i < n; i++) {
             nums[i] === 0 ? red++ : nums[i] === 1 ? white++ : blue++;
         }
-        for(let i = 0; i < nums.length; i++) {
-            if(red!==0){
+        for (let i = 0; i < nums.length; i++) {
+            if (red !== 0) {
                 nums[i] = 0;
-                red--;     
-            } else if(white!==0){
+                red--;
+            } else if (white !== 0) {
                 nums[i] = 1;
                 white--;
-            } else{
+            } else {
                 nums[i] = 2;
             }
         }
@@ -637,5 +637,60 @@
 
     sortColors([2, 0, 2, 1, 1, 0]);
 
+    //17) First missing positive integer
 
+    // 1) The brute force method is to sort and compare the index with array elements O(nlogn) O(n) space
+    // 2) Then we can use hash to do it in O(n) space and time
+
+    // function firstMissingPositive(nums) {
+    //     let items = {};
+    //     let length = 1;
+    //     for (let i = 0; i < nums.length; i++) {
+    //         //We make sure only +ve number are inserted
+    //         if (nums[i] > 0) {
+    //             items[[nums[i]]] = i;
+    //             length++;
+    //         }
+    //     }
+
+    //     let j = 1;
+    //     while (j <= length) {
+    //         if(j in items){
+    //             j++;
+    //         } else{
+    //             return j;
+    //         }
+    //     }
+    // }
+
+    //3 Solution is diving it into partition -ve and +ve
+    //Solution not complete
+    function firstMissingPositive(nums) {
+        let i = 0;
+        //1st passs for partition
+        for (let j = 0; j < nums.length; j++) {
+            //Swapping numbers
+            if (nums[i] > 0 && nums[j] <= 0) {
+                let temp = nums[i];
+                nums[i] = nums[j];
+                nums[j] = temp;
+                i++;
+            } else if (nums[i] < 0 && nums[j] <= 0 && nums[i] > 0 && nums[j] >= 0) {
+                i++;
+            }
+        }
+        let int = 1;
+        for (i; i <= nums.length; i++) {
+            if (nums[i] === int) {
+                int++;
+            } else {
+                return int;
+            };
+        }
+    }
+
+
+
+
+    firstMissingPositive([3,4,-1,1]);
 </script>
