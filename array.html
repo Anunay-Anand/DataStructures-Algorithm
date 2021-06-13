@@ -689,7 +689,7 @@
         }
     }
 
-    firstMissingPositive([3,4,-1,1]);
+    firstMissingPositive([3, 4, -1, 1]);
 
     //18) Majority Element // This solution is O(n) space and time
     //NOTE A VERY IMP CONDIIDITON THE MAJORITY ELEMENT 2N times of all other elements
@@ -727,21 +727,22 @@
     //     return nums[Math.floor(nums.length/2)];
     // }
 
-    //3)  Boyer-Moore Voting Algorithm it's absolute solution O(n) time O(1) space
+    //3)  Boyer-Moore Vomiting Algorithm it's absolute solution O(n) time O(1) space
     function majorityElement(nums) {
         let count = 1;
         let maj = 0;
-        for(let i = 1; i < nums.length; i++) {
-            debugger;
+        for (let i = 1; i < nums.length; i++) {
             nums[i] === nums[maj] ? count++ : count--;
-            if(count === 0) {
+            if (count === 0) {
                 maj = i;
-                count = 1;
-            } 
+                count++;
+            }
         }
         return nums[maj];
     }
 
+    majorityElement([4, 5, 4]);
 
-    console.log(majorityElement([4,5,4]));
+    
+
 </script>

@@ -1,0 +1,18 @@
+<script>
+    
+    //1) To find wether it is perfect palindrome
+    function isPalindrome(str) {
+        //Setting Regx (Our Regx the '^' means anything that does not come in the particular ranger)
+        //So anything that is not between a to z or 0 to 9 is accepted or matched
+        let re = /[^A-Za-z0-9]/g;
+        str = str.toLowerCase().replace(re, '');
+        let len = str.length;
+        for (let i = 0; i < len / 2; i++) {
+            if (str[i] !== str[len - 1 - i]) {
+                return false;
+            }
+        }
+        return true;
+    }
+    isPalindrome("A man, a plan, a canal. Panama");
+</script>
