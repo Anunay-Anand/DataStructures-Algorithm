@@ -1,5 +1,4 @@
 <script>
-    
     //1) To find wether it is perfect palindrome
     function isPalindrome(str) {
         //Setting Regx (Our Regx the '^' means anything that does not come in the particular ranger)
@@ -15,4 +14,37 @@
         return true;
     }
     isPalindrome("A man, a plan, a canal. Panama");
+
+    //2) Add binary a and b
+
+    function addBinary(A, B) {
+        //define the sum string and indexes i,j and carry 
+        let sum = '';
+        let i = A.length - 1;
+        let j = B.length - 1;
+        let carry = 0;
+
+        //While loop until and i and j both are empty
+        while (i >= 0 || j >= 0) {
+            //Check values of A and B to be compared
+            let a = A[i] ? A[i] : '0';
+            let b = B[j] ? B[j] : '0';
+            //Sum in every loop
+            //Every time we loop and a and b string which are converted to number to be compared so convery back to string
+            //  sum = a[i]^b[j]^carry + sum;
+            sum = String(a ^ b ^ carry) + sum;
+            //Carry only changes on two occasions
+            if(a === b &&  a !== String(carry)) {
+                carry = Number(!carry);
+            }
+            i--, j--;
+        }
+        //Check if carry exists
+        if(carry) {
+            sum = String(carry) + sum;
+        }
+        return sum;
+    };
+
+    console.log(addBinary("1010", "1011"));
 </script>
