@@ -60,7 +60,7 @@
             //result string 
             res = "",
             i = 0;
-            //We compare only till prev.length - 1 as we compare second last to last element each time. (As last element + undefined is not a comparison)
+        //We compare only till prev.length - 1 as we compare second last to last element each time. (As last element + undefined is not a comparison)
         for (; i < prev.length - 1; i++) {
             if (prev[i] === prev[i + 1]) {
                 count++;
@@ -76,4 +76,24 @@
     }
 
     countAndSay(4);
+
+    //4) Unique character String Note (for in loop is a better solution for of)
+
+    //This solution is O(n) space and time
+    function firstUniqChar(s) {
+        //use object and solve
+        let char = {};
+        for (let i = 0; i < s.length; i++) {
+            char[s[i]] = s[i] in char ? -1 : i;
+        }
+        //Check if any element does not have an index of -1
+        for (let i in char) {
+            if(char[i] !== -1) {
+                return char[i];
+            }
+        }
+        return -1;
+    };
+
+    firstUniqChar("loveleetcode");
 </script>
