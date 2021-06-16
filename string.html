@@ -88,7 +88,7 @@
         }
         //Check if any element does not have an index of -1
         for (let i in char) {
-            if(char[i] !== -1) {
+            if (char[i] !== -1) {
                 return char[i];
             }
         }
@@ -96,4 +96,84 @@
     };
 
     firstUniqChar("loveleetcode");
+
+    //5) Find common prefix if any
+
+    function longestCommonPrefix(strs) {
+        'use strict';
+        if (strs === undefined || strs.length === 0) {
+            return '';
+        }
+
+        return strs.reduce((prev, next) => {
+            let i = 0;
+            debugger;
+            while (prev[i] && next[i] && prev[i] === next[i]) i++;
+            return prev.slice(0, i);
+        });
+    };
+
+    longestCommonPrefix(['flower', 'cow', 'flight', 'flow']);
+
+    //6) Reverse words in a string
+    // With JavaScript methods
+
+    // function reverseWords(s) {
+    //     //We can reduce the spaces by either str.trim() or str.replace([^A-Za-z0-9], '')
+    //     //But we need a single space so
+    //     //Remove the initial space
+    //     s = s.trimLeft();
+    //     s = s.trimRight();
+    //     for (let i = 0; i < s.length; i++) {
+    //         debugger;
+    //         if (s[i] === s[i + 1] && s[i] === " ") {
+    //             s = s.slice(0, i) + s.slice(i + 1);
+    //             i--;
+    //         }
+    //     }
+    //     //Convert the str to array
+    //     //IN split function if we leave a space character or $ it will seperate the
+    //     const str = s.split(' ');
+    //     for (let i = 0, j = str.length - 1; i < j; i++, j--) {
+    //         let temp = str[j];
+    //         str[j] = str[i];
+    //         str[i] = temp;
+    //     }
+    //     return str.join(' ');
+    // };
+
+    //2) without method
+
+    function reverseWords(str) {
+        //Let us initiate two pointer i and j where 
+        let resultString = "";
+        let regex = /[A-z]/;
+        let items = [];
+        let i = str.length - 1;
+        while (i >= 0) {
+            //Increment i everytime there is an empty space
+            if (str[i] === " ") {
+                i--;
+            } else if (regex.test(str[i])) {
+                resultString = resultString + str[i];
+                i--;
+                if (str[i] === " " || str[i] === undefined) {
+                    resultString = reverseString(resultString);
+                    items.push(resultString);
+                    resultString = "";
+                }
+            }
+        }
+        return items.join(' ');
+    }
+
+    function reverseString(str) {
+        let newString = "";
+        for (let i = str.length - 1; i >= 0; i--) {
+            newString += str[i];
+        }
+        return newString;
+    }
+
+    reverseWords("the sky is blue");
 </script>
