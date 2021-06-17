@@ -107,7 +107,6 @@
 
         return strs.reduce((prev, next) => {
             let i = 0;
-            debugger;
             while (prev[i] && next[i] && prev[i] === next[i]) i++;
             return prev.slice(0, i);
         });
@@ -176,4 +175,35 @@
     }
 
     reverseWords("the sky is blue");
+
+    // 7) Compare Versions (165) Medium
+
+    function compareVersion(v1, v2) {
+        //We split the string into different element on the basis of 0
+        //as in javaScript 0001 is also 1 and 001 is also 1 we don't have to worry for the preceding 0.
+        let v1Array = v1.split('.');
+        let v2Array = v2.split('.');
+        let length = Math.max(v1Array.length, v2Array.length);
+
+        for (let i = 0; i < length; i++) {
+            let num1 = parseInt(v1Array[i]) || 0;
+            let num2 = parseInt(v2Array[i]) || 0;
+            if (num1 === num2) {
+                continue;
+            }
+            return num1 > num2 ? 1 : -1;
+        }
+        return 0;
+    };
+
+    console.log(compareVersion('1.01', '1.0001'));
+
+    // 8) Restore IP Addresses (93)
+
+    // function restoreIpAddresses(s) {
+    //     let partition = Math.floor(s.length / 4);
+    //     return partition;
+    // };
+
+    // console.log(restoreIpAddresses('25525511135'));
 </script>
