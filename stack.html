@@ -1,0 +1,61 @@
+<script>
+    //Implementing my own stack
+
+    //LinkedList Implementation
+
+    class Node {
+        constructor(value) {
+            this.next = null;
+            this.value = value;
+        }
+    }
+
+    class Stack {
+        constructor() {
+            this.top = null;
+            this.length = 0;
+            this.bottom = null;
+        }
+
+        peek() {
+            return this.top;
+        }
+
+        push(value) {
+            //Create new Node
+            const newNode = new Node(value);
+            if (!this.length) {
+                this.top = newNode;
+                this.bottom = newNode;
+            } else {
+                //If there is a element or node we shift current top as next node of newNode
+                newNode.next = this.top;
+                this.top = newNode;
+            }
+            this.length++;
+            return this;
+        }
+
+        pop() {
+            if (!this.top) {
+                return null;
+            } else if (this.length === 1) {
+                this.bottom = null;
+                this.top = null;
+            } else {
+                this.top = this.top.next;
+            }
+            this.length--;
+            return this;
+        }
+    }
+
+    const myStack = new Stack();
+    myStack.push('google');
+    myStack.push('udemy');
+    myStack.push('discord');
+    myStack.pop();
+    myStack.pop();
+    myStack.pop();
+    console.log(myStack);
+</script>
