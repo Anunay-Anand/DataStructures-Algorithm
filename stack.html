@@ -78,12 +78,82 @@
         }
     }
 
-    const myStack = new Stack();
-    myStack.push('google');
-    myStack.push('udemy');
-    myStack.push('discord');
-    myStack.pop();
-    myStack.pop();
-    myStack.pop();
-    console.log(myStack);
+    // const myStack = new Stack();
+    // myStack.push('google');
+    // myStack.push('udemy');
+    // myStack.push('discord');
+    // myStack.pop();
+    // myStack.pop();
+    // myStack.pop();
+    // console.log(myStack);
+
+    //1) Valid Paranthesis (20)
+
+    function isValid(s) {
+        //     //Check if the length is odd or 1
+        //     let check = s.length === 1 || s.length % 2 !== 0 ? false : true;
+        //     if (check === false) {
+        //         return false;
+        //     }
+
+        //     //Create hash table with all brackets closing signs
+        //     //If we get a closing bracket in string we can get the value or opening of bracket to match with stack
+        //     const brackets = {
+        //         ')': '(',
+        //         '}': '{',
+        //         ']': '['
+        //     }
+
+        //     for (let i = 0; i < s.length; i++) {
+        //         const stack = [];
+        //         let currChar = s[i];
+        //         let lastChar = stack[stack.length - 1];
+        //         let delChar = brackets[currChar];
+
+        //         if (delChar) {
+        //             if (delChar === lastChar) {
+        //                 stack.pop()
+        //             } else {
+        //                 return false
+        //             }
+        //         } else {
+        //             stack.push(currChar)
+        //         }
+        //     }
+
+        //Check for input
+        if (s.length % 2 === 1 || s.length === 1) {
+            return false;
+        }
+
+        //Create a hash with all brackets closing
+        const brackets = {
+            '}': '{',
+            ')': '(',
+            ']': '['
+        }
+
+        const stack = [];
+
+        for (let i = 0; i < s.length; i++) {
+            let currChar = s[i];
+            let lastChar = stack[stack.length - 1];
+            let inBrackets = brackets[currChar];
+            //Check if the current bracket is opening bracket or not. 
+            //If it is a closing bracket then we go into if and else and check if stack has it's opening 
+            if (inBrackets) {
+                if (inBrackets === lastChar) {
+                    stack.pop();
+                } else {
+                    return false;
+                }
+            } else {
+                stack.push(currChar);
+            }
+        }
+        //If there are still element in stack it means not completed 
+        return !stack.length;
+    }
+
+    console.log(isValid("(("));
 </script>
