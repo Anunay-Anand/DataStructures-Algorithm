@@ -155,5 +155,33 @@
         return !stack.length;
     }
 
-    console.log(isValid("(("));
+    isValid("((");
+
+    // 2) Postfix to infix and evaluate
+
+    function evaluatePostfix(S) {
+        //Create a regex to check if it's an operand or not
+        let reg = /[0-9]/;
+        let stack = [];
+        for (let i = 0; i < S.length; i++) {
+            //If it is simply an operand push it onto stack
+            if (reg.test(S[i])) {
+                stack.push(S[i]);
+            } else {
+                //Pop the last two expressions entered and add operand in between and evaluate
+                let t1 = parseInt(stack.pop());
+                let t2 = parseInt(stack.pop());
+                //Check the type of operator
+                let result = S[i] === '+' ? t2 + t1 : S[i] === '-' ? t2 - t1 : S[i] === '*' ? t2 * t1 : t2 / t1;
+                stack.push(result);
+            }
+        }
+        let result = stack.pop();
+        if (result === -0) {
+            return 0
+        };
+        return result;
+    }
+
+    console.log(evaluatePostfix("231*+9-"));
 </script>
