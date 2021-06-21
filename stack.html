@@ -76,15 +76,29 @@
         pop() {
             return this.array.pop();
         }
+
+        minStack() {
+            return this.array.reduce((accumulator, num) => {
+                if (num < accumulator) {
+                    return num;
+                }
+                return accumulator;
+            });
+        }
     }
 
     // const myStack = new Stack();
-    // myStack.push('google');
+    // myStack.push(3);
+    // myStack.push(2);
+    // myStack.push(1);
+    // myStack.push(5);
+    // myStack.push(4);
     // myStack.push('udemy');
     // myStack.push('discord');
     // myStack.pop();
     // myStack.pop();
     // myStack.pop();
+    // console.log(myStack.minStack());
     // console.log(myStack);
 
     //1) Valid Paranthesis (20)
@@ -183,5 +197,67 @@
         return result;
     }
 
-    console.log(evaluatePostfix("231*+9-"));
+    evaluatePostfix("231*+9-");
+
+    //3) Sorting of Stack
+
+    function sortStack(s) {
+        let temp = [];
+        while (s.length) {
+            let t = s.pop();
+            while (temp && temp[temp.length - 1] > t) {
+                //pop from temporary and push it into input
+                s.push(temp.pop());
+            }
+            temp.push(t);
+        }
+        return temp;
+    }
+
+    sortStack([1, 3, 4, 2, 6, 8]);
+
+    //4) Remove K digits (402)
+
+    function removeKdigits(nums, k) {
+
+        //check for input
+        if (k === nums.length) {
+            return "0"
+        };
+
+        //Creating a stack for comparison
+        const stack = [];
+        let length = nums.length;
+        //iterating over the nums string
+        for (let i = 0; i < length; i++) {
+            //remove the peak
+            while (stack && k > 0 && stack[stack.length - 1] > nums[i]) {
+                //if the top of the stack is greater than current nums element i.e there was a dip
+                //we pop the top element of stack to flatten the curve
+                stack.pop();
+                k--;
+            }
+            //if stack is empty and nums string item is not 0
+            if (stack || nums[i] !== "0") {
+                stack.push(nums[i]);
+            }
+        }
+
+        //special condition if no dip arise in the whole nums // 1 2 3 4 5 6 (no dip) 
+        //we simply we remove large num from back
+        while (stack && k--) {
+            stack.pop();
+        }
+
+        /* if we have 0200 we need to remove the leading 0's but the point is the array length
+	    should be greater than 1. If we had just 0 there is no point in removing */
+        while (stack[0] === "0" && stack.length > 1) {
+            stack.shift();
+        }
+
+        return stack.join(' ');
+
+    };
+
+    console.log(removeKdigits('101200', 1));
 </script>
