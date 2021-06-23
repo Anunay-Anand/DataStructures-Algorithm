@@ -259,5 +259,83 @@
 
     };
 
-    console.log(removeKdigits('101200', 1));
+    removeKdigits('101200', 1);
+
+    // 5) Next Greater Element 
+
+    //Solution (1) N^2 and space O(N)
+    // function nextLargerElement(arr, n) {
+    //     //create your own stack
+    //     let stack = [];
+    //     //loop each element in array once
+    //     for (let i = 0; i < n; i++) {
+    //         let j = i + 1;
+    //         while (j <= n) {
+    //             if (arr[i] < arr[j]) {
+    //                 stack.push(arr[j]);
+    //                 break;
+    //             } else if (j === n) {
+    //                 stack.push('-1');
+    //             }
+    //             j++;
+    //         }
+    //     }
+    //     return result;
+    // }
+
+    function nextLargerElement(arr, n) {
+        // //stack of elements
+        // let stack = [];
+        // let arr1 = new Array(n);
+        // debugger;
+        // for (let i = n - 1; i >= 0; i--) {
+        //     //we will pop until we get greater element on top
+        //     // or our stack gets empty
+        //     while (stack && stack[stack.length - 1] <= arr[i]) {
+        //         stack.pop();
+        //         // If stack gots empty means there
+        //         // is no element on right which is greater
+        //         // than the current element.
+        //         // if not empty then the next greater
+        //         // element is on top of stack
+        //         if (stack.length === 0) {
+        //             arr1[i] = -1;
+        //         } else {
+        //             arr1[i] = stack[stack.length - 1];
+        //         }
+        //     }
+        //     stack.push(arr[i]);
+        // }
+        // return stack;
+
+        let stack = [];
+        let arr1 = new Array(n);
+
+        // Iterating from n-1 to 0
+        for (let i = n - 1; i >= 0; i--) {
+            debugger;
+            // We will pop till we get the
+            // greater element on top or
+            // stack gets empty
+            while (stack &&
+                stack[stack.length - 1] <= arr[i]) {
+                stack.pop();
+            }
+
+            // If stack gots empty means there
+            // is no element on right which is greater
+            // than the current element.
+            // if not empty then the next greater
+            // element is on top of stack
+            if (stack.length == 0) {
+                arr1[i] = -1;
+            } else {
+                arr1[i] = stack[stack.length - 1];
+            }
+            stack.push(arr[i]);
+        }
+        return arr1;
+    }
+
+    console.log(nextLargerElement([11, 13, 21, 3], 4));
 </script>
