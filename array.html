@@ -145,42 +145,54 @@
 
     //Faster Solution using hash table in 2 runs O(1) time complexity
 
-    // let twoSum = function (nums, target) {
-    //     const indices = {}; 
-    //     //We will create an object with keys being the variable and value being index
-    //     //We store the index as values as we need to pass them as solution
-    //     for (let i = 0; i < nums.length; i++) { //O(n)
-    //         indices[nums[i]] = i;
-    //     }
+    let twoSum = function (nums, target) {
+        // const indices = {};
+        // //We will create an object with keys being the variable and value being index
+        // //We store the index as values as we need to pass them as solution
+        // for (let i = 0; i < nums.length; i++) { //O(n)
+        //     debugger;
+        //     indices[nums[i]] = i;
+        // }
 
-    //     for (let index = 0; index < nums.length; j++) { //O(n)
-    //         let constraint = target - nums[index];
-    //         //Now let us understang it this way constaint + num[index] = target
-    //         //As all elements are already stored as keys
-    //         //Thus contraint if it exists in the object we will take it's index and the sol = [index, indicies[constraint]]
-    //         //the second condition is checked to make sure the element with same index aren't accecpted as soln   
-    //         if (indices[constraint] !== undefined && indices[constraint] !== index) {
-    //             return [index, indices[constraint]];
-    //         }
-    //     }
-    // }
+        // for (let index = 0; index < nums.length; index++) { //O(n)
+        //     let constraint = target - nums[index];
+        //     //Now let us understang it this way constaint + num[index] = target
+        //     //As all elements are already stored as keys
+        //     //Thus contraint if it exists in the object we will take it's index and the sol = [index, indicies[constraint]]
+        //     //the second condition is checked to make sure the element with same index aren't accecpted as soln   
+        //     if (indices[constraint] !== undefined && indices[constraint] !== index) {
+        //         return [index, indices[constraint]];
+        //     }
+        // }
+        // const indices = {};
+        // for (let i = 0; i < nums.length; i++) { //O(n)
+        //     indices[nums[i]] = i;
+        // }
+
+        // for (let index = 0; index < nums.length; index++) { //O(n)
+        //     let constraint = target - nums[index];
+        //     if (constraint in indices && indices[constraint] !== index) {
+        //         return [index, indices[constraint]];
+        //     }
+        // }
+    }
 
     //Fastest solution in single Run
 
-    let twoSum = function (nums, target) {
-        const indices = {};
-        for (let index = 0; index < nums.length; index++) {
-            let complement = target - nums[index];
-            //Now check if complement exist
-            if (complement in indices) {
-                return [index, indices[complement]]
-            }
-            //storing key as array value and index as values
-            indices[nums[index]] = index;
-        }
-    }
+    // let twoSum = function (nums, target) {
+    //     const indices = {};
+    //     for (let index = 0; index < nums.length; index++) {
+    //         let complement = target - nums[index];
+    //         //Now check if complement exist
+    //         if (complement in indices) {
+    //             return [index, indices[complement]]
+    //         }
+    //         //storing key as array value and index as values
+    //         indices[nums[index]] = index;
+    //     }
+    // }
 
-    twoSum([1, 15, 22, 10, 4], 11);
+    twoSum([3, 2, 4, ], 6);
 
     //5) Maximum Sub Array
 
@@ -553,6 +565,7 @@
     function thirdMax(nums) {
         let max = 0;
         let items = {};
+        debugger;
         for (let i = 0; i < nums.length; i++) {
             items[nums[i]] = nums[i];
         }
@@ -727,7 +740,24 @@
     //     return nums[Math.floor(nums.length/2)];
     // }
 
-    //3)  Boyer-Moore Vomiting Algorithm it's absolute solution O(n) time O(1) space
+    //3) Using hash in single pass O(n) space and time
+    // if(nums.length <= 1) {
+    //     return nums[0];
+    // }
+    // let items = {};
+    // let len = nums.length;
+    // for(let i = 0; i < len; i++) {
+    //    if(nums[i] in items) {
+    //    	items[nums[i]] = items[nums[i]] + 1;
+    //     if(items[nums[i]] >= len/2) {
+    //     	return nums[i];
+    //     }
+    //    } else {
+    //    		items[nums[i]] = 1;
+    //    }
+    // }
+
+    //4)  Boyer-Moore Vomiting Algorithm it's absolute solution O(n) time O(1) space
     function majorityElement(nums) {
         let count = 1;
         let maj = 0;
@@ -742,7 +772,4 @@
     }
 
     majorityElement([4, 5, 4]);
-
-    
-
 </script>
