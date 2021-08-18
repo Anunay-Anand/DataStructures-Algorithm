@@ -539,7 +539,7 @@
     //     return nums.reduce((acc, num) => acc ^ num)
     // };
 
-    singleNumber([4, 1, 2, 1, 2]);
+    // singleNumber([4, 1, 2, 1, 2]);
 
     //14) Sum of two number without + and - operators
 
@@ -788,45 +788,45 @@
 
     // 19) Max distance to closest person (leetcode 849) 
 
-    const maxDistToClosest = (seats) => {
-        let first = null;
-        let last = null;
-        max = 0;
+    // const maxDistToClosest = (seats) => {
+    //     let first = null;
+    //     let last = null;
+    //     max = 0;
 
-        for (let i = 0; i < seats.length; i++) {
-            if (seats[i]) {
-                if (first === null) {
-                    first = i;
-                }
+    //     for (let i = 0; i < seats.length; i++) {
+    //         if (seats[i]) {
+    //             if (first === null) {
+    //                 first = i;
+    //             }
 
-                if (last !== null) {
-                    dist = i - last;
-                    max = Math.max(max, Math.floor(dist / 2));
-                }
-                last = i;
-            }
-        }
+    //             if (last !== null) {
+    //                 dist = i - last;
+    //                 max = Math.max(max, Math.floor(dist / 2));
+    //             }
+    //             last = i;
+    //         }
+    //     }
 
-        //  If no one is seated at first seat then check
-        if (seats[0] !== 1) {
-            max = Math.max(max, first);
-        }
+    //     //  If no one is seated at first seat then check
+    //     if (seats[0] !== 1) {
+    //         max = Math.max(max, first);
+    //     }
 
-        //  if no one is seated at last then check
-        if (seats[seats.length - 1] !== 1) {
-            max = Math.max(max, seats.length - 1 - last);
-        }
-        return max;
-    };
+    //     //  if no one is seated at last then check
+    //     if (seats[seats.length - 1] !== 1) {
+    //         max = Math.max(max, seats.length - 1 - last);
+    //     }
+    //     return max;
+    // };
 
-    // 20) Buy and Sell Stock 2 
-    let maxProfit = (prices) => {
-        let profit = 0;
-        for (let i = 0; i < prices.length; i++) {
-            if (prices[i] > prices[i - 1]) {
-                profit += prices[i] - prices[i - 1];
-            }
-        }
-        return profit;
-    }
+    // // 20) Buy and Sell Stock 2 
+    // let maxProfit = (prices) => {
+    //     let profit = 0;
+    //     for (let i = 0; i < prices.length; i++) {
+    //         if (prices[i] > prices[i - 1]) {
+    //             profit += prices[i] - prices[i - 1];
+    //         }
+    //     }
+    //     return profit;
+    // }
 </script>
