@@ -501,23 +501,37 @@
     // 14) Return Single Number (136)
 
     //HASH SOLUTION/Object Solution
-    function singleNumber(nums) {
-        let items = {};
-        for (let i = 0; i < nums.length; i++) {
-            if (nums[i] in items) {
-                delete(items[nums[i]]);
-            } else {
-                items[[nums[i]]] = i;
-            }
-        }
-        //Now fetch all object values by ES6 Method
-        for (let key of Object.keys(items)) {
-            if (items[key] !== undefined) {
-                return key;
-            }
+    // function singleNumber(nums) {
+    //     let items = {};
+    //     for (let i = 0; i < nums.length; i++) {
+    //         if (nums[i] in items) {
+    //             delete(items[nums[i]]);
+    //         } else {
+    //             items[[nums[i]]] = i;
+    //         }
+    //     }
+    //     //Now fetch all object values by ES6 Method
+    //     for (let key of Object.keys(items)) {
+    //         if (items[key] !== undefined) {
+    //             return key;
+    //         }
 
-        }
-    }
+    //     }
+    // }
+
+    // Single number single loop solution
+    // const singleNumber2 = (nums) => {
+    //     let items = {};
+    //     for (let i = 0; i < nums.length; i++) {
+    //         debugger;
+    //         if (nums[i] in items) {
+    //             delete items[nums[i]];
+    //         } else {
+    //             items[nums[i]] = 0;
+    //         }
+    //     }
+    //     return Object.keys(items)[0];
+    // };
 
     //SUPER SOLUTION
     // const singleNumber = (nums) => {
@@ -529,43 +543,42 @@
 
     //14) Sum of two number without + and - operators
 
-    function getSum(a, b) {
-        let sum = 0;
-        if (a > 0) {
-            sum = incrementer(a, sum);
-        } else {
-            sum = decrementer(a, sum);
-        }
-        if (b > 0) {
-            sum = incrementer(b, sum);
-        } else {
-            sum = decrementer(b, sum);
-        }
-        return sum;
-    };
+    // function getSum(a, b) {
+    //     let sum = 0;
+    //     if (a > 0) {
+    //         sum = incrementer(a, sum);
+    //     } else {
+    //         sum = decrementer(a, sum);
+    //     }
+    //     if (b > 0) {
+    //         sum = incrementer(b, sum);
+    //     } else {
+    //         sum = decrementer(b, sum);
+    //     }
+    //     return sum;
+    // };
 
-    function incrementer(num, sum) {
-        for (let i = 0; i < num; i++) {
-            sum++;
-        }
-        return sum;
-    }
+    // function incrementer(num, sum) {
+    //     for (let i = 0; i < num; i++) {
+    //         sum++;
+    //     }
+    //     return sum;
+    // }
 
-    function decrementer(num, sum) {
-        for (let i = num; i < 0; i++) {
-            sum--;
-        }
-        return sum;
-    }
+    // function decrementer(num, sum) {
+    //     for (let i = num; i < 0; i++) {
+    //         sum--;
+    //     }
+    //     return sum;
+    // }
 
-    getSum(-1, 1);
+    // getSum(-1, 1);
 
     //15) Third Maximum Number
 
     function thirdMax(nums) {
         let max = 0;
         let items = {};
-        debugger;
         for (let i = 0; i < nums.length; i++) {
             items[nums[i]] = nums[i];
         }
