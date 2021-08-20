@@ -203,4 +203,11 @@
     // 9) Longest Substring without Repeating Character (3) 
 
     // 10) Maximum Number of Occurrences of a Substring (1297)
+
+    // 11) Reverse a Integer
+    const reverse = x => {
+        const str = x.split('').reverse().join('').replace('-', '');
+        const num = x < 0 ? parseInt(str) * (-1) : parseInt(str);
+        return (num >= (2 ** 31 - 1) || num <= (-(2 ** 31))) ? 0 : num;
+    }
 </script>
