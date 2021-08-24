@@ -60,32 +60,32 @@
 
     //Implementation using Array
 
-    class Stack {
-        constructor(value) {
-            this.array = [];
-        }
+    // class Stack {
+    //     constructor(value) {
+    //         this.array = [];
+    //     }
 
-        peek() {
-            return this.array[this.array.length - 1];
-        }
+    //     peek() {
+    //         return this.array[this.array.length - 1];
+    //     }
 
-        push(value) {
-            return this.array.push(value);
-        }
+    //     push(value) {
+    //         return this.array.push(value);
+    //     }
 
-        pop() {
-            return this.array.pop();
-        }
+    //     pop() {
+    //         return this.array.pop();
+    //     }
 
-        minStack() {
-            return this.array.reduce((accumulator, num) => {
-                if (num < accumulator) {
-                    return num;
-                }
-                return accumulator;
-            });
-        }
-    }
+    //     minStack() {
+    //         return this.array.reduce((accumulator, num) => {
+    //             if (num < accumulator) {
+    //                 return num;
+    //             }
+    //             return accumulator;
+    //         });
+    //     }
+    // }
 
     // const myStack = new Stack();
     // myStack.push(3);

@@ -50,32 +50,32 @@
 
     //3) Count and Say
 
-    function countAndSay(n) {
-        //This is the base case for recursion (Bottom to top approach)
-        if (n === 1) return "1";
-        //Each time we will take the prev value from the last stack call. Ex. for n = 3 we will have prev = solution of n = 2 (11)
-        let prev = countAndSay(n - 1),
-            //count is 1 as if an element of string occur it will occcur atleat once
-            count = 1,
-            //result string 
-            res = "",
-            i = 0;
-        //We compare only till prev.length - 1 as we compare second last to last element each time. (As last element + undefined is not a comparison)
-        for (; i < prev.length - 1; i++) {
-            if (prev[i] === prev[i + 1]) {
-                count++;
-            } else {
-                //If i and i + 1 are not equal append to result count + element(prev[index]) 
-                res += count + prev[i];
-                count = 1;
-            }
-        }
-        //This is for the last element or prev.length - 1 element is appended with count 1 and the element itself.
-        res += count + prev[i];
-        return res;
-    }
+    // function countAndSay(n) {
+    //     //This is the base case for recursion (Bottom to top approach)
+    //     if (n === 1) return "1";
+    //     //Each time we will take the prev value from the last stack call. Ex. for n = 3 we will have prev = solution of n = 2 (11)
+    //     let prev = countAndSay(n - 1),
+    //         //count is 1 as if an element of string occur it will occcur atleat once
+    //         count = 1,
+    //         //result string 
+    //         res = "",
+    //         i = 0;
+    //     //We compare only till prev.length - 1 as we compare second last to last element each time. (As last element + undefined is not a comparison)
+    //     for (; i < prev.length - 1; i++) {
+    //         if (prev[i] === prev[i + 1]) {
+    //             count++;
+    //         } else {
+    //             //If i and i + 1 are not equal append to result count + element(prev[index]) 
+    //             res += count + prev[i];
+    //             count = 1;
+    //         }
+    //     }
+    //     //This is for the last element or prev.length - 1 element is appended with count 1 and the element itself.
+    //     res += count + prev[i];
+    //     return res;
+    // }
 
-    countAndSay(4);
+    // countAndSay(4);
 
     //4) Unique character String Note (for in loop is a better solution for of)
 
