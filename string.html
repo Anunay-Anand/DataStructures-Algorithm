@@ -80,43 +80,41 @@
     //4) Unique character String Note (for in loop is a better solution for of)
 
     //This solution is O(n) space and time
-    function firstUniqChar(s) {
-        //use object and solve
-        let char = {};
-        for (let i = 0; i < s.length; i++) {
-            char[s[i]] = s[i] in char ? -1 : i;
-        }
-        //Check if any element does not have an index of -1
-        for (let i in char) {
-            if (char[i] !== -1) {
-                return char[i];
-            }
-        }
-        return -1;
-    };
+    // function firstUniqChar(s) {
+    //     //use object and solve
+    //     let char = {};
+    //     for (let i = 0; i < s.length; i++) {
+    //         char[s[i]] = s[i] in char ? -1 : i;
+    //     }
+    //     //Check if any element does not have an index of -1
+    //     for (let i in char) {
+    //         if (char[i] !== -1) {
+    //             return char[i];
+    //         }
+    //     }
+    //     return -1;
+    // };
 
-    firstUniqChar("loveleetcode");
+    // firstUniqChar("loveleetcode");
 
-    //5) Find common prefix if any
+    // //5) Find common prefix if any
 
-    function longestCommonPrefix(strs) {
-        'use strict';
-        if (strs === undefined || strs.length === 0) {
-            return '';
-        }
+    // function longestCommonPrefix(strs) {
+    //     'use strict';
+    //     if (strs === undefined || strs.length === 0) {
+    //         return '';
+    //     }
+    //     return strs.reduce((prev, next) => {
+    //         let i = 0;
+    //         while (prev[i] && next[i] && prev[i] === next[i]) i++;
+    //         return prev.slice(0, i);
+    //     });
+    // };
 
-        return strs.reduce((prev, next) => {
-            let i = 0;
-            while (prev[i] && next[i] && prev[i] === next[i]) i++;
-            return prev.slice(0, i);
-        });
-    };
-
-    longestCommonPrefix(['flower', 'cow', 'flight', 'flow']);
+    // longestCommonPrefix(['flower', 'cow', 'flight', 'flow']);
 
     //6) Reverse words in a string
     // With JavaScript methods
-
     // function reverseWords(s) {
     //     //We can reduce the spaces by either str.trim() or str.replace([^A-Za-z0-9], '')
     //     //But we need a single space so
@@ -124,7 +122,6 @@
     //     s = s.trimLeft();
     //     s = s.trimRight();
     //     for (let i = 0; i < s.length; i++) {
-    //         debugger;
     //         if (s[i] === s[i + 1] && s[i] === " ") {
     //             s = s.slice(0, i) + s.slice(i + 1);
     //             i--;
@@ -140,13 +137,14 @@
     //     }
     //     return str.join(' ');
     // };
+    // console.log(reverseWords("blue is sky the"));
 
     //2) without method
 
     function reverseWords(str) {
         //Let us initiate two pointer i and j where 
         let resultString = "";
-        let regex = /[A-z]/;
+        let regex = /[A-z0-9]/;
         let items = [];
         let i = str.length - 1;
         while (i >= 0) {
@@ -210,4 +208,7 @@
     //     const num = x < 0 ? parseInt(str) * (-1) : parseInt(str);
     //     return (num >= (2 ** 31 - 1) || num <= (-(2 ** 31))) ? 0 : num;
     // }
+
+
+    // console.log(longestCommonPrefix(["flower", "flow", "flight"]));
 </script>
