@@ -184,6 +184,7 @@
         let length = Math.max(v1Array.length, v2Array.length);
 
         for (let i = 0; i < length; i++) {
+            debugger;
             let num1 = parseInt(v1Array[i]) || 0;
             let num2 = parseInt(v2Array[i]) || 0;
             if (num1 === num2) {
@@ -194,9 +195,40 @@
         return 0;
     };
 
-    compareVersion('1.01', '1.0001');
+    console.log(compareVersion('1.01', '1.0001'));
 
     // 8) Longest Palindromic String (5) (DP se hoga)
+
+    const longestPalindrome = s => {
+        //we need to keep track of longest
+        let longest = '';
+        for (let i = 0; i < s.length; i++) {
+            //It is so because in even palindrome the center will be single character  
+            let evenPalindromeSubstring = expandFromCenter(s, i, i);
+            //It is so because in odd palindrome the center will have two character 
+            let oddPalindromeSubstring = expandFromCenter(s, i - 1, i);
+
+            if (evenPalindromeSubstring.length > longest.length) {
+                longest = evenPalindromeSubstring;
+            }
+
+            if (oddPalindromeSubstring.length > longest.length) {
+                longest = oddPalindromeSubstring;
+            }
+
+        }
+        return longest;
+    };
+
+    const expandFromCenter = (str, l, r) => {
+        let i = 0;
+        while (str[l - i] && (str[l - i] === str[r + i])) {
+            i++;
+        }
+        //We decrement i as we want to return valid palindrome     
+        i--;
+        return str.slice(l - i, r + 1 + i);
+    }
 
     // 9) Longest Substring without Repeating Character (3) 
 
