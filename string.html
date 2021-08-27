@@ -184,7 +184,6 @@
         let length = Math.max(v1Array.length, v2Array.length);
 
         for (let i = 0; i < length; i++) {
-            debugger;
             let num1 = parseInt(v1Array[i]) || 0;
             let num2 = parseInt(v2Array[i]) || 0;
             if (num1 === num2) {
@@ -233,26 +232,80 @@
 
     // 9) Longest Substring without Repeating Character (3) 
 
-    function longestSubstring(s) {
-        let char = {};
-        let longest = 0;
-        let count = 0;
-        for (let i = 0; i < s.length; i++) {
-            if (s[i] in char) {
-                let subString = s.slice(i - count, i);
-                let index = subString.indexOf(s[i]);
-                count = count - (index + 1);
-            }
-            count++;
-            items[s[i]] = i;
-            if (longest < count) {
-                longest = count;
-            }
-        }
-        return longest;
-    }
+    // function longestSubstring(s) {
+    //     let char = {};
+    //     let longest = 0;
+    //     let count = 0;
+    //     for (let i = 0; i < s.length; i++) {
+    //         debugger;
+    //         if (s[i] in char) {
+    //             let subString = s.slice(i - count, i);
+    //             let index = subString.indexOf(s[i]);
+    //             count = count - (index + 1);
+    //         }
+    //         count++;
+    //         char[s[i]] = i;
+    //         if (longest < count) {
+    //             longest = count;
+    //         }
+    //     }
+    //     return longest;
+    // }
 
-    console.log(longestSubstring('aabbsahdaggss'));
+    // console.log(longestSubstring('abcabcabdbbabcad'));
+
+    // 10) Valid anagram
+
+    // var isAnagram = function (s, t) {
+    //     let map = {}
+
+    //     debugger;
+    //     // O(s+t) where s and t are length of strings
+    //     for (let char of s) {
+    //         if (!map[char]) {
+    //             map[char] = 1
+    //         } else {
+    //             map[char]++
+    //         }
+    //     }
+
+    //     for (let char of t) {
+    //         if (map[char] !== undefined) {
+    //             map[char]--
+    //         } else {
+    //             return false
+    //         }
+    //     }
+
+    //     for (let value of Object.values(map)) {
+    //         if (value != 0) {
+    //             return false
+    //         }
+    //     }
+    //     return true
+    // };
+
+    // isAnagram('nagaram', 'anagram');
+
+    // 2nd solution
+
+    // var isAnagram = function (s, t) {
+    //     if (!s.length || !t.length || s.length !== t.length) {
+    //         return false;
+    //     }
+
+    //     for (let i = 0; i < s.length; i++) {
+    //         let index = t.indexOf(s[i]);
+    //         if (index === -1) {
+    //             return false;
+    //         }
+    //         t = t.slice(0, index) + t.slice(index + 1);
+    //     }
+    //     if (t.length === 0) {
+    //         return true;
+    //     }
+
+    // };
 
     // 10) Maximum Number of Occurrences of a Substring (1297)
 
