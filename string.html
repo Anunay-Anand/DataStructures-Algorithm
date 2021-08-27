@@ -230,7 +230,29 @@
         return str.slice(l - i, r + 1 + i);
     }
 
+
     // 9) Longest Substring without Repeating Character (3) 
+
+    function longestSubstring(s) {
+        let char = {};
+        let longest = 0;
+        let count = 0;
+        for (let i = 0; i < s.length; i++) {
+            if (s[i] in char) {
+                let subString = s.slice(i - count, i);
+                let index = subString.indexOf(s[i]);
+                count = count - (index + 1);
+            }
+            count++;
+            items[s[i]] = i;
+            if (longest < count) {
+                longest = count;
+            }
+        }
+        return longest;
+    }
+
+    console.log(longestSubstring('aabbsahdaggss'));
 
     // 10) Maximum Number of Occurrences of a Substring (1297)
 
