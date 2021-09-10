@@ -344,6 +344,16 @@ var hammingDistance = (x, y) => {
   return count;
 };
 
-console.log(hammingDistance(1, 4));
+// console.log(hammingDistance(1, 4));
 
 // 13) Invert all the bits
+var reverseBits = (n) => {
+  let binary = n.toString(2);
+  const zeroAppend = 32 - binary.length;
+  for (let i = 0; i < zeroAppend; i++) {
+    binary = "0" + binary;
+  }
+  return parseInt(binary.split("").reverse("").join(""), 2);
+};
+
+console.log(reverseBits(11111111111111111111111111111101));
