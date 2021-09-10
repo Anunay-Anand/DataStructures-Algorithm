@@ -94,12 +94,32 @@ class Linkedlist {
     this.length--;
     return this.printList();
   }
+
+  reverse() {
+    if (!this.head.next) {
+      return this.head;
+    }
+    let first = this.head;
+    // To make sure first item is tail by the end
+    this.tail = this.head;
+    let second = first.next;
+    while (second) {
+      let temp = second.next;
+      second.next = first;
+      first = second;
+      second = temp;
+    }
+    this.head.next = null;
+    this.head = first;
+    return this.printList();
+  }
 }
 
-// const list = new Linkedlist(10);
-// list.append(12);
-// list.prepend(8);
-// console.log(list.insert(1, 5));
+const list = new Linkedlist(10);
+list.append(12);
+list.prepend(8);
+list.insert(1, 5);
+
 
 // 1) Delete Node from linked list without Head
 
@@ -130,19 +150,19 @@ var deleteNode2 = (node) => {
 // 2) Remove nth Node from End
 
 // Sol - 1 :--
-var removeNthFromEnd1 = function(head, n) {
-    
-  if(head.next === null) {
+var removeNthFromEnd1 = function (head, n) {
+
+  if (head.next === null) {
     return null;
   }
   let length = 0;
   let currentNode = head;
-  while(currentNode !== null) {
+  while (currentNode !== null) {
     currentNode = currentNode.next;
     length++;
   }
   // Check if length = n (delete head)
-  if(n === length) {
+  if (n === length) {
     head = head.next;
     return head;
   }
@@ -157,34 +177,94 @@ var removeNthFromEnd1 = function(head, n) {
 const traverse = (head, index) => {
   let count = 1;
   let currentNode = head;
-  while( count !== index) {
+  while (count !== index) {
     currentNode = currentNode.next;
-     count++;
+    count++;
   }
   return currentNode;
 }
 
 // sol - 2 :--
 
-var removeNthFromEnd2 = function(head, n) {
-    
+var removeNthFromEnd2 = function (head, n) {
+
   let dummyHead = new ListNode;
   dummyHead.next = head;
   let fast = dummyHead;
-  while(n > 0) {
-      fast = fast.next;
-      n--;
+  while (n > 0) {
+    fast = fast.next;
+    n--;
   }
-  
+
   let prev = dummyHead;
   let curr = dummyHead;
-  while(fast) {
-      prev = curr;
-      curr = curr.next;
-      fast = fast.next;
+  while (fast) {
+    prev = curr;
+    curr = curr.next;
+    fast = fast.next;
   }
-  
+
   prev.next = curr.next;
-  
+
   return dummyHead.next;
+};
+
+// 3) Reverse a linkedlist
+
+var reverseList = (head) => {
+  if(!head) {
+      return null;
+  }
+  if(head.next === null) {
+      return head;
+  } 
+  first = head;
+  second = head.next;
+  while(second) {
+      let temp = second.next;
+      second.next = first;
+      first = second;
+      second = temp;
+  }
+  head.next = null;
+  head = first;
+  return head;
+};
+
+// 4) Merged two list sorted
+
+var mergeTwoLists = function(l1, l2) {
+  if(l1 === null && l2 === null) {
+      return null;
+  }
+  if(l1 && !l2) {
+      return l1;
+  }
+  if(l2 && !l1) {
+      return l2;
+  }
+  let mergedNode = new ListNode;
+  let head = mergedNode;
+  let nodeOne = l1;
+  let nodeTwo = l2;
+  while(nodeOne || nodeTwo) {
+      if(nodeOne.val <= nodeTwo.val || !nodeTwo) {
+          mergedNode.next = nodeOne;
+          mergedNode = mergedNode.next;
+          nodeOne = nodeOne.next;
+          if(nodeOne === null) {
+              nodeOne = 0;
+          }
+          console.log(nodeOne);
+      } else {
+          mergedNode.next = nodeTwo;
+          mergedNode = mergedNode.next;
+          nodeTwo = nodeTwo.next;
+          if(nodeTwo === null) {
+              nodeTwo = 0;
+          }
+          console.log(nodeTwo);
+      }
+  }
+  return head.next;
 };
