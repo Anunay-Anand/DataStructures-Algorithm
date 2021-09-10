@@ -104,12 +104,18 @@ class Linkedlist {
 // 1) Delete Node from linked list without Head
 
 // Sol - 1 :--
+var deleteNode1 = (node) => {
+  let deleteNode = node.next;
+  node.val = deleteNode.val;
+  node.next = deleteNode.next;
+  delete deleteNode;
+}
 
 // Sol - 2 :--
-var deleteNode = (node) => {
+var deleteNode2 = (node) => {
   let prev = node;
   let curr = node.next;
-  while (curr) {
+  while (curr !== null) {
     prev.val = curr.val;
     if (curr.next === null) {
       prev.next = null;
@@ -119,4 +125,66 @@ var deleteNode = (node) => {
     prev = curr;
     curr = curr.next;
   }
+};
+
+// 2) Remove nth Node from End
+
+// Sol - 1 :--
+var removeNthFromEnd1 = function(head, n) {
+    
+  if(head.next === null) {
+    return null;
+  }
+  let length = 0;
+  let currentNode = head;
+  while(currentNode !== null) {
+    currentNode = currentNode.next;
+    length++;
+  }
+  // Check if length = n (delete head)
+  if(n === length) {
+    head = head.next;
+    return head;
+  }
+  let prev = traverse(head, length - n);
+  let deleteNode = prev.next;
+  prev.next = deleteNode.next;
+  delete deleteNode;
+  return head;
+
+};
+
+const traverse = (head, index) => {
+  let count = 1;
+  let currentNode = head;
+  while( count !== index) {
+    currentNode = currentNode.next;
+     count++;
+  }
+  return currentNode;
+}
+
+// sol - 2 :--
+
+var removeNthFromEnd2 = function(head, n) {
+    
+  let dummyHead = new ListNode;
+  dummyHead.next = head;
+  let fast = dummyHead;
+  while(n > 0) {
+      fast = fast.next;
+      n--;
+  }
+  
+  let prev = dummyHead;
+  let curr = dummyHead;
+  while(fast) {
+      prev = curr;
+      curr = curr.next;
+      fast = fast.next;
+  }
+  
+  prev.next = curr.next;
+  
+  return dummyHead.next;
 };
