@@ -268,3 +268,19 @@ var mergeTwoLists = function(l1, l2) {
   }
   return head.next;
 };
+
+// 5) Cycle in Linkedlist
+
+var hasCycle = function(head) {
+  let fast = head;
+  let slow = head;
+  // first loop
+  while(fast && fast.next) {
+      slow = slow.next;
+      fast = fast.next.next;
+      if(slow === fast) {
+          return true;
+      }
+  }
+  return false;
+};
