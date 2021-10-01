@@ -921,3 +921,21 @@
 //         [4, 5, 6],
 //         [7, 8, 9]
 //     ]);
+
+// 22) Merge Sorted array different
+
+var merge = function (nums1, m, nums2, n) {
+  let num1Index = m - 1;
+  let num2Index = n - 1;
+  let Index = m + n - 1;
+  while (num2Index > -1) {
+    if (nums1[num1Index] !== undefined && nums1[num1Index] > nums2[num2Index]) {
+      nums1[Index] = nums1[num1Index];
+      num1Index--;
+    } else {
+      nums1[Index] = nums2[num2Index];
+      num2Index--;
+    }
+    Index--;
+  }
+};
