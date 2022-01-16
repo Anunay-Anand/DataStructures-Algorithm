@@ -1001,3 +1001,17 @@ function removeElement(nums, val) {
     count--;
   }
 }
+
+// Look in the reverse direction (element which are not val)
+function removeElement(nums, val) {
+  // intital index where elements are allocated
+  let k = 0;
+  let len = nums.length;
+  for (let i = 0; i < len; i++) {
+    if (nums[i] !== val) {
+      nums[k] = nums[i];
+      k++;
+    }
+  }
+  nums.length = k;
+}
