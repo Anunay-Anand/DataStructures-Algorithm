@@ -944,5 +944,34 @@
 
 // Here the last digit 0 is the initial value of acc/prev number
 const findNumbers = (nums) => {
-    return nums.reduce((acc, val) => ('' + val).length % 2 === 0 ? acc + 1: acc, 0);
+  return nums.reduce(
+    (acc, val) => (("" + val).length % 2 === 0 ? acc + 1 : acc),
+    0
+  );
 };
+
+//  24) Removing Element in an Array
+
+function removeElement(nums, val) {
+  //   Solve for base case
+  if (nums[nums.length - 1] === val) {
+    nums.pop();
+  }
+  for (let i = 0; i < nums.length; i++) {
+    if (nums[i] === val) {
+      let index = i;
+      // Perform left shift operation
+      while (index < nums.length) {
+        nums[index] = nums[index + 1];
+        // increment the index
+        index++;
+      }
+      // to ensure the very next element is not val
+      i--;
+      // Reducing the length of array after removing element
+      nums.pop();
+    }
+  }
+  //  Returning the value of k
+  return nums.length;
+}
