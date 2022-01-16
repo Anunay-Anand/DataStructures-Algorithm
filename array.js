@@ -950,7 +950,7 @@ const findNumbers = (nums) => {
   );
 };
 
-//  24) Removing Element in an Array
+//  24) Removing Element in an Array - Brute Force
 
 function removeElement(nums, val) {
   //   Solve for base case
@@ -974,4 +974,30 @@ function removeElement(nums, val) {
   }
   //  Returning the value of k
   return nums.length;
+}
+
+// Two Pointer
+
+function removeElement(nums, val) {
+  // Base condition of the problem
+  if (nums[nums.length - 1] === val) {
+    nums.pop();
+  }
+  let index = nums.length - 1;
+  let j = index;
+  let count = 0;
+  while (j >= 0) {
+    if (nums[j] === val) {
+      let temp = nums[index];
+      nums[index] = val;
+      nums[j] = temp;
+      index--;
+      count++;
+    }
+    j--;
+  }
+  while (count > 0) {
+    nums.pop();
+    count--;
+  }
 }
