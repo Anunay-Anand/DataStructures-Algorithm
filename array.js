@@ -1015,3 +1015,38 @@ function removeElement(nums, val) {
   }
   nums.length = k;
 }
+
+// 25) Check if N and it's double Exist
+
+// 1) Brute Force n^2
+
+const checkIfExist = (arr) => {
+  // Check for base/edge cases
+  if (arr.length === 0) {
+    return false;
+  }
+
+  for (let i = 0; i < arr.length; i++) {
+    for (let j = 0; j < arr.length; j++) {
+      if (i != j && arr[i] === 2 * arr[j]) {
+        return true;
+      }
+    }
+  }
+  return false;
+};
+
+// 2) Comparitavly optimized
+
+const checkIfExist = (arr) => {
+  let map = {};
+  for (let x of arr) {
+    // Inorder to accept the negative number as well
+    if (map[x] > -Infinity) {
+      return true;
+    }
+    map[x / 2] = x;
+    map[x * 2] = x;
+  }
+  return false;
+};
