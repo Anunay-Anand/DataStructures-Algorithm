@@ -1050,3 +1050,55 @@ const checkIfExist = (arr) => {
   }
   return false;
 };
+
+// 26) Valley Problem
+
+var validMountainArray = function (arr) {
+  //     Check if length is less than 3
+  if (arr.length < 3) {
+    return false;
+  }
+
+  //     Finding the peak
+  var i = 0;
+  while (i < arr.length - 1) {
+    if (arr[i + 1] <= arr[i]) {
+      break;
+    }
+    i++;
+  }
+
+  //     If the array is continuosly inc or dec
+  if (i === 0 || i === arr.length - 1) {
+    return false;
+  }
+
+  //     Ensure it is strictly decreasing
+  for (let j = i; j < arr.length - 1; j++) {
+    if (arr[j] <= arr[j + 1]) {
+      return false;
+    }
+  }
+  return true;
+};
+
+// 27) Replace Elements with Greatest Element on Right side
+
+const replaceElements = (arr) => {
+  for (let i = 0; i < arr.length; i++) {
+    if (i === arr.length - 1) {
+      arr[i] = -1;
+      break;
+    }
+    let peak = -Infinity;
+    for (let j = i + 1; j < arr.length; j++) {
+      if (arr[j] > peak) {
+        peak = arr[j];
+      }
+      if (j === arr.length - 1) {
+        arr[i] = peak;
+      }
+    }
+  }
+  return arr;
+};
