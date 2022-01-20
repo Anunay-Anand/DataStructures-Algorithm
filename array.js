@@ -1084,6 +1084,7 @@ var validMountainArray = function (arr) {
 
 // 27) Replace Elements with Greatest Element on Right side
 
+// Burte Force
 const replaceElements = (arr) => {
   for (let i = 0; i < arr.length; i++) {
     if (i === arr.length - 1) {
@@ -1101,4 +1102,46 @@ const replaceElements = (arr) => {
     }
   }
   return arr;
+};
+
+// Optimized approach O(n)
+
+const replaceElements = (arr) => {
+  let len = arr.length;
+  let max = arr[len - 1];
+
+  for (let i = len - 2; i >= 0; i--) {
+    let temp = arr[i];
+    arr[i] = max;
+    if (temp > max) {
+      max = temp;
+    }
+  }
+  arr[len - 1] = -1;
+  return arr;
+};
+
+// 28) Sort Array by parity
+
+const sortArrayByParity = nums => {
+    
+    let len = nums.length;
+    let pos = len - 1;
+    
+    if(len < 1) {
+        return nums;
+    }
+    
+    for(let j = len - 2; j >= 0; j--) {
+        if(nums[j]%2 !== 0 && nums[pos]%2 === 0) {
+            let temp = nums[j];
+            nums[j] = nums[pos];
+            nums[pos] = temp;
+            pos--;
+        } else if (nums[pos]%2 !== 0 && nums[j]%2 === 0) {
+            pos = j;
+        }
+    }
+    
+    return nums;
 };
