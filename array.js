@@ -1123,25 +1123,44 @@ const replaceElements = (arr) => {
 
 // 28) Sort Array by parity
 
-const sortArrayByParity = nums => {
-    
-    let len = nums.length;
-    let pos = len - 1;
-    
-    if(len < 1) {
-        return nums;
-    }
-    
-    for(let j = len - 2; j >= 0; j--) {
-        if(nums[j]%2 !== 0 && nums[pos]%2 === 0) {
-            let temp = nums[j];
-            nums[j] = nums[pos];
-            nums[pos] = temp;
-            pos--;
-        } else if (nums[pos]%2 !== 0 && nums[j]%2 === 0) {
-            pos = j;
-        }
-    }
-    
+const sortArrayByParity = (nums) => {
+  let len = nums.length;
+  let pos = len - 1;
+
+  if (len < 1) {
     return nums;
+  }
+
+  for (let j = len - 2; j >= 0; j--) {
+    if (nums[j] % 2 !== 0 && nums[pos] % 2 === 0) {
+      let temp = nums[j];
+      nums[j] = nums[pos];
+      nums[pos] = temp;
+      pos--;
+    } else if (nums[pos] % 2 !== 0 && nums[j] % 2 === 0) {
+      pos = j;
+    }
+  }
+
+  return nums;
+};
+
+// 29) Heights Checker
+
+var heightChecker = function (heights) {
+  // Spread the initial array to avoid mutation
+  const expected = [...heights];
+  // Sort to get expected heights
+  expected.sort((a, b) => a - b);
+
+  // Counting indicies
+  let position = 0;
+
+  for (let i = 0; i < heights.length; i++) {
+    if (heights[i] !== expected[i]) {
+      position++;
+    }
+  }
+
+  return position;
 };
