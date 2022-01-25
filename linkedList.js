@@ -120,7 +120,6 @@ list.append(12);
 list.prepend(8);
 list.insert(1, 5);
 
-
 // 1) Delete Node from linked list without Head
 
 // Sol - 1 :--
@@ -129,7 +128,7 @@ var deleteNode1 = (node) => {
   node.val = deleteNode.val;
   node.next = deleteNode.next;
   delete deleteNode;
-}
+};
 
 // Sol - 2 :--
 var deleteNode2 = (node) => {
@@ -151,7 +150,6 @@ var deleteNode2 = (node) => {
 
 // Sol - 1 :--
 var removeNthFromEnd1 = function (head, n) {
-
   if (head.next === null) {
     return null;
   }
@@ -171,7 +169,6 @@ var removeNthFromEnd1 = function (head, n) {
   prev.next = deleteNode.next;
   delete deleteNode;
   return head;
-
 };
 
 const traverse = (head, index) => {
@@ -182,13 +179,12 @@ const traverse = (head, index) => {
     count++;
   }
   return currentNode;
-}
+};
 
 // sol - 2 :--
 
 var removeNthFromEnd2 = function (head, n) {
-
-  let dummyHead = new ListNode;
+  let dummyHead = new ListNode();
   dummyHead.next = head;
   let fast = dummyHead;
   while (n > 0) {
@@ -212,19 +208,19 @@ var removeNthFromEnd2 = function (head, n) {
 // 3) Reverse a linkedlist
 
 var reverseList = (head) => {
-  if(!head) {
-      return null;
+  if (!head) {
+    return null;
   }
-  if(head.next === null) {
-      return head;
-  } 
+  if (head.next === null) {
+    return head;
+  }
   first = head;
   second = head.next;
-  while(second) {
-      let temp = second.next;
-      second.next = first;
-      first = second;
-      second = temp;
+  while (second) {
+    let temp = second.next;
+    second.next = first;
+    first = second;
+    second = temp;
   }
   head.next = null;
   head = first;
@@ -233,54 +229,67 @@ var reverseList = (head) => {
 
 // 4) Merged two list sorted
 
-var mergeTwoLists = function(l1, l2) {
-  if(l1 === null && l2 === null) {
-      return null;
+var mergeTwoLists = function (l1, l2) {
+  if (l1 === null && l2 === null) {
+    return null;
   }
-  if(l1 && !l2) {
-      return l1;
+  if (l1 && !l2) {
+    return l1;
   }
-  if(l2 && !l1) {
-      return l2;
+  if (l2 && !l1) {
+    return l2;
   }
-  let mergedNode = new ListNode;
+  let mergedNode = new ListNode();
   let head = mergedNode;
   let nodeOne = l1;
   let nodeTwo = l2;
-  while(nodeOne || nodeTwo) {
-      if(nodeOne.val <= nodeTwo.val || !nodeTwo) {
-          mergedNode.next = nodeOne;
-          mergedNode = mergedNode.next;
-          nodeOne = nodeOne.next;
-          if(nodeOne === null) {
-              nodeOne = 0;
-          }
-          console.log(nodeOne);
-      } else {
-          mergedNode.next = nodeTwo;
-          mergedNode = mergedNode.next;
-          nodeTwo = nodeTwo.next;
-          if(nodeTwo === null) {
-              nodeTwo = 0;
-          }
-          console.log(nodeTwo);
+  while (nodeOne || nodeTwo) {
+    if (nodeOne.val <= nodeTwo.val || !nodeTwo) {
+      mergedNode.next = nodeOne;
+      mergedNode = mergedNode.next;
+      nodeOne = nodeOne.next;
+      if (nodeOne === null) {
+        nodeOne = 0;
       }
+      console.log(nodeOne);
+    } else {
+      mergedNode.next = nodeTwo;
+      mergedNode = mergedNode.next;
+      nodeTwo = nodeTwo.next;
+      if (nodeTwo === null) {
+        nodeTwo = 0;
+      }
+      console.log(nodeTwo);
+    }
   }
   return head.next;
 };
 
 // 5) Cycle in Linkedlist
 
-var hasCycle = function(head) {
+var hasCycle = function (head) {
   let fast = head;
   let slow = head;
   // first loop
-  while(fast && fast.next) {
-      slow = slow.next;
-      fast = fast.next.next;
-      if(slow === fast) {
-          return true;
-      }
+  while (fast && fast.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+    if (slow === fast) {
+      return true;
+    }
   }
   return false;
 };
+
+// hash map solution
+
+let fast = head;
+    let slow = head;
+    while(fast && fast.next) {
+        slow = slow.next;
+        fast = fast.next.next;
+        if(slow === fast) {
+            return true;
+        }
+    }
+    return false;
