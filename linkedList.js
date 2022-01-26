@@ -284,12 +284,66 @@ var hasCycle = function (head) {
 // hash map solution
 
 let fast = head;
-    let slow = head;
-    while(fast && fast.next) {
-        slow = slow.next;
-        fast = fast.next.next;
-        if(slow === fast) {
-            return true;
-        }
+let slow = head;
+while (fast && fast.next) {
+  slow = slow.next;
+  fast = fast.next.next;
+  if (slow === fast) {
+    return true;
+  }
+}
+return false;
+
+// 6) Cycle in Linkedlist 2
+
+// O(n) space and time solution
+var detectCycle = function (head) {
+  let slow = head;
+  let fast = head;
+  let pos = [];
+  while (head && head.next) {
+    pos.push(slow);
+    slow = slow.next;
+    fast = fast.next.next;
+    if (slow === fast) {
+      return pos[pos.length - 2] || null;
     }
-    return false;
+  }
+  return null;
+};
+
+// O(n) time and O(1) space solution
+
+var detectCycle = function (head) {
+  // Check for the edge cases
+  if (!head || !head.next) {
+    return null;
+  }
+
+  let slow = head;
+  let fast = head;
+
+  // Loop 1 to find slow === fast (thus there is a loop)
+  while (fast && fast.next) {
+    slow = slow.next;
+    fast = fast.next.next;
+    if (slow === fast) {
+      break;
+    }
+  }
+
+  // to check if fast runner and slow both met at end
+  if (!fast || !fast.next) {
+    return null;
+  }
+
+  slow = head;
+
+  // Loop 2 to find the node which creates cycle
+  while (slow != fast) {
+    slow = slow.next;
+    fast = fast.next;
+  }
+
+  return slow;
+};
