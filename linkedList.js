@@ -347,3 +347,28 @@ var detectCycle = function (head) {
 
   return slow;
 };
+
+//7) Remove any element from the linkedList
+
+var removeElements = function(head, val) {
+    // Check for all edge cases     
+    if(!head) {
+        return head;
+    }
+    
+    // All the nodes where head element had the val was deleted     
+    while(head && (head.val === val)) {
+        head = head.next;
+    }
+    
+    // Deleting remaining Nodes
+    let currentNode = head;
+    while(currentNode && currentNode.next) {
+        if(currentNode.next.val === val) {
+            currentNode.next = currentNode.next.next;
+        }else{
+            currentNode = currentNode.next;    
+        }   
+    }
+    return head;
+};
