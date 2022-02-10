@@ -555,3 +555,86 @@ const isPalindrome = (head) => {
 
   return true;
 };
+
+// 11) Add Two Numbers (Linkedlist)
+
+function listEmpty(l, carry, list) {
+  let sum;
+  while (l) {
+    // Find sum by checking carry or not
+    if (carry) {
+      sum = l.val + carry;
+      carry = 0;
+    } else {
+      sum = l.val;
+    }
+
+    // Create new Node by new sum value
+    if (sum > 9) {
+      carry = 1;
+      let numStr = sum.toString();
+      sum = +numStr[1];
+    }
+    let newNode = new ListNode(sum);
+    list.next = newNode;
+    list = list.next;
+    l = l.next;
+  }
+  // Check if carry
+  if (carry) {
+    let newNode = new ListNode(1);
+    list.next = newNode;
+  }
+  return list;
+}
+
+var addTwoNumbers = function (l1, l2) {
+  // Create a new list
+  let list = new ListNode();
+  let head = list;
+
+  // Global variable for carrry
+  let carry = 0;
+  let sum;
+
+  // Loop to add all elements of lists
+  while (l1 && l2) {
+    // Find sum by checking if carry or not
+    if (carry) {
+      sum = l1.val + l2.val + carry;
+      carry = 0;
+    } else {
+      sum = l1.val + l2.val;
+    }
+
+    // Create new node by new sum value
+    if (sum > 9) {
+      carry = 1;
+      let numStr = sum.toString();
+      sum = +numStr[1];
+    }
+    let newNode = new ListNode(sum);
+    list.next = newNode;
+    list = list.next;
+    l1 = l1.next;
+    l2 = l2.next;
+  }
+
+  // Check if either l1 or l2 is remaining
+  if (l1) {
+    list = listEmpty(l1, carry, list);
+    return head.next;
+  }
+
+  if (l2) {
+    list = listEmpty(l2, carry, list);
+    return head.next;
+  }
+
+  if (carry) {
+    let newNode = new ListNode(1);
+    list.next = newNode;
+  }
+
+  return head.next;
+};
