@@ -350,25 +350,48 @@ var detectCycle = function (head) {
 
 //7) Remove any element from the linkedList
 
-var removeElements = function(head, val) {
-    // Check for all edge cases     
-    if(!head) {
-        return head;
-    }
-    
-    // All the nodes where head element had the val was deleted     
-    while(head && (head.val === val)) {
-        head = head.next;
-    }
-    
-    // Deleting remaining Nodes
-    let currentNode = head;
-    while(currentNode && currentNode.next) {
-        if(currentNode.next.val === val) {
-            currentNode.next = currentNode.next.next;
-        }else{
-            currentNode = currentNode.next;    
-        }   
-    }
+var removeElements = function (head, val) {
+  // Check for all edge cases
+  if (!head) {
     return head;
+  }
+
+  // All the nodes where head element had the val was deleted
+  while (head && head.val === val) {
+    head = head.next;
+  }
+
+  // Deleting remaining Nodes
+  let currentNode = head;
+  while (currentNode && currentNode.next) {
+    if (currentNode.next.val === val) {
+      currentNode.next = currentNode.next.next;
+    } else {
+      currentNode = currentNode.next;
+    }
+  }
+  return head;
+};
+
+// 8) Odd even LinkedList
+
+var oddEvenList = function (head) {
+  if (!head) {
+    return head;
+  }
+  let odd = head;
+  let even = head.next;
+  let temp = even;
+  while (odd.next && even.next) {
+    odd.next = even.next;
+    if (odd.next) {
+      odd = odd.next;
+    }
+    even.next = odd.next;
+    if (even.next) {
+      even = even.next;
+    }
+  }
+  odd.next = temp;
+  return head;
 };
