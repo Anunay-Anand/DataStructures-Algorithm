@@ -505,3 +505,53 @@ newList.addAtAnyIndex(0, 4);
 newList.append(6);
 newList.removeAtAnyIndex(1);
 console.log(newList);
+
+// 10) Single LinkedList palindrome
+
+const isPalindrome = (head) => {
+  // Return edge case
+  if (!head || !head.next) {
+    return true;
+  }
+
+  // First loop to bring slow to the mid of list
+  let slow = head;
+  let fast = head;
+  while (fast && fast.next) {
+    fast = fast.next.next;
+    slow = slow.next;
+  }
+
+  // for odd list (fast exists)
+  if (fast !== null) {
+    slow = slow.next;
+  }
+
+  // Reverse the second half of the list (slow as head)
+  let first = slow;
+  let second = slow.next;
+  while (second) {
+    let temp = second.next;
+    second.next = first;
+    first = second;
+    second = temp;
+  }
+  slow.next = null;
+  slow = first;
+
+  // Compare the first half and reversed second half of list
+  let currentNode = head;
+  while (currentNode && currentNode.next && slow && slow.next) {
+    if (currentNode.val !== slow.val) {
+      return false;
+    }
+    currentNode = currentNode.next;
+    slow = slow.next;
+  }
+
+  if (currentNode.val !== slow.val) {
+    return false;
+  }
+
+  return true;
+};
