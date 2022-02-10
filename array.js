@@ -1164,26 +1164,3 @@ var heightChecker = function (heights) {
 
   return position;
 };
-
-// 7) First Bad design
-
-var solution = function (isBadVersion) {
-  /**
-   * @param {integer} n Total versions
-   * @return {integer} The first bad version
-   */
-  return function (n) {
-    let start = 0;
-    let end = n;
-    while (start <= end) {
-      let mid = Math.floor((start + end) / 2);
-      if (isBadVersion(mid)) {
-        end = mid - 1;
-      } else {
-        start = mid + 1;
-      }
-    }
-    //         We are returning mid only. This is why end + 1;
-    return end + 1;
-  };
-};
