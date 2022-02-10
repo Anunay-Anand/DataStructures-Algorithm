@@ -638,3 +638,73 @@ var addTwoNumbers = function (l1, l2) {
 
   return head.next;
 };
+
+// 12) Intersection between linkedlist
+
+// Finding length difference and then using it to find intersection method
+
+function traverseHead(head, index) {
+  while (index) {
+    head = head.next;
+    index--;
+  }
+  return head;
+}
+
+const getIntersectionNode = (headA, headB) => {
+  let length1 = 0;
+  let length2 = 0;
+  let curr1 = headA;
+  let curr2 = headB;
+
+  // Find the length of both list
+  while (curr1 || curr2) {
+    if (curr1) {
+      curr1 = curr1.next;
+      length1++;
+    }
+    if (curr2) {
+      curr2 = curr2.next;
+      length2++;
+    }
+  }
+
+  if (length1 === 1 && length2 === 1) {
+    if (headA.val === headB.val) {
+      return headA;
+    }
+    return null;
+  }
+
+  if (length1 > length2) {
+    headA = traverseHead(headA, length1 - length2);
+  }
+
+  if (length2 > length1) {
+    headB = traverseHead(headB, length2 - length1);
+  }
+
+  while (headA && headB) {
+    if (headA.next === headB.next) {
+      return headA.next;
+    }
+    headA = headA.next;
+    headB = headB.next;
+  }
+  return null;
+};
+
+// Exchanging head or over turning head method
+const getIntersectionNode = (headA, headB) => {
+  if (!headA && !headB) {
+    return null;
+  }
+
+  let currA = headA;
+  let currB = headB;
+  while (currA !== currB) {
+    currA = currA === null ? headB : currA.next;
+    currB = currB === null ? headA : currB.next;
+  }
+  return currA;
+};
