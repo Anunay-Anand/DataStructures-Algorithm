@@ -65,27 +65,6 @@ myQueue.enqueue(3);
 // myQueue.dequeue();
 // myQueue.dequeue();
 
-function queueReversal(q) {
-  //your code here
-  let len = q.length;
-  // Check if the Queue is empty
-  if (len === 0) {
-    return null;
-  }
-  let stack = [];
-  while (len > 0) {
-    stack.push(q.dequeue());
-    len--;
-  }
-
-  while (stack.length > 0) {
-    q.enqueue(stack.pop());
-  }
-
-  return q;
-}
-
-console.log(queueReversal(myQueue));
 // 2) Create a Queue using Stack
 
 // var MyQueue = function() {
@@ -93,18 +72,11 @@ console.log(queueReversal(myQueue));
 //     this.stack2 = [];
 // };
 
-// /**
-//  * @param {number} x
-//  * @return {void}
-//  */
 // MyQueue.prototype.push = function(x) {
 //     this.stack1.push(x);
 //     return null;
 // };
 
-// /**
-//  * @return {number}
-//  */
 // MyQueue.prototype.pop = function() {
 //     if(this.stack2.length > 0) {
 //         return this.stack2.pop();
@@ -119,9 +91,6 @@ console.log(queueReversal(myQueue));
 //     }
 // };
 
-// /**
-//  * @return {number}
-//  */
 // MyQueue.prototype.peek = function() {
 //     if(this.stack2.length === 0) {
 //        while(this.stack1.length > 0) {
@@ -134,12 +103,95 @@ console.log(queueReversal(myQueue));
 //     return this.stack2[this.stack2.length - 1];
 // };
 
-// /**
-//  * @return {boolean}
-//  */
 // MyQueue.prototype.empty = function() {
 //     if(this.stack1.length === 0 && this.stack2.length === 0) {
 //         return true;
 //     }
 //     return false;
 // };
+
+// 3) Circular Queue Design
+
+var MyCircularQueue = function (k) {
+  this.queue = new Array(k);
+  this.front = -1;
+  this.rear = -1;
+  this.length = k;
+};
+
+MyCircularQueue.prototype.enQueue = function (value) {
+  if (this.rear === -1 && this.front === -1) {
+    this.rear = 0;
+    this.front = 0;
+    this.queue[0] = value;
+    return true;
+  } else {
+    if ((this.rear + 1) % this.length === this.front) {
+      return false;
+    } else {
+      this.rear = (this.rear + 1) % this.length;
+      this.queue[this.rear] = value;
+      return true;
+    }
+  }
+};
+
+MyCircularQueue.prototype.deQueue = function () {
+  if (this.rear === -1 && this.front === -1) {
+    return false;
+  } else if (this.front === this.rear) {
+    this.queue[this.front] = -1;
+    this.rear = -1;
+    this.front = -1;
+  } else {
+    this.queue[this.front] = -1;
+    this.front = (this.front + 1) % this.length;
+  }
+  return true;
+};
+
+MyCircularQueue.prototype.Front = function () {
+  if (this.front !== -1) {
+    return this.queue[this.front];
+  }
+  return -1;
+};
+
+MyCircularQueue.prototype.Rear = function () {
+  if (this.rear !== -1) {
+    return this.queue[this.rear];
+  }
+  return -1;
+};
+
+MyCircularQueue.prototype.isEmpty = function () {
+  if (this.rear === -1) {
+    return true;
+  }
+  return false;
+};
+
+MyCircularQueue.prototype.isFull = function () {
+  if ((this.rear + 1) % this.length === this.front && this.front !== -1) {
+    return true;
+  }
+  return false;
+};
+
+// 4) Reverse a Queue
+
+class Solution {
+  //Function to reverse the queue.
+  rev(q) {
+    //your code here
+    // Check if the Queue is empty
+    let stack = [];
+    while (!q.empty()) {
+      stack.push(q.pop());
+    }
+    while (stack.length > 0) {
+      q.push(stack.pop());
+    }
+    return q;
+  }
+}
