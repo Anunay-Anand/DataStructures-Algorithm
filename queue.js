@@ -195,3 +195,40 @@ class Solution {
     return q;
   }
 }
+
+// 5) First Non Repeating Character in a String
+
+// 1st method with length and front variables (identifiers)
+function FirstNonRepeating(A) {
+  //code here
+  let queue = [];
+  let countMap = {};
+  let res = "";
+  let front = 0;
+  let length = 0;
+  for (let i = 0; i < A.length; i++) {
+    // Push the elements onto the Queue
+    queue.push(A[i]);
+    length++;
+    // Keep a count of the elements
+    if (A[i] in countMap) {
+      countMap[A[i]] = countMap[A[i]] + 1;
+    } else {
+      countMap[A[i]] = 1;
+    }
+    // Now check for non repeating character
+    while (length > 0) {
+      if (countMap[queue[front]] > 1) {
+        front++;
+        length--;
+      } else {
+        res = res + queue[front];
+        break;
+      }
+    }
+    if (length === 0) {
+      res = res + "#";
+    }
+  }
+  return res;
+}
