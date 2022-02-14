@@ -708,3 +708,116 @@ const getIntersectionNode = (headA, headB) => {
   }
   return currA;
 };
+
+// 13) Flatten Multilevel Linkedlist to Doubly linkedlist
+
+const flatten = (head) => {
+  // Check for the edge cases
+  if (!head) {
+    return head;
+  }
+
+  let curr = head;
+  // Stack used to store the next in case children occur
+  let stack = [];
+
+  // While loop until linkedlist is empty
+  while (curr) {
+    if (curr.child) {
+      // if next of currentNode exist push onto stack
+      if (curr.next) {
+        // Push the current node next onto stack and treat child as next
+        stack.push(curr.next);
+      }
+      curr.next = curr.child;
+      curr.next.prev = curr;
+      curr.child = null; // Inorder to ensure our list is a doubly linked list
+    } else if (!curr.next && stack.length !== 0) {
+      curr.next = stack.pop();
+      curr.next.prev = curr;
+    }
+    curr = curr.next;
+  }
+  return head;
+};
+
+// 14) Rotate Linkedlist
+
+// 1st it is the O(n^2) solution in O(1) space
+
+const rotateRight = (head, k) => {
+  // Check for edge cases
+  if (!head || !head.next) {
+    return head;
+  }
+
+  let curr, prev;
+  let len = 1;
+  // Loop k times
+  while (k > 0) {
+    // Loop or travere list for every k
+    curr = head;
+    // loop until the last node
+    while (curr && curr.next) {
+      prev = curr;
+      curr = curr.next;
+      len++;
+    }
+    // Reduce k if k > len
+    if (k > len) {
+      counter = 1;
+      k = k % len;
+      if (k === 0) {
+        return head;
+      }
+    }
+    // Convert curr or last node to head
+    curr.next = head;
+    head = curr;
+    // Convert prev to last node to tail
+    prev.next = null;
+    k--;
+  }
+  return head;
+};
+
+// 2) O(n) solution of list rotation
+
+const rotateRight = (head, k) => {
+  // Check for edge cases
+  if (!head || !head.next) {
+    return head;
+  }
+
+  let curr = head;
+  let prev;
+  let len = 1;
+  // Calculate length of list
+  while (curr && curr.next) {
+    curr = curr.next;
+    len++;
+  }
+
+  // Reduce the number of Rotations
+  k = k % len;
+  if (k === 0) {
+    return head;
+  }
+
+  // Convert it into circular list
+  curr.next = head;
+
+  k = len - k;
+
+  while (k > 0) {
+    prev = head;
+    head = head.next;
+    k--;
+  }
+
+  // Cut the list
+  prev.next = null;
+
+  // Return the Rotated list
+  return head;
+};
