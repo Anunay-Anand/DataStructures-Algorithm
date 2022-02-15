@@ -843,11 +843,6 @@ const LRUCache = function (capacity) {
   this.cache = {};
 };
 
-/**
- * @param {number} key
- * @return {number}
- */
-
 LRUCache.prototype.get = function (key) {
   if (!this.cache[key]) {
     return -1;
@@ -876,11 +871,6 @@ LRUCache.prototype.get = function (key) {
   return foundNode.val;
 };
 
-/**
- * @param {number} key
- * @param {number} value
- * @return {void}
- */
 LRUCache.prototype.put = function (key, value) {
   let newNode;
   if (!this.cache[key]) {
@@ -926,4 +916,65 @@ LRUCache.prototype.put = function (key, value) {
   //add to cache
   this.cache[key] = newNode;
   return;
+};
+
+// 16) Sliding Window Maximum (Queue Important)
+
+// O(n^2) solution
+const findMaximum = (q, first) => {
+  let peak = -Infinity;
+  for (let i = first; i < q.length; i++) {
+    if (peak < q[i]) {
+      peak = q[i];
+    }
+  }
+  return peak;
+};
+
+const maxSlidingWindow = (nums, k) => {
+  let queue = [];
+  let index = k;
+  let first = 0;
+
+  // Fill the queue with first window
+  for (let i = 0; i < k; i++) {
+    queue.push(nums[i]);
+  }
+  //Enter the first maximum
+  queue[first] = findMaximum(queue, first);
+
+  // Number of times we have to loop
+  let loop = nums.length - k;
+
+  while (loop > 0) {
+    // Enqueue
+    queue.push(nums[index++]);
+    // Dequeue
+    first++;
+    // Finding Maximum
+    queue[first] = findMaximum(queue, first);
+    loop--;
+  }
+  return queue.slice(0, nums.length - k + 1);
+};
+
+// O(n) solution (Using deQueue)
+
+const maxSlidingWindow = (nums, k) => {
+  const res = [];
+  const q = [];
+
+  for (let i = 0; i < nums.length; i++) {
+    while (q.length - 1 >= 0 && nums[i] > q[q.length - 1]) q.pop();
+    q.push(nums[i]);
+
+    // When i + 1 - k >= 0, the window is fully overlapping nums
+    const j = i + 1 - k;
+    if (j >= 0) {
+      res.push(q[0]);
+      // If the biggest element in q is about to exit window, remove it from q
+      if (nums[j] === q[0]) q.shift();
+    }
+  }
+  return res;
 };
