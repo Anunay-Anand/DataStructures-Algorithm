@@ -821,3 +821,109 @@ const rotateRight = (head, k) => {
   // Return the Rotated list
   return head;
 };
+
+// 15) LRU CACHE (Linkedlist + hash map (object))
+
+// Design of Node
+class Node {
+  constructor(key, value) {
+    this.key = key;
+    this.next = null;
+    this.prev = null;
+    this.val = value;
+  }
+}
+
+const LRUCache = function (capacity) {
+  //Design of cache
+  this.head = null;
+  this.tail = null;
+  this.size = 0;
+  this.max = capacity;
+  this.cache = {};
+};
+
+/**
+ * @param {number} key
+ * @return {number}
+ */
+
+LRUCache.prototype.get = function (key) {
+  if (!this.cache[key]) {
+    return -1;
+  }
+
+  let foundNode = this.cache[key];
+
+  if (foundNode === this.head) return foundNode.val;
+
+  let previous = foundNode.prev;
+  let next = foundNode.next;
+
+  if (foundNode === this.tail) {
+    previous.next = null;
+    this.tail = previous;
+  } else {
+    previous.next = next;
+    next.prev = previous;
+  }
+
+  this.head.prev = foundNode;
+  foundNode.next = this.head;
+  foundNode.prev = null;
+  this.head = foundNode;
+
+  return foundNode.val;
+};
+
+/**
+ * @param {number} key
+ * @param {number} value
+ * @return {void}
+ */
+LRUCache.prototype.put = function (key, value) {
+  let newNode;
+  if (!this.cache[key]) {
+    newNode = new Node(key, value);
+  } else {
+    this.cache[key].val = value;
+    return this.get(key);
+  }
+
+  // Check if the size is zero
+  if (this.size === 0) {
+    this.head = newNode;
+    this.tail = newNode;
+    this.size++;
+    this.cache[key] = newNode;
+    return;
+  }
+
+  // Check if max size
+  if (this.size === this.max) {
+    // Remove from cache
+    delete this.cache[this.tail.key];
+    // If capacity is more than one
+    if (this.tail.prev) {
+      this.tail = this.tail.prev;
+      this.tail.next = null;
+      this.size--;
+    } else {
+      // If Capacity is less than one
+      this.head = newNode;
+      this.tail = newNode;
+      this.cache[key] = newNode;
+      return;
+    }
+  }
+
+  // Insert it into head
+  this.head.prev = newNode;
+  newNode.next = this.head;
+  this.head = newNode;
+  this.size++;
+
+  //add to cache
+  this.cache[key] = newNode;
+  return;
+};
