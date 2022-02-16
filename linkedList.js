@@ -978,3 +978,71 @@ const maxSlidingWindow = (nums, k) => {
   }
   return res;
 };
+
+// 17) Front, Back and Middle Queue
+
+FrontMiddleBackQueue.prototype.pushMiddle = function (val) {
+  if (this.length === 0 || this.length === 1) {
+    return this.pushFront(val);
+  }
+  let mid =
+    this.length % 2 !== 0
+      ? Math.floor((this.length - 1) / 2)
+      : Math.floor(this.length / 2);
+  for (let i = this.length - 1; i >= mid; i--) {
+    this.queue[i + 1] = this.queue[i];
+  }
+  this.queue[mid] = val;
+  this.length++;
+  console.log("length is " + this.length + "queue is" + this.queue);
+  return this;
+};
+
+/**
+ * @param {number} val
+ * @return {void}
+ */
+FrontMiddleBackQueue.prototype.pushBack = function (val) {
+  this.queue.push(val);
+  this.length++;
+  return this;
+};
+
+/**
+ * @return {number}
+ */
+FrontMiddleBackQueue.prototype.popFront = function () {
+  if (this.length === 0) {
+    return -1;
+  }
+  this.length--;
+  return this.queue.shift();
+};
+
+/**
+ * @return {number}
+ */
+FrontMiddleBackQueue.prototype.popMiddle = function () {
+  if (this.length === 0 || this.length === 1) {
+    return this.popBack();
+  }
+  let mid = Math.floor((this.length - 1) / 2);
+  let item = this.queue[mid];
+  for (let i = mid; i < this.length - 1; i++) {
+    this.queue[i] = this.queue[i + 1];
+  }
+  this.queue.pop();
+  this.length--;
+  return item;
+};
+
+/**
+ * @return {number}
+ */
+FrontMiddleBackQueue.prototype.popBack = function () {
+  if (this.length === 0) {
+    return -1;
+  }
+  this.length--;
+  return this.queue.pop();
+};
