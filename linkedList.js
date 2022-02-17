@@ -998,19 +998,12 @@ FrontMiddleBackQueue.prototype.pushMiddle = function (val) {
   return this;
 };
 
-/**
- * @param {number} val
- * @return {void}
- */
 FrontMiddleBackQueue.prototype.pushBack = function (val) {
   this.queue.push(val);
   this.length++;
   return this;
 };
 
-/**
- * @return {number}
- */
 FrontMiddleBackQueue.prototype.popFront = function () {
   if (this.length === 0) {
     return -1;
@@ -1019,9 +1012,6 @@ FrontMiddleBackQueue.prototype.popFront = function () {
   return this.queue.shift();
 };
 
-/**
- * @return {number}
- */
 FrontMiddleBackQueue.prototype.popMiddle = function () {
   if (this.length === 0 || this.length === 1) {
     return this.popBack();
@@ -1036,13 +1026,35 @@ FrontMiddleBackQueue.prototype.popMiddle = function () {
   return item;
 };
 
-/**
- * @return {number}
- */
 FrontMiddleBackQueue.prototype.popBack = function () {
   if (this.length === 0) {
     return -1;
   }
   this.length--;
   return this.queue.pop();
+};
+
+// 18) Circular Tour/Gas Station
+
+const canCompleteCircuit = (gas, cost) => {
+  // Points to the starting Index
+  let start = 0;
+  // The current balance updated on each index
+  let currentBalance = 0;
+  // The total balance to ensure it is possible journey
+  let totalBalance = 0;
+
+  for (let i = 0; i < gas.length; i++) {
+    // Check the balance wether it is possible to journey to station with gas
+    currentBalance = currentBalance + gas[i] - cost[i];
+    // Keep track of total Balance (valid journey)
+    totalBalance = totalBalance + gas[i] - cost[i];
+    // If the balance is negative update the starting point
+    if (currentBalance < 0) {
+      start = i + 1;
+      currentBalance = 0;
+    }
+    console.log("total Balance " + totalBalance);
+  }
+  return totalBalance >= 0 ? start : -1;
 };
