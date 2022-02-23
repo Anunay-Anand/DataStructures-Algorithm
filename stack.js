@@ -397,44 +397,43 @@ var dailyTemperatures = function (temperatures) {
 
 // 7) Min Stack Correct Solution
 
-O(1) getMin using two Stacks
-var MinStack = function() {
-    this.stack = [];
-    this.minStack = [];
-    this.length = 0;
+// O(1) getMin using two Stacks
+var MinStack = function () {
+  this.stack = [];
+  this.minStack = [];
+  this.length = 0;
 };
-We maintain two stacks one with normal sequence & one for Minimum
+// We maintain two stacks one with normal sequence & one for Minimum
 
-MinStack.prototype.push = function(val) {
-    if(this.minStack[this.length - 1] < val){
-        let temp = this.minStack.pop();
-        this.minStack.push(val, temp);
-    }
-    else {
-        this.minStack.push(val);
-    }
-    this.stack.push(val);
-    this.length++;
-    return this;
+MinStack.prototype.push = function (val) {
+  if (this.minStack[this.length - 1] < val) {
+    let temp = this.minStack.pop();
+    this.minStack.push(val, temp);
+  } else {
+    this.minStack.push(val);
+  }
+  this.stack.push(val);
+  this.length++;
+  return this;
 };
-Ensure that the element deleted in min Stacks matches the sequence of last element of main Stack
+// Ensure that the element deleted in min Stacks matches the sequence of last element of main Stack
 
-MinStack.prototype.pop = function() {
-    if(this.minStack[this.length - 1] !== this.stack[this.length - 1]) {
-        for(let i = this.length - 2; i < this.length; i++) {
-            this.minStack[i] = this.minStack[i+1];
-        }
+MinStack.prototype.pop = function () {
+  if (this.minStack[this.length - 1] !== this.stack[this.length - 1]) {
+    for (let i = this.length - 2; i < this.length; i++) {
+      this.minStack[i] = this.minStack[i + 1];
     }
-    this.minStack.pop();
-    this.stack.pop();
-    this.length--;
-    return;
+  }
+  this.minStack.pop();
+  this.stack.pop();
+  this.length--;
+  return;
 };
-MinStack.prototype.top = function() {
-    return this.stack[this.length - 1];
+MinStack.prototype.top = function () {
+  return this.stack[this.length - 1];
 };
-Simply return the last Element of Min Stack
+// Simply return the last Element of Min Stack
 
-MinStack.prototype.getMin = function() {
-    return this.minStack[this.length - 1];
+MinStack.prototype.getMin = function () {
+  return this.minStack[this.length - 1];
 };
