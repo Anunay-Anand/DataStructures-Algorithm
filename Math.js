@@ -140,3 +140,35 @@ var solution = function (isBadVersion) {
     return end + 1;
   };
 };
+
+// 8) Squared of Sorted Arrays
+
+const sortedSquares = (nums) => {
+  let mid;
+  let odd = [];
+  let even = [];
+
+  for (let i = 0; i <= nums.length - 1; i++) {
+    if (nums[i] < 0) {
+      odd.push(nums[i] * nums[i]);
+    } else {
+      even.push(nums[i] * nums[i]);
+    }
+  }
+
+  // Now Sort the array and merge
+  let x = odd.length - 1;
+  let y = 0;
+  let index = 0;
+  while (index <= nums.length - 1) {
+    if (odd[x] < even[y] || even[y] === undefined) {
+      nums[index] = odd[x];
+      x--;
+    } else {
+      nums[index] = even[y];
+      y++;
+    }
+    index++;
+  }
+  return nums;
+};
