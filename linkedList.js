@@ -917,3 +917,20 @@ LRUCache.prototype.put = function (key, value) {
   this.cache[key] = newNode;
   return;
 };
+
+// 16) Middle of List
+
+const middleNode = head => {
+    let currentNode = head;
+    let len = 0;
+    while(currentNode) {
+        len++;
+        currentNode = currentNode.next;
+    }
+    let mid = Math.floor(len/2);
+    while(mid) {
+        head = head.next;
+        mid--;
+    }
+    return head;
+};

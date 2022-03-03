@@ -437,3 +437,26 @@ MinStack.prototype.top = function () {
 MinStack.prototype.getMin = function () {
   return this.minStack[this.length - 1];
 };
+
+// 8) Next greatest Element
+
+class Solution {
+  //Function to find the next greater element for each element of the array.
+  nextLargerElement(arr, n) {
+    // code here
+    let stack = [];
+    let output = new Array(n).fill(-1);
+    for (let i = n - 1; i >= 0; i--) {
+      while (stack.length > 0) {
+        if (stack[stack.length - 1] > arr[i]) {
+          output[i] = stack[stack.length - 1];
+          break;
+        } else {
+          stack.pop();
+        }
+      }
+      stack.push(arr[i]);
+    }
+    return output;
+  }
+}

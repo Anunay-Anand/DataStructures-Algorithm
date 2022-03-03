@@ -353,15 +353,21 @@
 
 // //OPtimal solution 2 pass
 // function rotate(nums, k) {
-//     //1st loop to copy array first elements[no of elements = k]
-//     for (let i = nums.length - 1; i >= 0; i--) {
-//         //Copy the entire array within the array at higher indexes
-//         nums[k + i] = nums[i];
+
+//   const rotate = (nums, k) => {
+//     if(k > nums.length) {
+//         k = k%nums.length;
 //     }
-//     //2nd loop now pop the last elements which are extra and insert at top
-//     for (let i = k - 1; i >= 0; i--) {
-//         let last = nums.pop();
-//         nums[i] = last;
+    
+//     // Copy all elements to extra index (k times)     
+//     for(let i = nums.length - 1; i >= 0; i--) {
+//         nums[k+i] = nums[i];
+//     }
+    
+//     //Now pop the elements and fill in start index
+//     while(k - 1 >= 0) {
+//         nums[k - 1] = nums.pop();
+//         k--;
 //     }
 //     return nums;
 // };
