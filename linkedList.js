@@ -934,3 +934,24 @@ const middleNode = head => {
     }
     return head;
 };
+
+// 17) Sort a list (merge sort and inbuilt sort)
+
+// O(n) and O(n)
+
+const sortList = head => {
+  let arr = [];
+  let node = head;
+  while(head) {
+      arr.push(head.val);
+      head = head.next;
+  }
+//Sort
+arr.sort((a,b) => a - b);
+ head = node; 
+ for(let x of arr) {
+     node.val = x;
+     node = node.next;
+ }
+  return head;
+};
