@@ -920,38 +920,90 @@ LRUCache.prototype.put = function (key, value) {
 
 // 16) Middle of List
 
-const middleNode = head => {
-    let currentNode = head;
-    let len = 0;
-    while(currentNode) {
-        len++;
-        currentNode = currentNode.next;
-    }
-    let mid = Math.floor(len/2);
-    while(mid) {
-        head = head.next;
-        mid--;
-    }
-    return head;
+const middleNode = (head) => {
+  let currentNode = head;
+  let len = 0;
+  while (currentNode) {
+    len++;
+    currentNode = currentNode.next;
+  }
+  let mid = Math.floor(len / 2);
+  while (mid) {
+    head = head.next;
+    mid--;
+  }
+  return head;
 };
 
 // 17) Sort a list (merge sort and inbuilt sort)
 
-// O(n) and O(n)
+// O(nlogn) and O(n)
 
-const sortList = head => {
+const sortList = (head) => {
   let arr = [];
   let node = head;
-  while(head) {
-      arr.push(head.val);
-      head = head.next;
+  while (head) {
+    arr.push(head.val);
+    head = head.next;
   }
-//Sort
-arr.sort((a,b) => a - b);
- head = node; 
- for(let x of arr) {
-     node.val = x;
-     node = node.next;
- }
+  //Sort
+  arr.sort((a, b) => a - b);
+  head = node;
+  for (let x of arr) {
+    node.val = x;
+    node = node.next;
+  }
   return head;
+};
+
+// O(nlogn) and O(1)
+const sortList = (head) => {
+  // Check for edge cases/ end of recursion
+  if (!head || !head.next) {
+    return head;
+  }
+  // Using floyd method to find middle
+  // slow * 2 = fast
+  let slow = head;
+  let fast = head;
+  // To simply seperate the first half from second half
+  let temp;
+  while (fast && fast.next) {
+    temp = slow;
+    slow = slow.next;
+    fast = fast.next.next;
+  }
+  temp.next = null;
+  // Recursive call to both side of list until head === empty
+  let l1 = sortList(head);
+  let l2 = sortList(slow);
+
+  return mergeList(l1, l2);
+};
+
+const mergeList = (l1, l2) => {
+  let list = new ListNode();
+  let curr = list;
+
+  while (l1 && l2) {
+    if (l1.val <= l2.val) {
+      curr.next = l1;
+      l1 = l1.next;
+    } else {
+      curr.next = l2;
+      l2 = l2.next;
+    }
+    curr = curr.next;
+  }
+
+  // If unequal list
+  if (l1 !== null) {
+    curr.next = l1;
+    l1 = l1.next;
+  }
+  if (l2 !== null) {
+    curr.next = l2;
+    l2 = l2.next;
+  }
+  return list.next;
 };
