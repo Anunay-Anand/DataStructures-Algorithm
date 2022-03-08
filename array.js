@@ -358,12 +358,12 @@
 //     if(k > nums.length) {
 //         k = k%nums.length;
 //     }
-    
-//     // Copy all elements to extra index (k times)     
+
+//     // Copy all elements to extra index (k times)
 //     for(let i = nums.length - 1; i >= 0; i--) {
 //         nums[k+i] = nums[i];
 //     }
-    
+
 //     //Now pop the elements and fill in start index
 //     while(k - 1 >= 0) {
 //         nums[k - 1] = nums.pop();
@@ -1044,18 +1044,18 @@ const checkIfExist = (arr) => {
 
 // 2) Comparitavly optimized
 
-const checkIfExist = (arr) => {
-  let map = {};
-  for (let x of arr) {
-    // Inorder to accept the negative number as well
-    if (map[x] > -Infinity) {
-      return true;
-    }
-    map[x / 2] = x;
-    map[x * 2] = x;
-  }
-  return false;
-};
+// const checkIfExist = (arr) => {
+//   let map = {};
+//   for (let x of arr) {
+//     // Inorder to accept the negative number as well
+//     if (map[x] > -Infinity) {
+//       return true;
+//     }
+//     map[x / 2] = x;
+//     map[x * 2] = x;
+//   }
+//   return false;
+// };
 
 // 26) Valley Problem
 
@@ -1091,24 +1091,24 @@ var validMountainArray = function (arr) {
 // 27) Replace Elements with Greatest Element on Right side
 
 // Burte Force
-const replaceElements = (arr) => {
-  for (let i = 0; i < arr.length; i++) {
-    if (i === arr.length - 1) {
-      arr[i] = -1;
-      break;
-    }
-    let peak = -Infinity;
-    for (let j = i + 1; j < arr.length; j++) {
-      if (arr[j] > peak) {
-        peak = arr[j];
-      }
-      if (j === arr.length - 1) {
-        arr[i] = peak;
-      }
-    }
-  }
-  return arr;
-};
+// const replaceElements = (arr) => {
+//   for (let i = 0; i < arr.length; i++) {
+//     if (i === arr.length - 1) {
+//       arr[i] = -1;
+//       break;
+//     }
+//     let peak = -Infinity;
+//     for (let j = i + 1; j < arr.length; j++) {
+//       if (arr[j] > peak) {
+//         peak = arr[j];
+//       }
+//       if (j === arr.length - 1) {
+//         arr[i] = peak;
+//       }
+//     }
+//   }
+//   return arr;
+// };
 
 // Optimized approach O(n)
 
@@ -1170,3 +1170,45 @@ var heightChecker = function (heights) {
 
   return position;
 };
+
+// 30) k largest element in arrays
+
+function kLargest(arr, k) {
+  // Let temp array
+  let temp = [];
+  let min = Infinity;
+  // Fill k number of elements and find min
+  for (let i = 0; i < k; i++) {
+    temp[i] = arr[i];
+    // Check for min
+    if (min > arr[i]) {
+      min = arr[i];
+    }
+  }
+
+  // Loop until length from k
+  while (k < arr.length) {
+    // Check if min
+    if (min < arr[k]) {
+      let newMin = arr[k];
+      // Loop and replace min with k - 1
+      for (let i = 0; i < temp.length; i++) {
+        // Replacing min with new Value
+        if (min === temp[i]) {
+          temp[i] = arr[k];
+        }
+        // Compare to find min
+        if (newMin > temp[i]) {
+          newMin = temp[i];
+        }
+      }
+      // Finally replace the min with newMin
+      min = newMin;
+    }
+    k++;
+  }
+
+  return temp;
+}
+
+// console.log(kLargest([1, 23, 12, 9, 30, 2, 50], 3));
