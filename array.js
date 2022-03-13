@@ -1211,4 +1211,4 @@ function kLargest(arr, k) {
   return temp;
 }
 
-// console.log(kLargest([1, 23, 12, 9, 30, 2, 50], 3));
+kLargest([1, 23, 120, 9, 30, 2, 50, -1, 20, 140], 3);
