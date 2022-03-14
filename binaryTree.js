@@ -168,3 +168,28 @@ const isUnivalTree = (root) => {
   // Call the function to check if true
   return checkIfTrue(root);
 };
+
+// 8) Compare Leaves
+
+const leafSimilar = (root1, root2) => {
+  const leaves1 = [];
+  const leaves2 = [];
+  function checkForLeaves(root, leaves) {
+    if (!root) return;
+    checkForLeaves(root.left, leaves);
+    checkForLeaves(root.right, leaves);
+    if (!root.left && !root.right) {
+      leaves.push(root.val);
+    }
+  }
+  // Find all the leaves for tree 1
+  checkForLeaves(root1, leaves1);
+  checkForLeaves(root2, leaves2);
+  if (leaves1.length !== leaves2.length) return false;
+  for (let i = 0; i < leaves1.length; i++) {
+    if (leaves1[i] !== leaves2[i]) {
+      return false;
+    }
+  }
+  return true;
+};
