@@ -77,7 +77,9 @@ const inorderTraversalIterative = (root) => {
 
 // 3) PostOrder traversal
 
-const postorderTraversal = (root) => {
+// Recursive Approach
+
+const postorderTraversalRecursive = (root) => {
   // Define an Identifier Result
   const result = [];
   postOrder(root);
@@ -89,4 +91,50 @@ const postorderTraversal = (root) => {
     result.push(root.val);
   }
   return result;
+};
+
+// Iterative
+const postorderTraversalIterative = (root) => {
+  // Define an Identifier Result
+  const result = [];
+  const stack = [root];
+
+  while (stack.length !== 0) {
+    let root = stack.pop();
+    result.push(root.val);
+    if (root.right) {
+      stack.push(root.right);
+    }
+    if (root.left) {
+      stack.push(root.left);
+    }
+
+    return result;
+  }
+};
+
+// 4) Maximum Depth of Binary Tree
+
+const maxDepth = (root) => {
+  // Check for edge case (no root)
+  if (!root) return 0;
+  // Now recursively traverse both the left and right subtree
+  let leftTree = maxDepth(root.left);
+  let rightTree = maxDepth(root.right);
+  // Now compare both to find Max
+  return Math.max(leftTree + 1, rightTree + 1);
+};
+
+// 5) Maximum Depth of N-ary Tree (Can have n number of child nodes)
+
+const maxDepth = (root) => {
+  // Check for edge cases (when no root)
+  if (!root) return 0;
+  // Let the initial answer be 0 for each root node
+  let ans = 0;
+  // Loop over each node
+  for (let x of root.children) {
+    ans = Math.max(ans, maxDepth(x));
+  }
+  return ans + 1;
 };
