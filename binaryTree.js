@@ -127,7 +127,7 @@ const maxDepth = (root) => {
 
 // 5) Maximum Depth of N-ary Tree (Can have n number of child nodes)
 
-const maxDepth = (root) => {
+const maxDepthNAry = (root) => {
   // Check for edge cases (when no root)
   if (!root) return 0;
   // Let the initial answer be 0 for each root node
@@ -137,4 +137,34 @@ const maxDepth = (root) => {
     ans = Math.max(ans, maxDepth(x));
   }
   return ans + 1;
+};
+
+// 6) Merge Binary Trees
+
+const mergeTrees = (root1, root2) => {
+  // Check if both don't exist (edge case)
+  if (!root1 && !root2) return null;
+  // Check if either exist at that node (simply return)
+  if (!root1 || !root2) return root1 || root2;
+  // Summation of node
+  root1.val += root2.val;
+  // Now traverse left and then right in sequence
+  root1.left = mergeTrees(root1.left, root2.left);
+  root1.right = mergeTrees(root1.right, root2.right);
+  return root1;
+};
+
+// 7) IsUniversal Tree
+
+const isUnivalTree = (root) => {
+  // Define Identifier value and store the root value
+  let value = root.val;
+  function checkIfTrue(root) {
+    if (!root) return true;
+    let leftNode = checkIfTrue(root.left);
+    let rightNode = checkIfTrue(root.right);
+    return leftNode && rightNode && root.val === value;
+  }
+  // Call the function to check if true
+  return checkIfTrue(root);
 };
