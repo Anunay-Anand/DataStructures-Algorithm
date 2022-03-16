@@ -1212,3 +1212,53 @@ function kLargest(arr, k) {
 }
 
 kLargest([1, 23, 120, 9, 30, 2, 50, -1, 20, 140], 3);
+
+// 31) Buy and Sell Stock - I
+
+const maxProfitOne = (prices) => {
+  let min = Infinity;
+  let everyDayProfit = 0;
+  let overAllProfit = 0;
+  for (let i = 0; i < prices.length; i++) {
+    // To find the best day to buy stock
+    if (min > prices[i]) {
+      min = prices[i];
+    }
+    everyDayProfit = prices[i] - min;
+    // Check if it is the most profit made
+    if (everyDayProfit > overAllProfit) {
+      overAllProfit = everyDayProfit;
+    }
+  }
+  return overAllProfit;
+};
+
+// 32) Buy and Sell Stock - II
+
+const maxProfitTwo = (prices) => {
+  let min = Infinity;
+  let currStock = null;
+  let flag = false;
+  let overAllProfit = 0;
+  for (let i = 0; i < prices.length; i++) {
+    // Check if stock bought
+    if (flag) {
+      // Check if time to sell
+      if (prices[i + 1] < prices[i] || prices[i + 1] === undefined) {
+        overAllProfit += prices[i] - currStock;
+        min = prices[i];
+        flag = false;
+        currStock = null;
+      }
+    } else if (min > prices[i]) {
+      // Check if the price is min
+      min = prices[i];
+      // Check if the right time to buy
+      if (prices[i + 1] >= prices[i]) {
+        currStock = min;
+        flag = true;
+      }
+    }
+  }
+  return overAllProfit;
+};
