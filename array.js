@@ -1262,3 +1262,163 @@ const maxProfitTwo = (prices) => {
   }
   return overAllProfit;
 };
+
+// 33) Buy and Sell stock with infinite transaction and fees
+
+// O(n) solution mine (not optimised)
+
+const maxProfitInfiniteFees = (prices, fee) => {
+  // Declare and initiate identifiers required
+  let min = Infinity;
+  let profit = 0;
+  let flag = false;
+  let stock = null;
+  // Loop over all prices
+  for (let i = 0; i < prices.length; i++) {
+    // If a stock is already bought
+    if (flag) {
+      // Check if price falling next day && selling today is profitable
+      if (
+        (prices[i + 1] < prices[i] && prices[i] - stock > fee) ||
+        prices[i + 1] === undefined
+      ) {
+        profit += prices[i] - stock - fee;
+        // Turn flag to false and min to curr price[i]
+        flag = false;
+        min = prices[i];
+      }
+    } else if (min > prices[i]) {
+      min = prices[i];
+      // Check if good time to buy stock
+      if (prices[i + 1] >= prices[i]) {
+        stock = prices[i];
+        flag = true;
+      }
+    }
+  }
+  return profit;
+};
+
+// O(n) optimized and working
+
+const maxProfitInfiniteFee = (prices, fee) => {
+  // Declare and initiate identifiers required
+  // The old bought state profit.. Amount left after buying
+  let obsp = -prices[0];
+  // The old sold state profit... Amount left after selling the stock
+  let ossp = 0;
+  // To handle the new bought and sold state each time
+  let nbsp, nssp;
+  // Loop for all prices
+  for (let i = 1; i < prices.length; i++) {
+    // Reinitialize new bought state and sold state
+    nbsp = 0;
+    nssp = 0;
+    // Check if we need to buy
+    if (ossp - prices[i] > obsp) {
+      nbsp = ossp - prices[i];
+    } else {
+      nbsp = obsp;
+    }
+
+    // Check if we need to sell
+    if (obsp + prices[i] - fee > ossp) {
+      nssp = prices[i] + obsp - fee;
+    } else {
+      nssp = ossp;
+    }
+
+    // Update both for new cycle
+    obsp = nbsp;
+    ossp = nssp;
+  }
+  return ossp;
+};
+
+// 34) Buy and Sell Stock only two transaction allowed
+
+// O(n) not optimized solution
+
+const maxProfit = (prices) => {
+  // Declare and initiate identifier to be used
+  let min = Infinity;
+  let profit = 0;
+  let currStock = null;
+  let profit1 = null;
+  let profit2 = null;
+  let flag = false;
+  // Loop for all prices
+  for (let i = 0; i < prices.length; i++) {
+    if (flag) {
+      // Check if right time to sell
+      if (prices[i + 1] < prices[i] || prices[i + 1] === undefined) {
+        // Calculate the profit
+        profit = prices[i] - currStock;
+        // Check if firstMax Profit is null
+        if (profit1 === null) {
+          profit1 = prices[i] - currStock;
+        } else if (profit2 === null) {
+          profit2 = prices[i] - currStock;
+        } else if (profit1 > profit2) {
+          profit2 = profit2 < profit ? profit : profit2;
+        } else if (profit2 > profit1) {
+          profit1 = profit1 < profit ? profit : profit1;
+        }
+        flag = false;
+        currStock = null;
+        min = prices[i];
+      }
+    } else if (min > prices[i]) {
+      // change min
+      min = prices[i];
+      // Check if the right time to buy
+      if (prices[i + 1] >= prices[i]) {
+        currStock = min;
+        flag = true;
+      }
+    }
+  }
+  return profit1 + profit2;
+};
+
+// 35) Infinite Transaction + cooldown
+
+const maxProfit = prices => {
+  // Declaring the required identifiers for all states
+  let obsp = - prices[0];
+  let ossp = 0;
+  let ocsp = 0;
+  // New state to store changed data
+  let nbsp, nssp, ncsp;
+  // Loop for all prices
+  for(let i = 1; i < prices.length; i++) {
+      nbsp = 0; ncsp = 0; nssp = 0;
+      
+      // Check for bought state profit
+      if(ocsp - prices[i] > obsp) {
+          nbsp = ocsp - prices[i];
+      } else {
+          nbsp = obsp;
+      }
+      
+      // Check for sold state state profit
+      if(obsp + prices[i] > ossp) {
+          nssp = obsp + prices[i];
+      } else {
+          nssp = ossp;
+      }
+      
+      // Check for cooldown state
+      if(ossp > ocsp) {
+          ncsp = ossp;
+      } else {
+          ncsp = ocsp;
+      }
+      // Storing the values for next transition
+      obsp = nbsp;
+      ossp = nssp;
+      ocsp = ncsp;
+  }
+  
+  return ossp;
+};
