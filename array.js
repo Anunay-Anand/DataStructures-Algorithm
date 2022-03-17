@@ -1383,42 +1383,44 @@ const maxProfit = (prices) => {
 
 // 35) Infinite Transaction + cooldown
 
-const maxProfit = prices => {
+const maxProfitCooldown = (prices) => {
   // Declaring the required identifiers for all states
-  let obsp = - prices[0];
+  let obsp = -prices[0];
   let ossp = 0;
   let ocsp = 0;
   // New state to store changed data
   let nbsp, nssp, ncsp;
   // Loop for all prices
-  for(let i = 1; i < prices.length; i++) {
-      nbsp = 0; ncsp = 0; nssp = 0;
-      
-      // Check for bought state profit
-      if(ocsp - prices[i] > obsp) {
-          nbsp = ocsp - prices[i];
-      } else {
-          nbsp = obsp;
-      }
-      
-      // Check for sold state state profit
-      if(obsp + prices[i] > ossp) {
-          nssp = obsp + prices[i];
-      } else {
-          nssp = ossp;
-      }
-      
-      // Check for cooldown state
-      if(ossp > ocsp) {
-          ncsp = ossp;
-      } else {
-          ncsp = ocsp;
-      }
-      // Storing the values for next transition
-      obsp = nbsp;
-      ossp = nssp;
-      ocsp = ncsp;
+  for (let i = 1; i < prices.length; i++) {
+    nbsp = 0;
+    ncsp = 0;
+    nssp = 0;
+
+    // Check for bought state profit
+    if (ocsp - prices[i] > obsp) {
+      nbsp = ocsp - prices[i];
+    } else {
+      nbsp = obsp;
+    }
+
+    // Check for sold state state profit
+    if (obsp + prices[i] > ossp) {
+      nssp = obsp + prices[i];
+    } else {
+      nssp = ossp;
+    }
+
+    // Check for cooldown state
+    if (ossp > ocsp) {
+      ncsp = ossp;
+    } else {
+      ncsp = ocsp;
+    }
+    // Storing the values for next transition
+    obsp = nbsp;
+    ossp = nssp;
+    ocsp = ncsp;
   }
-  
+
   return ossp;
 };

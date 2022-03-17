@@ -193,3 +193,56 @@ const leafSimilar = (root1, root2) => {
   }
   return true;
 };
+
+// 9) Count left Leaves only
+
+// O(n) & O(n) solution
+
+const sumOfLeftLeaves = (root) => {
+  // In case there is no left or right
+  if (!root.left && !root.right) {
+    return 0;
+  }
+  // Declare identifiers
+  let leaves = [];
+  function countLeftLeaves(root, leaves, toCount) {
+    if (!root) {
+      return;
+    }
+    countLeftLeaves(root.left, leaves, true);
+    countLeftLeaves(root.right, leaves, false);
+    if (!root.left && !root.right && toCount) {
+      leaves.push(root.val);
+      return;
+    }
+  }
+  countLeftLeaves(root, leaves, true);
+  let sum = 0;
+  for (let x of leaves) {
+    sum += x;
+  }
+  return sum;
+};
+
+// O(n) solution
+
+const sumOfLeftLeaves = (root) => {
+  // Check if no left and right
+  if (!root.left && !root.right) {
+    return 0;
+  }
+  // Calculate the sum
+  let sum = 0;
+  let isLeft = true;
+  function countLeftLeaves(root, isLeft) {
+    if (!root) return;
+    countLeftLeaves(root.left, true);
+    countLeftLeaves(root.right, false);
+    if (!root.left && !root.right && isLeft) {
+      sum = sum + root.val;
+      return;
+    }
+  }
+  countLeftLeaves(root, isLeft);
+  return sum;
+};
