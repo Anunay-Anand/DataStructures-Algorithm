@@ -226,7 +226,7 @@ const sumOfLeftLeaves = (root) => {
 
 // O(n) solution
 
-const sumOfLeftLeaves = (root) => {
+const sumOfLeftLeavesBest = (root) => {
   // Check if no left and right
   if (!root.left && !root.right) {
     return 0;
@@ -245,4 +245,49 @@ const sumOfLeftLeaves = (root) => {
   }
   countLeftLeaves(root, isLeft);
   return sum;
+};
+
+// 10) Check if both tree are same
+
+const isSameTree = (p, q) => {
+  // Check for edge cases
+  if (!p && !q) return true;
+  if (!p || !q) return false;
+  // function to count tree
+  function countTree(root, tree) {
+    if (!root) {
+      tree.push(null);
+      return;
+    }
+    countTree(root.left, tree);
+    countTree(root.right, tree);
+    // Add the elements to array tree
+    tree.push(root.val);
+  }
+  let tree1 = [];
+  let tree2 = [];
+  countTree(p, tree1);
+  countTree(q, tree2);
+  // Check if same
+  if (tree1.length !== tree2.length) return false;
+  for (let i = 0; i < tree1.length; i++) {
+    if (tree1[i] !== tree2[i]) return false;
+  }
+  return true;
+};
+
+// 11) Invert Binary Tree
+
+const invertTree = (root) => {
+  if (!root) return root;
+  function invert(root) {
+    if (!root) return;
+    let temp = root.left;
+    root.left = root.right;
+    root.right = temp;
+    invertTree(root.left);
+    invertTree(root.right);
+    return root;
+  }
+  return invert(root);
 };
