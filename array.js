@@ -1424,3 +1424,68 @@ const maxProfitCooldown = (prices) => {
 
   return ossp;
 };
+
+// 36) 3 sum
+
+// Brute FOrce solution O(n^3)
+
+const threeSum = (nums) => {
+  if (nums.length <= 1) {
+    return [];
+  }
+  nums.sort((a, b) => a - b);
+  let res = [];
+  for (let i = 0; i < nums.length; i++) {
+    if (i > 0 && nums[i] === nums[i - 1]) continue;
+    for (let j = i + 1; j < nums.length; j++) {
+      if (j > i + 1 && nums[j] === nums[j - 1]) continue;
+      for (let k = j + 1; k < nums.length; k++) {
+        if (k > j + 1 && nums[k] === nums[k - 1]) continue;
+        if (nums[i] + nums[j] + nums[k] === 0) {
+          res.push([nums[i], nums[j], nums[k]]);
+        }
+      }
+    }
+  }
+  return res;
+};
+
+// O(nlogn) solution
+
+const threeSum = (nums) => {
+  // Check for edge cases
+  if (nums.length <= 1) {
+    return [];
+  }
+  // Sorting all the nums in sequence  O(nlogn)
+  nums.sort((a, b) => a - b);
+  // Defining identifiers
+  let result = [];
+  let target, left, right;
+  // Looping to solution
+  for (let i = 0; i < nums.length; i++) {
+    // To avoid same subarrays
+    if (i > 0 && nums[i] === nums[i - 1]) continue;
+    target = -nums[i];
+    left = i + 1;
+    right = nums.length - 1;
+    // Loop until right is greater than left (i.e only two elements remain)
+    while (right > left) {
+      const sum = nums[left] + nums[right];
+      if (sum > target) {
+        right--;
+      } else if (sum < target) {
+        left++;
+      } else {
+        result.push([nums[i], nums[left], nums[right]]);
+        // To ensure no duplicate pattern are accepted
+        while (nums[left] === nums[left + 1]) left++;
+        while (nums[right] === nums[right - 1]) right--;
+        // Increment left and decrement right to find further solutions
+        left++;
+        right--;
+      }
+    }
+  }
+  return result;
+};
