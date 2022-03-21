@@ -1452,7 +1452,7 @@ const threeSum = (nums) => {
 
 // O(nlogn) solution
 
-const threeSum = (nums) => {
+const threeSumOptimized = (nums) => {
   // Check for edge cases
   if (nums.length <= 1) {
     return [];
@@ -1488,4 +1488,73 @@ const threeSum = (nums) => {
     }
   }
   return result;
+};
+
+// 37) Trapping Rainwater
+
+// Brute Force O(n^2) and O(1)
+
+const trap = (height) => {
+  // Check for edge cases
+  if(height.length <= 1) {
+      return 0;
+  }
+  // Define the identifiers required
+  let len = height.length;
+  let leftMax;
+  let rightMax;
+  let water = 0;
+  // Loop to find result
+  for(let i = 0; i < height.length - 1; i++) {
+      // We will start from the first building as 0th building can't store anything
+      leftMax = 0; rightMax = 0
+      // Find the leftMax
+      for(let j = i; j >= 0; j--) {
+          leftMax = Math.max(leftMax, height[j]);
+      }
+      // Find the rightMax
+      for(let j = i; j < len; j++) {
+          rightMax = Math.max(rightMax, height[j]);
+      }
+      // Now find the min
+      water = water + Math.min(leftMax, rightMax) - height[i];    
+  }
+  return water;
+};
+
+// O(n) and O(n)
+
+const trap = (height) => {
+  // Check for edge cases
+  if(height.length <= 1) {
+      return 0;
+  }
+  // Define the identifiers required
+  let water = 0;
+  // Maintain two arrays to handle the maxLeft and right
+  let max = -1;
+  let maxLeft = [];
+  let maxRight = [];
+  // Finding the maxLeft O(n)
+  for(let i = 0; i < height.length; i++) {
+      // Pushing in max for each index         
+      if(height[i] > max) {
+          max = height[i];
+      }
+      maxLeft[i] = max;
+  }
+  max = -1;
+  // Finding the maxRIght O(n)
+  for(let i = height.length - 1; i >= 0; i--) {
+      // Pushing in max for each index         
+      if(height[i] > max) {
+          max = height[i];
+      }
+      maxRight[i] = max;
+  }
+  // Find water on each index O(n)    
+  for(let i = 0; i < height.length; i++) {
+      water = water + Math.min(maxLeft[i], maxRight[i]) - height[i];   
+  }
+  return water;
 };
