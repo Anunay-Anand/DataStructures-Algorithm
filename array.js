@@ -1496,8 +1496,8 @@ const threeSumOptimized = (nums) => {
 
 const trap = (height) => {
   // Check for edge cases
-  if(height.length <= 1) {
-      return 0;
+  if (height.length <= 1) {
+    return 0;
   }
   // Define the identifiers required
   let len = height.length;
@@ -1505,29 +1505,30 @@ const trap = (height) => {
   let rightMax;
   let water = 0;
   // Loop to find result
-  for(let i = 0; i < height.length - 1; i++) {
-      // We will start from the first building as 0th building can't store anything
-      leftMax = 0; rightMax = 0
-      // Find the leftMax
-      for(let j = i; j >= 0; j--) {
-          leftMax = Math.max(leftMax, height[j]);
-      }
-      // Find the rightMax
-      for(let j = i; j < len; j++) {
-          rightMax = Math.max(rightMax, height[j]);
-      }
-      // Now find the min
-      water = water + Math.min(leftMax, rightMax) - height[i];    
+  for (let i = 0; i < height.length - 1; i++) {
+    // We will start from the first building as 0th building can't store anything
+    leftMax = 0;
+    rightMax = 0;
+    // Find the leftMax
+    for (let j = i; j >= 0; j--) {
+      leftMax = Math.max(leftMax, height[j]);
+    }
+    // Find the rightMax
+    for (let j = i; j < len; j++) {
+      rightMax = Math.max(rightMax, height[j]);
+    }
+    // Now find the min
+    water = water + Math.min(leftMax, rightMax) - height[i];
   }
   return water;
 };
 
 // O(n) and O(n)
 
-const trap = (height) => {
+const trap2 = (height) => {
   // Check for edge cases
-  if(height.length <= 1) {
-      return 0;
+  if (height.length <= 1) {
+    return 0;
   }
   // Define the identifiers required
   let water = 0;
@@ -1536,25 +1537,62 @@ const trap = (height) => {
   let maxLeft = [];
   let maxRight = [];
   // Finding the maxLeft O(n)
-  for(let i = 0; i < height.length; i++) {
-      // Pushing in max for each index         
-      if(height[i] > max) {
-          max = height[i];
-      }
-      maxLeft[i] = max;
+  for (let i = 0; i < height.length; i++) {
+    // Pushing in max for each index
+    if (height[i] > max) {
+      max = height[i];
+    }
+    maxLeft[i] = max;
   }
   max = -1;
   // Finding the maxRIght O(n)
-  for(let i = height.length - 1; i >= 0; i--) {
-      // Pushing in max for each index         
-      if(height[i] > max) {
-          max = height[i];
-      }
-      maxRight[i] = max;
+  for (let i = height.length - 1; i >= 0; i--) {
+    // Pushing in max for each index
+    if (height[i] > max) {
+      max = height[i];
+    }
+    maxRight[i] = max;
   }
-  // Find water on each index O(n)    
-  for(let i = 0; i < height.length; i++) {
-      water = water + Math.min(maxLeft[i], maxRight[i]) - height[i];   
+  // Find water on each index O(n)
+  for (let i = 0; i < height.length; i++) {
+    water = water + Math.min(maxLeft[i], maxRight[i]) - height[i];
+  }
+  return water;
+};
+
+// O(n) and O(1)
+
+const trap = (height) => {
+  // Check for edge cases
+  if (height.length <= 1) {
+    return 0;
+  }
+  // Define the result and index identifiers
+  let index1 = 1;
+  let index2 = height.length - 2;
+  let water = 0;
+  // Maintain two arrays to handle the maxLeft and right
+  let left = 0;
+  let right = height.length - 1;
+  // Loop until maxLeft < maxRight
+  while (index1 <= index2) {
+    // Check if left is smaller than right
+    if (height[left] <= height[right]) {
+      // If by any chance height of left wall is smaller than height of index
+      if (height[left] < height[index1]) {
+        left = index1;
+      } else {
+        water = water + height[left] - height[index1];
+        index1++;
+      }
+    } else {
+      if (height[right] < height[index2]) {
+        right = index2;
+      } else {
+        water = water + height[right] - height[index2];
+        index2--;
+      }
+    }
   }
   return water;
 };
