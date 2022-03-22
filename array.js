@@ -1562,7 +1562,7 @@ const trap2 = (height) => {
 
 // O(n) and O(1)
 
-const trap = (height) => {
+const trapOptimal = (height) => {
   // Check for edge cases
   if (height.length <= 1) {
     return 0;
@@ -1595,4 +1595,25 @@ const trap = (height) => {
     }
   }
   return water;
+};
+
+// 38) Max absolute Sum
+
+const maxAbsoluteSum = (nums) => {
+  // Check for edge case
+  if (nums.length === 1) {
+    return Math.abs(nums[0]);
+  }
+  // Define the identifiers
+  let min = 0;
+  let max = 0;
+  let res = 0;
+  for (let i = 0; i < nums.length; i++) {
+    // This is what we compare everytime
+    // The sum with the current element and compare to 0 to ensure it does not go +ve
+    min = Math.min(0, nums[i], min + nums[i]);
+    max = Math.max(0, nums[i], max + nums[i]);
+    res = Math.max(res, Math.abs(max), Math.abs(min));
+  }
+  return res;
 };
