@@ -1617,3 +1617,84 @@ const maxAbsoluteSum = (nums) => {
   }
   return res;
 };
+
+// 39) Set Matrix Zeros
+
+// Optimized O(n^2) O(n + m)
+
+const setZeroes = (matrix) => {
+  // Defining identifiers
+  let row = matrix.length - 1; // m rows
+  let col = matrix[0].length - 1; // n cols
+  // In order to store row and cols
+  let rows = new Set();
+  let cols = new Set();
+  // Find the 0s location in the array
+  for (let i = 0; i <= row; i++) {
+    // This loop is for rows
+    for (let j = 0; j <= col; j++) {
+      // This loop is for cols
+      // If a element is 0. Store it's index in respective array keeping track
+      if (matrix[i][j] === 0) {
+        rows.add(i);
+        cols.add(j);
+      }
+    }
+  }
+
+  // Turning all row element in matrix to 0
+  for (let i = 0; i <= row; i++) {
+    for (let j = 0; j <= col; j++) {
+      // Check if the row contains i or cols contain j
+      if (rows.has(i) || cols.has(j)) {
+        matrix[i][j] = 0;
+      }
+    }
+  }
+
+  return matrix;
+};
+
+// Ultra Optimized O(1) space
+
+const setZeroes = (matrix) => {
+  // Defining identifiers
+  let row = matrix.length - 1; // m rows
+  let col = matrix[0].length - 1; // n cols
+  // Variable to ensure wether col0 needs to be turned to 0's or not
+  let col0 = false;
+
+  // Loop to mark dummy arrays
+  for (let i = 0; i <= row; i++) {
+    // for m rows
+    // Check for col0
+    if (matrix[i][0] === 0) col0 = true;
+    for (let j = 1; j <= col; j++) {
+      // for n rows
+      // mark rows and cols
+      if (matrix[i][j] === 0) {
+        // Marking first col for dummy rows
+        matrix[i][0] = 0;
+        // Marking first row for dummy cols
+        matrix[0][j] = 0;
+      }
+    }
+  }
+
+  // Now fill 0's at right place
+  for (let i = row; i >= 0; i--) {
+    for (let j = col; j >= 1; j--) {
+      // Check the dummy row and col
+      if (matrix[i][0] === 0 || matrix[0][j] === 0) {
+        matrix[i][j] = 0;
+      }
+    }
+    // Check for first col
+    if (col0 === true) {
+      matrix[i][0] = 0;
+    }
+  }
+
+  console.log(matrix);
+  return matrix;
+};

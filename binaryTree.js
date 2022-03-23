@@ -291,3 +291,70 @@ const invertTree = (root) => {
   }
   return invert(root);
 };
+
+// 12) Univalued longest path
+
+const longestUnivaluePath = (root) => {
+  // Check for edge case
+  if (!root) return 0;
+  // Defining identifiers required. Max for storing result
+  let max = 0;
+  // To recursively calculate the length of left and right subtree
+  let left = 0,
+    right = 0;
+  // function for finding the path
+  function longestPath(root) {
+    // base condition to break the stack
+    if (!root) {
+      return 0;
+    }
+    // Recursively call left and right
+    left = longestPath(root.left);
+    right = longestPath(root.right);
+    // Check if univalued path or not
+    if (!root.left || root.left.val !== root.val) {
+      left = 0;
+    }
+    if (!root.right || root.right.val !== root.val) {
+      right = 0;
+    }
+    // Find the new max
+    max = Math.max(max, left + right);
+    // Sending back the highest of left or right if there.. +1 in case they match
+    return Math.max(left, right) + 1;
+  }
+  longestPath(root);
+  return max;
+};
+
+// 13) Cousins in Binary Tree
+
+const isCousins = (root, x, y) => {
+  let left = [];
+  let right = [];
+  let depth = -1;
+  function checkSibling(root, x, y, depth) {
+    if (!root) return;
+    depth++;
+    checkSibling(root.left, x, y, depth);
+    checkSibling(root.right, x, y, depth);
+    // Check the parent and depth
+    if (root.left) {
+      if (root.left.val === x) {
+        left.push(root.val, depth);
+      } else if (root.left.val === y) {
+        right.push(root.val, depth);
+      }
+    }
+    if (root.right) {
+      if (root.right.val === x) {
+        left.push(root.val, depth);
+      } else if (root.right.val === y) {
+        right.push(root.val, depth);
+      }
+    }
+    return;
+  }
+  checkSibling(root, x, y, depth);
+  return left[0] !== right[0] && left[1] === right[1] ? true : false;
+};
