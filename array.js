@@ -106,6 +106,37 @@
 
 // mergeArray([0, 3, 4, 29], [4, 6, 30]);
 
+// Ultra Optimized
+
+// const mergeOptimized = (nums1, m, nums2, n) => {
+//   // Check for edge cases
+//   if(nums1.length === 0 && nums2.length === 0) {
+//       return [];
+//   }
+//   if(nums1.length === 0 || nums2.length === 0) {
+//       return nums1 || nums2;
+//   }
+
+//   // Define identifiers required
+//   let index1 = m - 1; //nums1
+//   let index2 = n - 1; //nums2
+//   let index = m + n - 1; //nums
+
+//   // Loop and insert elements in ascending order
+//   while(index >= 0) {
+//       // Check if element in nums1 is greater than or equal to element in nums2
+//       if(nums1[index1] >= nums2[index2] || nums2[index2] === undefined) {
+//           nums1[index] = nums1[index1];
+//           index1--;
+//       } else {
+//           nums1[index] = nums2[index2];
+//           index2--;
+//       }
+//       index--;
+//   }
+//   return nums1;
+// };
+
 // // 4) Two Sum
 
 // // var twoSum = function (nums, target) {
@@ -1700,7 +1731,7 @@ const setZeroesOptimized = (matrix) => {
 
 // 40) Merge Overlapping Intervals
 
-// Brute Force
+// Optimal O(nlogn) O(1)/O(n)
 
 const merge = (intervals) => {
   // Check for edge cases
@@ -1730,3 +1761,29 @@ const merge = (intervals) => {
   }
   return res;
 };
+
+// 41) Find the repeating and missing number
+
+// O(n) and O(n) solution (brute)
+
+function findMissingAndRepeating(nums) {
+  // Define the identifiers required
+  let arr1 = new Array(nums.length + 1).fill(0);
+  let duplicate;
+  let missing;
+  // Loop and update the indexes for number found
+  for (let x of nums) {
+    arr1[x] = arr1[x] + 1;
+  }
+
+  // Now find the missing and repeated number
+  for (let i = 1; i < nums.length; i++) {
+    if (arr1[i] === 2) {
+      duplicate = i;
+    }
+    if (arr1[i] === 0) {
+      missing = i;
+    }
+  }
+  return [duplicate, missing];
+}
