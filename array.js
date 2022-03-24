@@ -1657,7 +1657,7 @@ const setZeroes = (matrix) => {
 
 // Ultra Optimized O(1) space
 
-const setZeroes = (matrix) => {
+const setZeroesOptimized = (matrix) => {
   // Defining identifiers
   let row = matrix.length - 1; // m rows
   let col = matrix[0].length - 1; // n cols
@@ -1695,6 +1695,38 @@ const setZeroes = (matrix) => {
     }
   }
 
-  console.log(matrix);
   return matrix;
+};
+
+// 40) Merge Overlapping Intervals
+
+// Brute Force
+
+const merge = (intervals) => {
+  // Check for edge cases
+  if (intervals.length <= 1) {
+    return intervals;
+  }
+
+  // Sort the intervals on the basis of first element. Here a and b are arr.
+  intervals.sort((a, b) => a[0] - b[0]);
+
+  // Define identifiers required
+  let res = [intervals[0]];
+
+  // Now compare the start and end of elements
+  for (let interval of intervals) {
+    // The end of last element in res is end1 or e1.
+    let e1 = res[res.length - 1][1];
+    // These are the start and end of current interval
+    let s2 = interval[0];
+    let e2 = interval[1];
+    // Compare the e1 and s2 and change the end of last interval in result array if true
+    if (e1 >= s2) {
+      res[res.length - 1][1] = e1 > e2 ? e1 : e2;
+    } else {
+      res.push(interval);
+    }
+  }
+  return res;
 };
