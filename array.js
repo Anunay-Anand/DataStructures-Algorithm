@@ -1914,3 +1914,55 @@ const majorityElement = (nums) => {
   }
   return maj;
 };
+
+// Optimized Solution O(n) O(1)
+
+const majorityElementOptimized = (nums) => {
+  // check for edge case
+  if (nums.length === 1) {
+    return nums;
+  }
+
+  // Define identifiers required
+  let num1 = -1;
+  let num2 = -1;
+  let count1 = 0;
+  let count2 = 0;
+  let maj = [];
+
+  // Now loop to find the two majority items
+  for (let x of nums) {
+    // check that is num1 equal to current x
+    if (num1 === x) {
+      count1++;
+      // Check that is num2 equal to current x
+    } else if (num2 === x) {
+      count2++;
+      // Now if both not satisfied if i.e count1 = 0. Then let num1 be current x
+    } else if (count1 === 0) {
+      num1 = x;
+      count1 = 1;
+      // Now if both not satisfied if i.e count2 = 0. Then let num2 be current x
+    } else if (count2 === 0) {
+      num2 = x;
+      count2 = 1;
+      // If no condition satisfied that is num1 exist with count1 > 0 and num2 with count2 > 0 but no match to x
+    } else {
+      count1--;
+      count2--;
+    }
+  }
+  //Reinitiatize counts to 0
+  (count1 = 0), (count2 = 0);
+  // Now count the occurence of both the majority element if more than 1/3 times
+  for (let x of nums) {
+    if (x === num1) count1++;
+    if (x === num2) count2++;
+  }
+
+  //Now check if major or not
+  if (count1 > nums.length / 3) maj.push(num1);
+  if (count2 > nums.length / 3 && num1 !== num2) maj.push(num2);
+
+  return maj;
+};
