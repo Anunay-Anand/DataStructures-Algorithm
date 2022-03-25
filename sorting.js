@@ -102,3 +102,55 @@ function merge(left, right) {
   }
   return result.concat(left.slice(leftIndex)).concat(right.slice(rightIndex));
 }
+
+// 5) Invert Count (A form of merge Sort)
+
+function mergeSort(arr, l, r) {
+  // Define the identifiers required
+  let invertCount = 0;
+  // Loop and call mergeSort until r > l (r is upperbound and l is lowerbound)
+  if(l < r) {
+    let mid = Math.floor((l + r) / 2);
+    // Call mergeSort and split the array into parts
+    invertCount = mergeSort(arr, l, mid);
+    invertCount += mergeSort(arr, mid + 1, r);
+    invertCount += merge(arr, l, mid + 1, r);
+  }
+  return invertCount;
+}
+
+function merge(arr, left, mid, right) {
+	//Define identifiers required
+  let invertCount = 0;
+  let i = left; // starting index of left subArray
+  let j = mid; // starting index of right subArray
+  let k = left; // starting index of result Array
+  // Loop until either pointer goes over bound
+  while (i <= mid - 1 && j <= right) {
+  	// Check if left is smaller
+    if(arr[i] <= arr[j]) {
+    	res[k++] = arr[i++];
+    } else {
+    	res[k++] = arr[j++];
+      // Now the rest of element to the right of i index will also form pair
+      invertCount += mid - i;
+    }
+  }
+  // Check if right array went overbound thus left array is remaining
+  while(i <= mid - 1) {
+  	arr[k++] = arr[i++];
+  }
+  
+  // Check if left array went overbound thus right array is remaining
+  while(j <= right) {
+  	arr[k++] = arr[j++];
+  }
+  
+  // Copy the merged element from the temp array to the original array
+  for(let i = left; i <= right; i++) {
+  	arr[i] = res[i];
+  }
+  
+  //Now return the count
+  return invertCount;
+}

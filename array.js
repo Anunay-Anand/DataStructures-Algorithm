@@ -883,6 +883,29 @@
 // //     [1, 3]
 // // ]);
 
+// O(n) O(1) space
+
+const searchMatrix = (matrix, target) => {
+  // declare and initiate identifiers required
+  let rows = matrix.length; // m rows
+  let cols = matrix[0].length; // n cols
+  let i = 0; // first row
+  let j = cols - 1; // last col
+  // Loop until target is found
+  while (i < rows && j >= 0) {
+    if (matrix[i][j] === target) {
+      return true;
+    }
+    // If the target is greater than current. We will increment row
+    else if (matrix[i][j] < target) {
+      i++;
+    } else if (matrix[i][j] > target) {
+      j--;
+    }
+  }
+  return false;
+};
+
 // // 22) Valid Sudoku
 
 // // var isValidSudoku = function (board) {
@@ -1786,4 +1809,77 @@ function findMissingAndRepeating(nums) {
     }
   }
   return [duplicate, missing];
+}
+
+// 42) Count Inversion + Also print pairs
+
+// Brute Force O(n^2) (O(1) if only counting/ O(n) for pairs)
+
+function countInversions(nums) {
+  // Declare and initiate identifiers required
+  let count = 0;
+  let pairs = [];
+  // Loop for each element in order to find pairs
+  for (let i = 0; i < nums.length; i++) {
+    for (j = i + 1; j < nums.length; j++) {
+      // Check if the conditions are satisfied
+      if (nums[i] > nums[j] && i < j) {
+        pairs.push([nums[i], nums[j]]);
+        count++;
+      }
+    }
+  }
+  return count;
+}
+
+// O(nlogn) O(n) Optimized approach
+
+function mergeSort(arr, l, r) {
+  // Define the identifiers required
+  let invertCount = 0;
+  // Loop and call mergeSort until r > l (r is upperbound and l is lowerbound)
+  if (l < r) {
+    let mid = Math.floor((l + r) / 2);
+    // Call mergeSort and split the array into parts
+    invertCount = mergeSort(arr, l, mid);
+    invertCount += mergeSort(arr, mid + 1, r);
+    invertCount += merge(arr, l, mid + 1, r);
+  }
+  return invertCount;
+}
+
+function merge(arr, left, mid, right) {
+  //Define identifiers required
+  let invertCount = 0;
+  let i = left; // starting index of left subArray
+  let j = mid; // starting index of right subArray
+  let k = left; // starting index of result Array
+  // Loop until either pointer goes over bound
+  while (i <= mid - 1 && j <= right) {
+    // Check if left is smaller
+    if (arr[i] <= arr[j]) {
+      res[k++] = arr[i++];
+    } else {
+      res[k++] = arr[j++];
+      // Now the rest of element to the right of i index will also form pair
+      invertCount += mid - i;
+    }
+  }
+  // Check if right array went overbound thus left array is remaining
+  while (i <= mid - 1) {
+    arr[k++] = arr[i++];
+  }
+
+  // Check if left array went overbound thus right array is remaining
+  while (j <= right) {
+    arr[k++] = arr[j++];
+  }
+
+  // Copy the merged element from the temp array to the original array
+  for (let i = left; i <= right; i++) {
+    arr[i] = res[i];
+  }
+
+  //Now return the count
+  return invertCount;
 }
