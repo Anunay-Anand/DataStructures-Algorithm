@@ -172,3 +172,57 @@ const sortedSquares = (nums) => {
   }
   return nums;
 };
+
+// 9) Pow(x,n)
+
+// Brute force without methods O(n) O(1)
+
+const myPowSlow = function (x, n) {
+  // declare and initiate identifiers required
+  let ans = x;
+  let count = 2;
+  // Check for edge case
+  if (n === 0) return 1;
+  // Loop until count is less than n
+  while (count <= Math.abs(n)) {
+    ans = ans * x;
+    count++;
+  }
+  // check if n was -ve or +ve
+  return n < 0 ? 1 / ans : ans;
+};
+
+// Brute Force approach fast O(n) time and O(1) space
+
+const myPow = function (x, n) {
+  // check for edge cases
+  // if(n === 0) return 0;
+  // Check if n is +ve
+  if (n > 0) {
+    return x ** n;
+  } else {
+    n = Math.abs(n);
+    return 1 / x ** n;
+  }
+};
+
+// Optimal Approach
+
+const myPowOptimized = function (x, n) {
+  // declare and initiate identifiers required
+  let ans = 1.0;
+  let power = Math.abs(n);
+  // Loop until count is greater than 0
+  while (power > 0) {
+    // If the power is even or if the power is odd
+    if (power % 2 === 0) {
+      x = x * x;
+      power = power / 2;
+    } else {
+      ans = ans * x;
+      power = power - 1;
+    }
+  }
+  // Check if n was -ve
+  return n < 0 ? 1 / ans : ans;
+};

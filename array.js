@@ -1883,3 +1883,34 @@ function merge(arr, left, mid, right) {
   //Now return the count
   return invertCount;
 }
+
+// 43) Majority Element 2
+
+// Brute Force O(n(loop) + logn(insertion in object)) O(n)
+const majorityElement = (nums) => {
+  // check for edge case
+  if (nums.length === 1) {
+    return nums;
+  }
+
+  // Define identifiers required
+  let count = {};
+  let maj = [];
+
+  // loop to find the maj element
+  for (let x of nums) {
+    // if x is already as a key.. increment it's value
+    if (x in count) {
+      count[x] = count[x] + 1;
+    } else {
+      count[x] = 1;
+    }
+
+    // check if majority or highest occurence
+    if (count[x] > nums.length / 3) {
+      maj.push(x);
+      count[x] = -1;
+    }
+  }
+  return maj;
+};
