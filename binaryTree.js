@@ -108,7 +108,6 @@ const postorderTraversalIterative = (root) => {
     if (root.left) {
       stack.push(root.left);
     }
-
     return result;
   }
 };
@@ -357,4 +356,121 @@ const isCousins = (root, x, y) => {
   }
   checkSibling(root, x, y, depth);
   return left[0] !== right[0] && left[1] === right[1] ? true : false;
+};
+
+//14) Find the right view of the tree
+
+function rightView(root) {
+  // Define the identifiers required
+  let level = 0;
+  let result = [];
+  function findView(root, level) {
+    // If there is no root/node
+    if (!root) {
+      return null;
+    }
+    // Check if first node on this level
+    if (level === result.length) {
+      result.push(root.data);
+    }
+    // Traverse to right first
+    findView(root.right, level + 1);
+    findView(root.left, level + 1);
+  }
+  findView(root, level);
+  return result;
+}
+
+// 15) Top View
+
+function topView(root) {
+  // Declare and Initiate identifiers required
+  // We will first create a queue for level order traversing
+  let queue = [];
+  let ans = [];
+
+  // Check for edge cases
+  if (!root) return ans;
+
+  // A map to find the top view
+  let topElements = {};
+  // push first level in form of [root, vertical level/ line (initially 0)]
+  queue.push([root, 0]);
+  // Loop until the end of queue
+  while (queue.length > 0) {
+    // find the top most node (first element pushed = arr[0])
+    let top = queue[0];
+    // Now pop the element
+    queue.pop();
+    // Find the node value and line number using array destructuring
+    let node = top[0];
+    let lineNumber = top[1];
+    // Check if an element on the same line number already exist on map or store it
+    if (!topElements[lineNumber]) {
+      topElements[lineNumber] = node;
+    }
+    // Now push whatever is on the left of current root to queue
+    console.log(node.left !== null);
+    if (node[left]) {
+      queue.push(node.left, lineNumber - 1);
+    }
+    // Now push whatever is on the right of current root to queue
+    if (node[right]) {
+      queue.push(node.right, lineNumber + 1);
+    }
+  }
+  // Now fill the answer array
+  for (let node in topElements) {
+    ans.push(node.data);
+  }
+  return ans;
+}
+
+// 16) Pre, Inorder and postOrder
+
+const rightSideView = (root) => {
+  // Check for edge case - no pre, in or post order
+  if (!root) return [];
+
+  // Declare and initiate identifiers required to store results
+  let inOrder = [];
+  let preOrder = [];
+  let postOrder = [];
+
+  // Defining stack required to store node on traversals [node, (order no)]
+  let stack = [];
+
+  // Insert root Node with order No 1 for preOrder
+  stack.push({ node: root, orderNumber: 1 });
+
+  while (stack.length > 0) {
+    // Select node from top
+    let currNode = stack[stack.length - 1];
+    stack.pop();
+
+    // If part of preOrder
+    // Increment 1 to 2 and push the left side of tree
+    if (currNode.orderNumber === 1) {
+      preOrder.push(currNode.node.val);
+      currNode.orderNumber++;
+      stack.push({ node: currNode.node, orderNumber: currNode.orderNumber });
+      // push if left exist
+      if (currNode.node.left !== null) {
+        stack.push({ node: currNode.node.left, orderNumber: 1 });
+      }
+    } else if (currNode.orderNumber === 2) {
+      inOrder.push(currNode.node.val);
+      currNode.orderNumber++;
+      stack.push({ node: currNode.node, orderNumber: currNode.orderNumber });
+
+      // Check if node left available
+      if (currNode.node.right !== null) {
+        stack.push({ node: currNode.node.right, orderNumber: 1 });
+      }
+    } else {
+      postOrder.push(currNode.node.val);
+    }
+  }
+
+  return [preOrder, inOrder, postOrder];
 };
