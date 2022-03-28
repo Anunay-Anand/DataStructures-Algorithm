@@ -383,52 +383,51 @@ function rightView(root) {
 
 // 15) Top View
 
-function  topView(root)
-{
-// Declare and Initiate identifiers required
-// We will first create a queue for level order traversing
-let queue = [];
-let ans = [];
+function topView(root) {
+  // Declare and Initiate identifiers required
+  // We will first create a queue for level order traversing
+  let queue = [];
+  let ans = [];
 
-// Check for edge cases
-if (!root) return ans;
+  // Check for edge cases
+  if (!root) return ans;
 
-// A map to find the top view
-let topElements = {};
-// push first level in form of [root, vertical level/ line (initially 0)]
-queue.push([root, 0]);
-// Loop until the end of queue
-while (queue.length > 0) {
-// find the top most node (first element pushed = arr[0])
-let top = queue[0];
-// Now pop the element
-queue.shift();
-// Find the node value and line number using array destructuring
-let node = top[0];
-let lineNumber = top[1];
-// Check if an element on the same line number already exist on map or store it
-if (!topElements[lineNumber]) {
-  topElements[lineNumber] = node;
-}
-// Now push whatever is on the left of current root to queue
-if (node.left) {
-  queue.push([node.left, lineNumber - 1]);
-}
-// Now push whatever is on the right of current root to queue
-if (node.right) {
-  queue.push([node.right, lineNumber + 1]);
-}
-}
+  // A map to find the top view
+  let topElements = {};
+  // push first level in form of [root, vertical level/ line (initially 0)]
+  queue.push([root, 0]);
+  // Loop until the end of queue
+  while (queue.length > 0) {
+    // find the top most node (first element pushed = arr[0])
+    let top = queue[0];
+    // Now pop the element
+    queue.shift();
+    // Find the node value and line number using array destructuring
+    let node = top[0];
+    let lineNumber = top[1];
+    // Check if an element on the same line number already exist on map or store it
+    if (!topElements[lineNumber]) {
+      topElements[lineNumber] = node;
+    }
+    // Now push whatever is on the left of current root to queue
+    if (node.left) {
+      queue.push([node.left, lineNumber - 1]);
+    }
+    // Now push whatever is on the right of current root to queue
+    if (node.right) {
+      queue.push([node.right, lineNumber + 1]);
+    }
+  }
 
-// Get the object keys and sort them in order
-let keys = Object.keys(topElements).sort((a,b) => a - b);
+  // Get the object keys and sort them in order
+  let keys = Object.keys(topElements).sort((a, b) => a - b);
 
-// Now fill the answer array
-for(let i = 0; i < keys.length; i++) {
+  // Now fill the answer array
+  for (let i = 0; i < keys.length; i++) {
     // Now store in right way
     ans.push(topElements[keys[i]].data);
-} 
-return ans;
+  }
+  return ans;
 }
 
 // 16) Pre, Inorder and postOrder

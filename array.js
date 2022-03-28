@@ -1966,3 +1966,277 @@ const majorityElementOptimized = (nums) => {
 
   return maj;
 };
+
+// 44) Grid Unqiue Paths
+
+// Backtracking Solution
+
+const uniquePaths = (m, n) => {
+  // Define identifiers
+  let bottom = 0;
+  let right = 0;
+
+  // Brute Force: function to findPaths O(2 * (m * n)) and Space O(m - 1 + n - 1)
+  function findPaths(bottom, right) {
+    // When we reached the bottom right
+    if (bottom === m - 1 && right === n - 1) {
+      return 1;
+    }
+    // If we went over bound
+    if (bottom >= m || right >= n) {
+      return 0;
+    }
+    return findPaths(bottom + 1, right) + findPaths(bottom, right + 1);
+  }
+
+  return findPaths(bottom, right);
+};
+
+// Brute Force Variation
+
+const uniquePathsBrute2 = (m, n) => {
+  // Define identifiers required
+  // Here bottom and right will simply store the sum or incerement when solution is found
+  let bottom = 0;
+  let right = 0;
+  // i and j will recursive index which will help to find solutions
+  let i = 0;
+  let j = 0;
+
+  // function to findPaths
+  function findPaths(i, j, bottom, right) {
+    // Check when bottom right is reached (i === m - 1 && i === n - 1)
+    if (i === m - 1 && j === n - 1) {
+      return 1;
+    }
+    // In case we went overbound (terminating condition for recursion)
+    if (i >= m || j >= n) {
+      return 0;
+    }
+    bottom = findPaths(i + 1, j);
+    right = findPaths(i, j + 1);
+    return bottom + right;
+  }
+
+  return findPaths(i, j, bottom, right);
+};
+
+// Optimized using DP
+
+const uniquePathsOptimized = (m, n) => {
+  // Define identifiers required
+  // Here bottom and right will simply store the sum or incerement when solution is found
+  let bottom = 0;
+  let right = 0;
+  // i and j will recursive index which will help to find solutions
+  let i = 0;
+  let j = 0;
+  // Take a 2D to store condition when solution is found
+  let dp = [...Array(m)].map((x) => Array(n).fill(-1));
+
+  // function to findPaths
+  function findPaths(i, j, bottom, right) {
+    // Check when bottom right is reached (i === m - 1 && i === n - 1)
+    if (i === m - 1 && j === n - 1) {
+      return 1;
+    }
+    // In case we went overbound (terminating condition for recursion)
+    if (i >= m || j >= n) {
+      return 0;
+    }
+    // Check if already visited
+    if (dp[i][j] !== -1) {
+      return dp[i][j];
+    }
+
+    // Recursive calls to bottom and right indexes
+    bottom = findPaths(i + 1, j);
+    right = findPaths(i, j + 1);
+
+    // Store the current sum of bottom and right value in dp
+    dp[i][j] = bottom + right;
+
+    return bottom + right;
+  }
+
+  return findPaths(i, j, bottom, right);
+};
+
+// 45) Reverse Pairs  TC - O( N log N ) + O (N) + O (N) SC - O(N)
+
+// Optimized
+
+const reversePairs = (nums) => {
+  // check for edge cases
+  if (nums.length === 1) {
+    return 0;
+  }
+
+  // Declare and initiate identifiers required
+  let i = 0; //beginning of array (left)
+  let j = nums.length - 1; //ending of array (right)
+
+  // Creating function to mergeSort (split the array)
+  function mergeSort(arr, l, r) {
+    // define variable to store count revere pairs
+    let reversePairs = 0;
+    // Check if left and right overlap or not
+    if (l < r) {
+      let mid = Math.floor((l + r) / 2);
+      reversePairs = mergeSort(arr, l, mid);
+      reversePairs += mergeSort(arr, mid + 1, r);
+      reversePairs += merge(arr, l, mid + 1, r);
+    }
+    return reversePairs;
+  }
+
+  // Function to merge both the array while also checking the pairs
+  function merge(arr, left, mid, right) {
+    // Define the identifiers required
+    let reversePairs = 0;
+    let i = left; // Beginning of left Array
+    let j = mid; //  Beginning of right Array
+    let k = 0; // Beginnig of result array
+    let res = new Array(right - left + 1).fill(0);
+
+    // HERE WE ARE COUNTING THE REVERSED PAIRS
+    while (i < mid && j <= right) {
+      if (arr[i] > 2 * arr[j]) {
+        reversePairs += mid - i;
+        j++;
+      } else {
+        i++;
+      }
+    }
+
+    // ALL THE CODE BELOW IS JUST TO SORT THE ARRAY JUST LIKE WE DO IN MERGE SORT
+    i = left;
+    j = mid;
+    k = 0;
+
+    while (i < mid && j <= right) {
+      if (arr[i] > arr[j]) {
+        res[k++] = nums[j++];
+      } else {
+        res[k++] = nums[i++];
+      }
+    }
+
+    // Now in case the left Array is still not empty
+    while (i <= mid - 1) {
+      res[k++] = arr[i++];
+    }
+
+    // Now in case the right Array is still not empty
+    while (j <= right) {
+      res[k++] = arr[j++];
+    }
+
+    // Now copy all the elements from result to the nums array or parent array
+    k = 0;
+    while (left <= right) {
+      arr[left++] = res[k++];
+    }
+
+    // Now return the count of pairs
+    return reversePairs;
+  }
+  return mergeSort(nums, 0, j);
+};
+
+// 46) Largest Subarray with sum zero
+
+// Brute Force O(n^2) SC O(1)
+
+function maxLen(arr, n) {
+  // Declare and initiate the identifiers required
+  let max = 0;
+  let sum = 0;
+  for (let i = 0; i < arr.length; i++) {
+    sum = 0;
+    for (let j = i; j < arr.length; j++) {
+      sum += arr[j];
+      if (sum === 0) {
+        max = Math.max(max, j - i + 1);
+      }
+    }
+  }
+  return max;
+}
+
+// Optimized TC - O(NLogN) and SC - O(N)
+
+function maxLenOptimized(arr, n) {
+  // Declare and initiate the identifiers required
+  let max = 0;
+  let sum = 0;
+
+  // Object to store different summation found. Prefix sums
+  let prefixSum = {};
+
+  // Loop to find the answer
+  for (let i = 0; i < arr.length; i++) {
+    // Find the current sum
+    sum += arr[i];
+    // Check if the sum === 0
+    if (sum === 0) {
+      max = i + 1;
+    } else {
+      if (sum in prefixSum) {
+        max = Math.max(max, i - prefixSum[sum]);
+      } else {
+        prefixSum[sum] = i;
+      }
+    }
+  }
+  return max;
+}
+
+// 47) Count Numver of Sub arrays with given Xor K
+
+// Brute Force O(N^2)
+
+function findXor(A, B) {
+  // Define identifiers required
+  let count = 0;
+  let currXor;
+  for (let i = 0; i < A.length; i++) {
+    // initiate sum to be 0
+    currXor = 0;
+    for (let j = i; j < A.length; j++) {
+      currXor ^= A[j];
+      // Check if sum === target
+      if (currXor === B) {
+        count++;
+      }
+    }
+  }
+  return count;
+}
+
+// 48) Longest SubString without repeat
+
+// Brute foce TC - O(n^2) SC - O(n)
+
+const lengthOfLongestSubstring = (s) => {
+  // Check for edge case
+  if (s.length === 1) {
+    return 1;
+  }
+  // Declare and initiate identifiers required
+  let maxStr = 0;
+  // Loop to find the longest substring
+  for (let i = 0; i < s.length; i++) {
+    // map to store str in case of repeat
+    var map = {};
+    for (let j = i; j < s.length; j++) {
+      // Check if str in set
+      if (s[j] in map) {
+        maxStr = Math.max(maxStr, j - i);
+        break;
+      }
+      map[s[j]] = j;
+    }
+  }
+  return maxStr === 0 ? s.length : maxStr;
+};
