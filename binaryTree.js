@@ -478,3 +478,193 @@ const rightSideView = (root) => {
 
   return [preOrder, inOrder, postOrder];
 };
+
+// 17) Vertical traversal of a Tree
+
+// This is a BFS Solution. TC - O(N*NLOGN*N) SC-O(N)
+
+const verticalTraversal = (root) => {
+  // check for edge case (in case no root)
+  if (!root) return [];
+
+  // Define the identifiers required for the solution
+  // We need a queue for level order or Breadth First Search
+  const queue = [];
+  // We will store the traversed node in the list
+  const list = [];
+
+  // Initialize the queue with the root element.. pattern [node, row, col]
+  // Our main criteria of difference is col
+  queue.push([root, 0, 0]);
+
+  // Loop until the queue is empty/ Entire tree traversed
+  while (queue.length > 0) {
+    // Select the current node, row and col for traversing and storing in list
+    // arr.shift() method remove the element from start
+    let [node, row, col] = queue.shift();
+
+    // Check if left node exist... we decrement col to left
+    if (node.left) {
+      queue.push([node.left, row + 1, col - 1]);
+    }
+
+    // Check if right node exist.. We increment col to right
+    if (node.right) {
+      queue.push([node.right, row + 1, col + 1]);
+    }
+
+    // Push the current Node onto the list
+    list.push([node.val, row, col]);
+  }
+
+  // Now sort the store nodes in the list are complete traversal of tree
+  list.sort((a, b) => {
+    // First compare their cols.. If they are in same col check row
+    if (a[2] - b[2] === 0) {
+      // We can also say a[2] === b[2] in same cols
+      // Check their row.. If in the same row level we compare value
+      if (a[1] - b[1] === 0) {
+        // We can also say a[1] === b[1] in same rows
+        return a[0] - b[0];
+      }
+    }
+    return a[2] - b[2];
+  });
+
+  // Storing it onto a map as Map only take unique keys as well as O(1) Lookup being unordered
+  const map = new Map();
+
+  // Loop through the entire sorted list
+  for (let i = 0; i < list.length; i++) {
+    // get the currennt Node, col and it's row
+    let [value, row, col] = list[i];
+
+    // Check the map if col already exist and then simply push the value
+    if (map.has(col)) {
+      // Fetch the current col.. The value stored in col key which is an array of node values
+      map.get(col).push(value);
+    } else {
+      map.set(col, [value]);
+    }
+  }
+  // Since map.values() returns us an array and we spread it.. Thus returning format required with right sequence of nodes
+  return [...map.values()];
+};
+
+// 18) Root to node Path
+
+// Brute Force Solution TC - O(N) SC - O(N) in case we consider result array
+
+function findPath(A, B) {
+  // Check if empty tree
+  if (!A) return [];
+
+  // Define the identifiers required to solve the problem
+  // Initialize it with root
+  let path = [];
+
+  // Define the recursive function to find path
+  function findPath(A) {
+    // Define the termination case
+    if (!A) return 0;
+    // Check if this is the target node
+    if (A.data === B) {
+      return 1;
+    }
+    // Traverse left and then right
+    let left = findPath(A.left);
+    let right = findPath(A.right);
+
+    // Check if either left or right is 1
+    if (left === 1) {
+      path.push(A.left.data);
+    }
+    if (right === 1) {
+      path.push(A.right.data);
+    }
+    return left || right;
+  }
+  findPath(A);
+  path.push(A.data);
+  path.reverse();
+  return path;
+}
+
+// O(N) Optimized
+
+function findPathOptimized(A, B) {
+  // Check if empty tree
+  if (!A) return [];
+
+  // Define the identifiers required to solve the problem
+  // Initialize it with root
+  let path = [];
+
+  // Define the recursive function to find path
+  function findPath(A) {
+    // Define the termination case
+    if (!A) return 0;
+
+    // Push the current Node val in path array
+    path.push(A.data);
+
+    // Check if this is the target node
+    if (A.data === B) {
+      return 1;
+    }
+    // Traverse left and then right
+    let left = findPath(A.left);
+    let right = findPath(A.right);
+
+    // Check if both zero
+    if (left === 0 && right === 0) {
+      path.pop();
+    }
+
+    return left || right;
+  }
+  findPath(A);
+  return path;
+}
+
+// 19) Morris Traversal Inorder
+const inorderTraversal = (root) => {
+  // Morris Traversal
+  // Check for edge cases
+  if (!root) return [];
+
+  // define identifiers required
+  let curr = root;
+  let inorder = [];
+
+  // Loop until curr is null/does not exist
+  while (curr !== null) {
+    // Check if there is no left to curr... i.e is root
+    if (curr.left === null) {
+      inorder.push(curr.val);
+      // Move it to right
+      curr = curr.right;
+    } else {
+      // If there is a left we need to store the root reference in prev identifier
+      let prev = curr.left;
+      // Now we will move as much right as possible to the prev.
+      // prev must not point to curr which is the root of prev. i.e the overall root
+      while (prev.right !== null && prev.right !== curr) {
+        prev = prev.right;
+      }
+      // Check if reached end of right connect it to curr or root of the subtree
+      if (prev.right === null) {
+        prev.right = curr;
+        // continue traversal
+        curr = curr.left;
+      } else {
+        // Since the node was connected to root it was revisited so break it and push it
+        prev.right = null;
+        // push the root into inorder
+        inorder.push(curr.val);
+        curr = curr.right;
+      }
+    }
+  }
+  return inorder;
+};

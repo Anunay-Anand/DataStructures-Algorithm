@@ -2214,6 +2214,39 @@ function findXor(A, B) {
   return count;
 }
 
+// Optimized approach TC - O(N) SC - O(N) (unordered map - O(N) ordered - O(nlogn))
+
+function findXorOptimized(A, B) {
+  // Declare and initiate Identifiers required
+  let count = 0; // to keep track of number of subarray found
+  let currXor; // To find Xor for each iteration
+  let y = 0; // It is the subarray which when multiplied by k will give XR. (Y === K)
+  let freq = {}; // hash map to store all prefix Xor
+
+  // Define an object/hash map to store if new Xor product found
+  for (let i = 0; i < A.length; i++) {
+    // Find the current Xor
+    currXor ^= A[i];
+    // Check if current Xor is equal to k
+    if (currXor === B) {
+      count++;
+    }
+    // Now find the value of Y subarray
+    y = currXor ^ B;
+    // Check if y exist.. Existence of y mean there will be k
+    if (y in freq) {
+      count = count + freq[y];
+    }
+    // Now simply add currXor in map
+    if (currXor in freq) {
+      freq[currXor]++;
+    } else {
+      freq[currXor] = 1;
+    }
+  }
+  return count;
+}
+
 // 48) Longest SubString without repeat
 
 // Brute foce TC - O(n^2) SC - O(n)
@@ -2239,4 +2272,46 @@ const lengthOfLongestSubstring = (s) => {
     }
   }
   return maxStr === 0 ? s.length : maxStr;
+};
+
+// 49) Longest common substring (LCS)
+
+// Brute Force Approach TC - O(N) (if ordered list T(O(nlogn))) SC - O(n)
+
+const longestConsecutive = (nums) => {
+  // check for edge cases
+  if (nums.length === 0) {
+    return 0;
+  }
+  if (nums.length === 1) {
+    return 1;
+  }
+
+  // Let's sort the array in order to get the numbers in sequence
+  nums.sort((a, b) => a - b);
+
+  // Define the identifiers required
+  let first = 0;
+  let second = 1;
+  let max = 0;
+  let count = 0;
+
+  // Now loop over the entire array nums until first || second goes overbound
+  while (first < nums.length && second < nums.length) {
+    // Check if the number is in sequence increment count
+    if (nums[second] - nums[first] === 1) {
+      count++;
+    } // if the first and second are same
+    else if (nums[second] - nums[first] === 0) {
+      count = count;
+    } // If not in sequence or repeated count = 0;
+    else {
+      count = 0;
+    }
+    // find the max LCS
+    max = Math.max(max, count + 1);
+    first++;
+    second++;
+  }
+  return max;
 };
