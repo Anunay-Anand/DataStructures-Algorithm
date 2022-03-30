@@ -668,3 +668,167 @@ const inorderTraversal = (root) => {
   }
   return inorder;
 };
+
+// 20) Binary Tree Level Order traversal... Both TC - O(N) SC - O(N)
+
+// The solution where we reduce the while loop calls with for loop. We can differencitate the level of nodes
+
+const widthOfBinaryTree = (root) => {
+  // Define the condition for edge cases
+  if (!root) return 0;
+
+  // Declare and initiate the identifiers required
+  const queue = []; // We define a queue for level order traversal.
+  let min; // It stores the min index at each level
+  let size; // The size of queue defines the number of node at each level
+  let width = 0; // Finding the width
+
+  // Push the first node onto the queue.. Root node. Form is [node, index]
+  queue.push([root, 0]);
+
+  // Now in order to do level order traversal loop until queue is empty
+  while (queue.length > 0) {
+    // get the size at each level.. On each traversal of while we traverse all nodes on a particular level
+    size = queue.length;
+    // Finding the min index for subtraction during push
+    min = queue[0][1];
+    // They store the first and last element at each level
+    let first, last;
+    // Loop over the all the nodes on the level
+    for (let i = 0; i < size; i++) {
+      // Get the curr node information
+      let [node, currIdx] = queue.shift();
+      // Decrease the currIdx by min. To ensure all id start from 0.
+      currIdx -= min;
+      // Check if index i === 0. It is the first node and i === size - 1 it is last node. Store Idx
+      if (i === 0) first = currIdx;
+      if (i === size - 1) last = currIdx;
+      // Check if the current Node has a left
+      if (node.left) {
+        queue.push([node.left, currIdx * 2 + 1]);
+      }
+      // Check if the current Node has a right
+      if (node.right) {
+        queue.push([node.right, currIdx * 2 + 2]);
+      }
+    }
+    width = Math.max(width, last - first + 1);
+  }
+  return width;
+};
+
+// The solution without the use of for loop. In this we are not able to differencitate between the level of nodes
+
+const levelOrder = function (root) {
+  // Check for the edge case
+  if (!root) {
+    return [];
+  }
+
+  // Define the identifiers required
+  let queue = []; // We need a queue for level order traversal
+  let list = []; // The final list which will be returned
+
+  // Initiate the queue with root node
+  queue.push(root);
+
+  // Loop until the queue is empty
+  while (queue.length > 0) {
+    // The current Node
+    let node = queue.shift();
+
+    // Check if it has a left or right
+    if (node.left) {
+      queue.push(node.left);
+    }
+    if (node.right) {
+      queue.push(node.right);
+    }
+    list.push(node.val);
+  }
+  return list;
+};
+
+// 21) Diameter of Binary Tree (Basically the longest distance between two nodes) TC - O(N) SC - O(1)
+
+const diameterOfBinaryTree = (root) => {
+  // check for edge case
+  if (!root) return 0;
+  // Identifier required
+  var diameter = 0;
+  function findDiameter(root) {
+    if (!root) return 0;
+    let left = findDiameter(root.left);
+    let right = findDiameter(root.right);
+    diameter = Math.max(diameter, left + right);
+    return Math.max(left, right) + 1;
+  }
+  findDiameter(root);
+  return diameter;
+};
+
+// 22) Is Balanced or Not TC - O(N) and SC - O(1)
+
+const isBalanced = (root) => {
+  // Check for edge case
+  if (!root) return true;
+
+  // Define the identifiers required
+  var balanced = true;
+
+  function check(root) {
+    if (!root) return 0;
+    let left = check(root.left);
+    let right = check(root.right);
+    // Check if unbalanced
+    if (Math.abs(left - right) > 1 || Math.abs(right - left) > 1) {
+      balanced = false;
+    }
+    return Math.max(left, right) + 1;
+  }
+  check(root);
+  return balanced;
+};
+
+// 23) LCA or lowest common ancestor
+
+// Brute Force Solution TC - O(N + N + N) and SC - O(N)
+
+const lowestCommonAncestor = (root, p, q) => {
+  // check for edge case
+  if (!root) return;
+  // define the identifiers required
+  let firstPath = [];
+  let secondPath = [];
+  var ans;
+  // Define a function to find the path
+  function findPath(root, array, target) {
+    // Define the termination case of recursion
+    if (!root) return 0;
+    // Push the current Node onto array
+    array.push(root);
+    // Check if the target root if found
+    if (root === target) {
+      return 1;
+    }
+    let left = findPath(root.left, array, target);
+    let right = findPath(root.right, array, target);
+    // check if leaf node
+    if (left === 0 && right === 0) {
+      array.pop();
+    }
+    return left || right;
+  }
+  // find both path
+  findPath(root, firstPath, p);
+  findPath(root, secondPath, q);
+
+  // Now loop through both of them and try to find a non unique element
+  let index = 0;
+  while (index < firstPath.length || index < secondPath.length) {
+    if (firstPath[index] !== secondPath[index]) {
+      return firstPath[index - 1];
+    }
+    index++;
+  }
+};
