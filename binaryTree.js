@@ -249,30 +249,61 @@ const sumOfLeftLeavesBest = (root) => {
 // 10) Check if both tree are same
 
 const isSameTree = (p, q) => {
-  // Check for edge cases
+  // Check if both tree are empty
   if (!p && !q) return true;
+  // Check if either of them exist
   if (!p || !q) return false;
-  // function to count tree
-  function countTree(root, tree) {
-    if (!root) {
-      tree.push(null);
-      return;
-    }
-    countTree(root.left, tree);
-    countTree(root.right, tree);
-    // Add the elements to array tree
-    tree.push(root.val);
-  }
+  // Define the identifiers required
   let tree1 = [];
   let tree2 = [];
-  countTree(p, tree1);
-  countTree(q, tree2);
-  // Check if same
+
+  // Define the function required
+  function isSame(root, arr) {
+    // Define the termination case
+    if (!root) {
+      arr.push(null);
+      return;
+    }
+    // Simply push the node value into the array
+    arr.push(root.val);
+    // Traverse left and right
+    isSame(root.left, arr);
+    isSame(root.right, arr);
+  }
+  // call or invoke the function
+  isSame(p, tree1);
+  isSame(q, tree2);
+
+  // Check if both tree have equal number of nodes
   if (tree1.length !== tree2.length) return false;
+
+  // Now traverse to compare the values of node
   for (let i = 0; i < tree1.length; i++) {
-    if (tree1[i] !== tree2[i]) return false;
+    if (tree1[i] !== tree2[i]) {
+      return false;
+    }
   }
   return true;
+};
+
+// Optimized SOlution O(n) O(1)
+
+const isSameTreeOptimized = (p, q) => {
+  // Check for edge cases
+  // If neither p exist nor q exist
+  if (!p && !q) {
+    return true;
+  }
+  // If either p exist or q exist return the one that exist. Whichever is not null
+  if (!p || !q) {
+    return false;
+  }
+
+  return (
+    p.val === q.val &&
+    isSameTreeOptimized(p.left, q.left) &&
+    isSameTreeOptimized(p.right, q.right)
+  );
 };
 
 // 11) Invert Binary Tree
@@ -831,4 +862,141 @@ const lowestCommonAncestor = (root, p, q) => {
     }
     index++;
   }
+};
+
+// 24) Binary ZigZag Level Order TC - O(N) SC - O(N)
+
+const zigzagLevelOrder = (root) => {
+  // Define the edge cases
+  if (!root) return [];
+
+  // Define the identifiers required
+  let isLeftToRight = true; // To check wether to store left to right or right to left
+  const Queue = []; // We use double ended queue
+  const list = []; // Final list to store the levels of nodes
+  let size, node;
+
+  // Initiate the queue with Root
+  Queue.push(root);
+
+  // Define the loop until queue empty
+  while (Queue.length > 0) {
+    // Find the size of queue
+    size = Queue.length;
+    // List to store the current level
+    let level = [];
+
+    // Loop over the entire queue
+    for (let i = 0; i < size; i++) {
+      // Check the first node
+      let node = Queue.shift();
+      // Now find the index where to insert
+      let index = isLeftToRight ? i : size - 1 - i;
+      // Check if it has a left
+      if (node.left) {
+        Queue.push(node.left);
+      }
+      // Check if it has a right
+      if (node.right) {
+        Queue.push(node.right);
+      }
+      // Now insert the current node into level list
+      level[index] = node.val;
+    }
+    // Now push the level onto list
+    list.push(level);
+    // Increment isLeft
+    isLeftToRight = !isLeftToRight;
+  }
+  return list;
+};
+
+// 25) Boundary of a Tree
+
+function boundaryOfBinaryTree(root) {
+  // Define the edge cases
+  if (!root) return [];
+
+  // Define the identifiers required
+  let stack = [];
+  let curr = root.left;
+  // Insert Root onto the Stack
+  stack.push(root.val);
+
+  // Define the Loop to findLeft
+  while (curr) {
+    // Check if current is not leaf Node
+    if (!(curr.left === null && curr.right === null)) {
+      stack.push(curr.val);
+    }
+    // Insert the left or right node
+    if (curr.left) {
+      curr = curr.left;
+    } else {
+      curr = curr.right;
+    }
+  }
+
+  // Define the loop for all leaf nodes
+  curr = root;
+  function findLeaves(curr) {
+    // Define the case of termination
+    if (!curr) return;
+    // Check if leaf node
+    if (curr.left === null && curr.right === null) {
+      stack.push(curr.val);
+    }
+    findLeaves(curr.left);
+    findLeaves(curr.right);
+    return;
+  }
+  findLeaves(curr);
+
+  // Define the loop to findRight
+  // Take a temorary array to store values
+  curr = root.right;
+  let temp = [];
+  while (curr) {
+    if (!(curr.left === null && curr.right === null)) {
+      temp.push(curr.val);
+    }
+    if (curr.right) {
+      curr = curr.right;
+    } else {
+      curr = curr.left;
+    }
+  }
+
+  // Now store the right into result array
+  let len = stack.length;
+  for (let i = temp.length - 1; i >= 0; i--) {
+    stack.push(temp[i]);
+  }
+
+  return stack;
+}
+
+// 26) Max Path Sum TC - O(N) SC - O(1)
+
+const maxPathSum = (root) => {
+  // check for edge case
+  if (!root) return 0;
+
+  // Define the identifiers required
+  let sum = -Infinity;
+
+  function findSum(root) {
+    // check for the case of termination
+    if (!root) return 0;
+    // Traverse to left
+    // We will ignore the negative paths as it won't help in sum
+    let leftSum = Math.max(0, findSum(root.left));
+    let rightSum = Math.max(0, findSum(root.right));
+    // Find the sum
+    sum = Math.max(sum, leftSum + rightSum + root.val);
+    // return the current max
+    return root.val + Math.max(leftSum, rightSum);
+  }
+  findSum(root);
+  return sum;
 };
