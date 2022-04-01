@@ -1000,3 +1000,334 @@ const maxPathSum = (root) => {
   findSum(root);
   return sum;
 };
+
+// 27) Construct Binary Tree with preorder and inorder TC - O(N)  SC - O(N)
+
+const buildTreeSecond = (preorder, inorder) => {
+  // Define the identifiers required
+  // preOrder helps us find -> Root, while inOrder finds -> Left && -> Right
+  let map = new Map(); // It is to store all inOrder elements
+
+  // Loop over the inorder while pushing them onto Map
+  for (let i = 0; i < inorder.length; i++) {
+    map[inorder[i]] = i;
+  }
+
+  // Define the function to build the tree
+  function buildTree(preorder, preStart, preEnd, inorder, inStart, inEnd, map) {
+    // Define the case of termination
+    // Here we check if we have traversed the entire preorder or inorder array
+    if (preStart > preEnd || inStart > inEnd) {
+      return null;
+    }
+    // Identify the root from the preorder list.
+    // Use the node class defined to create a binary tree node by passing value having empty left and right
+    let root = new TreeNode(preorder[preStart]);
+
+    // Find the root location in inorder using map. It will give us the index stored with root key.
+    let inRoot = map[root.val];
+
+    // Find the number of nodes to the left of inRoot
+    let numsLeft = inRoot - inStart;
+    // traverse left and right building the tree
+    // Here we don't delete from array to reduce. We use pointers
+    // preStart++ because each node in start in preorder is root. The preEnd is all nodes on left of the current root in inorder. Thus preStart + nodesleft to it's left in inorder.
+    // Instart it will always start from 0 only to end just before the root. Thus inRoot - 1.
+    root.left = buildTreeSecond(
+      preorder,
+      preStart + 1,
+      preStart + numsLeft,
+      inorder,
+      inStart,
+      inRoot - 1,
+      map
+    );
+    // Now we will do the same for right
+    root.right = buildTreeSecond(
+      preorder,
+      preStart + numsLeft + 1,
+      preEnd,
+      inorder,
+      inRoot + 1,
+      inEnd,
+      map
+    );
+    // Finally return the root with it's left and right sorted
+    return root;
+  }
+  // Here we invoke the function call to build the tree
+  let root = buildTreeSecond(
+    preorder,
+    0,
+    preorder.length - 1,
+    inorder,
+    0,
+    inorder.length - 1,
+    map
+  );
+  return root;
+};
+
+//28) Construct Binary Tree from Post and Inorder
+
+const buildTree = (inorder, postorder) => {
+  // Define the identifiers required.
+  let map = new Map();
+
+  // Loop and insert all elements of inorder list into Map
+  for (let i = 0; i < inorder.length; i++) {
+    map[inorder[i]] = i;
+  }
+
+  // Define the function to buildTree with the help of inorder and postorder
+  function buildTree(
+    postorder,
+    postStart,
+    postEnd,
+    inorder,
+    inStart,
+    inEnd,
+    map
+  ) {
+    // Define the termination condition
+    if (postStart > postEnd || inStart > inEnd) {
+      return null;
+    }
+    // Create the root node with the postOrder sequence
+    let root = new TreeNode(postorder[postEnd]);
+
+    // Find the inOrder root or the root location in inorder
+    let inRoot = map[root.val];
+
+    // Find the number of nodes remaining on the left
+    let inLeft = inRoot - inStart;
+
+    // Traverse for the left Node
+    root.left = buildTree(
+      postorder,
+      postStart,
+      postStart + inLeft - 1,
+      inorder,
+      inStart,
+      inRoot - 1,
+      map
+    );
+    root.right = buildTree(
+      postorder,
+      postStart + inLeft,
+      postEnd - 1,
+      inorder,
+      inRoot + 1,
+      inEnd,
+      map
+    );
+    return root;
+  }
+
+  // Invoke the function and store the coming result in root pointer/identifier
+  let root = buildTree(
+    postorder,
+    0,
+    postorder.length - 1,
+    inorder,
+    0,
+    inorder.length - 1,
+    map
+  );
+  return root;
+};
+
+// 29) Mirror or not.
+
+const isSymmetric = (root) => {
+  // Define the edge cases
+  if (!root) return true;
+
+  // Define the identifiers required
+  let root1 = root.left; // We will recursive check the left SubTree with root1
+  let root2 = root.right; // We will recursive check the right SubTree with root2
+
+  // Define the function
+  function isSymmetricTree(root1, root2) {
+    // Define the case of termination
+    // If both don't exist at the same level. It's true
+    if (root1 === null && root2 === null) {
+      return true;
+    }
+    // If one exist and other node doesn't return false
+    if (root1 === null || root2 === null) {
+      return root1 === root2;
+    }
+    // Keep on checking symmetry. Only the first value of root node will be same. Rest left and right should be equal
+    return (
+      root1.val === root2.val &&
+      isSymmetricTree(root1.left, root2.right) &&
+      isSymmetricTree(root1.right, root2.left)
+    );
+  }
+  return isSymmetricTree(root1, root2);
+};
+
+// 30) Flatten a tree to list TC-O(N) SC-O(N)
+
+// Recursive solution
+
+const flatten = (root) => {
+  // Check for the edge case
+  if (!root) return;
+
+  // Define the identifiers required
+  let prev = null; // It will store the previous node traversed from the end
+  let node = root;
+
+  // Define the function to recursively traverse in Right, Left, Root (reverse postorder)
+  function convertTree(node) {
+    // Define the case of termination
+    if (node === null) return null;
+    // Traverse to right and then left
+    convertTree(node.right);
+    convertTree(node.left);
+    // join the nodes
+    node.right = prev;
+    node.left = null;
+    // Change prev
+    prev = node;
+  }
+  convertTree(node);
+  return root;
+};
+
+// Iterative solution
+
+const flattenIterative = (root) => {
+  // Check for the edge case
+  if (!root) return;
+
+  // Define the identifiers required
+  let stack = []; // Inorder to complete iterative travel and store node
+  let curr = root; // To iterate through the tree
+  stack.push(root); // Insert root onto stack
+
+  // Define the iterative solution
+  while (stack.length !== 0) {
+    // Define the curr node
+    curr = stack.pop();
+    // Store if it has right
+    if (curr.right !== null) {
+      stack.push(curr.right);
+    }
+    // Store if it has left
+    if (curr.left !== null) {
+      stack.push(curr.left);
+    }
+    // Check if stack is not empty
+    if (stack.length !== 0) {
+      curr.right = stack[stack.length - 1];
+    }
+    curr.left = null;
+  }
+  return root;
+};
+
+// 31) Mirror of the tree
+
+function mirror(node) {
+  // Define the edge case
+  if (!node) return null;
+
+  // Define the identifiers
+  let curr = node;
+
+  // Define the function here
+  function mirrorInorder(node) {
+    // Define the termination case
+    if (!node) return null;
+    // Traverse left and right
+    let left = mirrorInorder(node.left);
+    let right = mirrorInorder(node.right);
+    // Exchange from each other
+    node.left = right;
+    node.right = left;
+    // Return the root
+    return node;
+  }
+  return mirrorInorder(node);
+}
+
+// 32) Children sum property TC - O(N) && SC - O(1)
+
+function isSumProperty(node) {
+  // Define the identifiers
+  let output = 1;
+  //your code here
+  function isSum(node) {
+    // Check the case of termination
+    if (!node) {
+      return 0;
+    }
+    if (node.left === null && node.right === null) {
+      return node.data;
+    }
+    // Now recursively move left and right
+    let left = isSum(node.left);
+    let right = isSum(node.right);
+    // Check if the sum
+    if (left + right !== node.data) {
+      output = 0;
+    }
+    return node.data;
+  }
+  isSum(node);
+  return output;
+}
+
+// 33) Children sum property following tree TC - O(N) SC -O(H)/O(N) skew tree
+
+function changeBinary(root) {
+  // Define the termination case for recursion
+  if (!root) return;
+
+  // Define an identifiers child having a value of 0
+  let child = 0;
+
+  // Use child to sum the data of both left and right node if exist
+  if (root.left) {
+    child += root.left.data;
+  }
+  if (root.right) {
+    child += root.right.data;
+  }
+
+  // Now check wether the child (left+right) is greater than root or not
+  // If greater than root
+  if (child >= root.data) {
+    root.data = child;
+  } else {
+    // Copy the value of root onto both the childs
+    if (root.left) {
+      root.left.data = child;
+    }
+    if (root.right) {
+      root.right.data = child;
+    }
+  }
+
+  // Traverse left and right
+  changeBinary(root.left);
+  changeBinary(root.right);
+
+  // We now check the total sum of left + right
+  let total = 0;
+  // Summation of total with the left node if it exist
+  if (root.left) {
+    total += root.left;
+  }
+  // Summation of total with the right node if it exist
+  if (root.right) {
+    total += root.right;
+  }
+  // Check if either exist then root data must be total (ensuring not leaf)
+  if (root.left || root.right) {
+    root.data = total;
+  }
+}

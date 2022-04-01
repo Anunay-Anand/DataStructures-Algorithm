@@ -2315,3 +2315,131 @@ const longestConsecutive = (nums) => {
   }
   return max;
 };
+
+// GREEDYYYYYY QUESTIONS
+
+// 50) N-Meetings
+
+// TC-O(N+NLOGN+N) SC-O(N)
+
+function maxMeetings(start, end, n) {
+  // Define the edge case
+  if (n === 1) {
+    return 1;
+  }
+
+  // Define the identifiers required
+  let meetings = []; // We will store all meetings in the array
+
+  // Storing all in meetings
+  for (let i = 0; i < start.length; i++) {
+    // We are storing in the pattern of start, end, index of meeting
+    meetings.push([start[i], end[i], i]);
+  }
+  // Now we will sort depending upon the end time
+  meetings.sort((a, b) => {
+    // If by any chance two meetings have same end time
+    if (a[1] - b[1] === 0) {
+      // we will compare meetinng number
+      return a[2] - b[2];
+    }
+    return a[1] - b[1];
+  });
+
+  // Define further identifiers required
+  let endLimit = meetings[0][1];
+  let output = 1; // no. of meetings that occur
+  for (let i = 1; i < meetings.length; i++) {
+    // Check if end limit is lower than next meeting start
+    if (endLimit < meetings[i][0]) {
+      // Inc output and update the endLimit
+      output++;
+      endLimit = meetings[i][1];
+    }
+  }
+  return output;
+}
+
+// 51) Minimum number of Platforms
+// Please make sure to ask interviewer the starting time is sorted or not because
+// end time will be in correspondence to starting time
+
+function findPlatform(arr, dep, n) {
+  // Define the edge case in case only one train arrives
+  if (n === 1) {
+    return 1;
+  }
+
+  // We are going to sort both the arrival and departure time.. This might change the way arrival is in
+  // corrospondence. But in the end.. we are more concerned with overall platform occupation in a day
+  // First sort the arrival
+  arr.sort((a, b) => a - b);
+  // Second sort the departure
+  dep.sort((a, b) => a - b);
+
+  // Define the identifiers required to solve
+  let maxPlatforms = 1; // This will keep track of max platforms occupied in entire day
+  let platform = 1; // Keep track of platforms occupied at an instance
+  let arrIndex = 1; // Index for the number of trains arriving
+  let depIndex = 0; // Index to keep track of number of trains departing
+
+  // Loop until all trains have arrived
+  while (arrIndex < n && depIndex < n) {
+    // Check if the arrival time is earlier than departed.
+    // In such case extra platform required
+    if (arr[arrIndex] <= dep[depIndex]) {
+      platform++;
+      // find the max platforms
+      maxPlatforms = Math.max(maxPlatforms, platform);
+      // Update the arrival index and wait for next train
+      arrIndex++;
+    } else {
+      platform--;
+      // Update the departure index as a train left
+      depIndex++;
+    }
+  }
+  return maxPlatforms;
+}
+
+// 53) Job sequencing Greedy
+
+function JobScheduling(arr, n) {
+  // define the edge cases
+  if (n === 1) {
+    return arr[0][2];
+  }
+
+  // Find the maximum deadline for making job sequence array
+  let maxDeadline = 0;
+  for (let i = 0; i < n; i++) {
+    maxDeadline = Math.max(maxDeadline, arr[i].dead);
+  }
+
+  // Define the identifiers required
+  let jobProfit = 0; // to caluclate the max profit
+  let countJobs = 0;
+  let jobs = new Array(maxDeadline + 1).fill(-1); // an array that holds job sequence
+
+  // Sort all the jobs in descending order of profit
+  arr.sort((a, b) => b.profit - a.profit);
+
+  // Now loop the entire jobs arr until all jobs checked
+  for (let i = 0; i < n; i++) {
+    // Now check if the deadline day is empty in array
+    for (let j = arr[i].dead; j > 0; j--) {
+      // The day is still empty. No Job assigned
+      if (jobs[j] === -1) {
+        // insert the job Id
+        jobs[j] = arr[i].id;
+        jobProfit += arr[i].profit;
+        countJobs++;
+        break;
+      }
+    }
+  }
+  let ans = [];
+  ans[0] = countJobs;
+  ans[1] = jobProfit;
+  return ans;
+}
