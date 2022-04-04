@@ -2443,3 +2443,55 @@ function JobScheduling(arr, n) {
   ans[1] = jobProfit;
   return ans;
 }
+
+// 54) 0/1 Knapsack Problem
+
+//Function to get the maximum total value in the knapsack.
+function fractionalKnapsack(W, arr, n) {
+  // define the identifiers required to solve
+  let maxValue = 0; // The value that can be taken
+  let currW = 0; // Calculating the curr weight
+  let remainingWeight;
+
+  // Sort the arr in terms of max value
+  // Not being 0/1 knapsack we can take items in pieces. Thus finding value to weight ratio
+  arr.sort((a, b) => b.value / b.weight - a.value / a.weight);
+
+  // Now find the max value possible
+  for (let i = 0; i < arr.length; i++) {
+    // Check if current weight is less than total weight available
+    if (currW + arr[i].weight <= W) {
+      maxValue += arr[i].value;
+      currW += arr[i].weight;
+    } else {
+      // Take the last piece in pieces
+      remainingWeight = W - currW;
+      maxValue += (arr[i].value / arr[i].weight) * remainingWeight;
+      break;
+    }
+  }
+  return maxValue;
+}
+
+// 55) Minimum number of Coins TC - O(V) SC - O(1)
+// Here V is number of times value is being reduced so in case
+// In case the value is something smaller we will have to traverse entire.
+
+function minCoins(coins, V, M) {
+  // Define the identifiers required to solve the problem
+  let currValue = 0;
+  let countCoins = 0; // This will keep track of number of coins counter
+
+  // Loop the entire array of coins to find min coins
+  // Make sure the coins are arranged in descending order
+  for (let i = 0; i < M; i++) {
+    // Check if remaining value is more than the current coin
+    while (V >= coins[i]) {
+      // Update the value remaining to be returned
+      V -= coins[i];
+      // increment the coin
+      countCoins++;
+    }
+  }
+  return countCoins;
+}
