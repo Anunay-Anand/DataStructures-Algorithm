@@ -559,3 +559,351 @@ const permute = (nums) => {
   findAll2(nums, 0, res);
   return res;
 };
+
+// 16)  N Queen Problem
+// Brute Force TC - O(N^3) SC-O(N^2)
+
+const solveNQueens = (n) => {
+  // define the edge case
+  if (n === 1) return [["Q"]];
+
+  // Define the identifiers required
+  let ans = []; // it will hold all the possible boards with right queen sequence.
+
+  // 1) Form a string of n length which will represent each row of col
+  let str = ".".repeat(n);
+  // 2) Now create an array of length n.
+  let board = new Array(n);
+  // 3) Now complete the board by filling each index(i) of array with n length string(.)
+  for (let i = 0; i < board.length; i++) {
+    board[i] = str;
+  }
+
+  // Define the function to check if the current row in ith col is safe to place Queen
+  function isSafe(row, col, board) {
+    // define the identifiers required
+    let dupRow = row;
+    let dupCol = col;
+
+    // Check for the upper left diagonal
+    while (row >= 0 && col >= 0) {
+      if (board[row][col] === "Q") return false;
+      row--;
+      col--;
+    }
+
+    row = dupRow;
+    col = dupCol;
+    // Check for the left side
+    while (row >= 0) {
+      if (board[row][col] === "Q") return false;
+      row--;
+    }
+
+    row = dupRow;
+    col = dupCol;
+    // Check for the left lower diagonal
+    while (row >= 0 && col >= 0) {
+      if (board[row][col] === "Q") return false;
+      row++;
+      col--;
+    }
+    return true;
+  }
+
+  // Define the main recursive function for N Queens.. it iterates cols fn(col, board)
+  function solve(col, board) {
+    // define the case of termination
+    if (col === n) {
+      ans.push(board);
+      return;
+    }
+
+    // Invoke or check for all cols
+    for (let row = 0; row < n; row++) {
+      // If by chance the current row iteration.. assume it's 0th index or 1 row is safe in 1st call.
+      // We will fix a queen here and recursively move to next col. It's simple.
+      // If we don't find it safe we remove the queen back from and check for next rows.
+      if (isSafe(row, col, board)) {
+        // place the queen at current col and row.
+        // Col remain constant in a particular recursive call while row iterates until safe
+        board[row][col] = "Q";
+        // Call the function for next col
+        solve(col + 1, board);
+        // If recursive call was by any chance unsuccessful. We remove the Queen. This is backtracking.
+        board[row][col] = ".";
+      }
+    }
+  }
+  // invoking the solve function
+  solve(0, board);
+  return ans;
+};
+
+// Optimized Approach
+// TC-O(N^2) SC-O(N^2)
+
+const solveNQueens2 = (n) => {
+  // define the edge case
+  if (n === 1) return [["Q"]];
+
+  // Define the identifiers required
+  let ans = []; // it will hold all the possible boards with right queen sequence.
+
+  // Define the diagonals array to check if Queen there or not.
+  let arrSize = 2n;
+  arrSize--;
+  let upperDiagonal = new Array(arrSize).fill(0);
+  let lowerDiagonal = new Array(arrSize).fill(0);
+
+  // Define the row side array
+  let leftRow = new Array(n).fill(0);
+
+  // 1) Form a string of n length which will represent each row of col
+  let str = ".".repeat(n);
+  // 2) Now create an array of length n.
+  let board = new Array(n);
+  // 3) Now complete the board by filling each index(i) of array with n length string(.)
+  for (let i = 0; i < board.length; i++) {
+    board[i] = str;
+  }
+
+  // Define the main recursive function for N Queens.. it iterates cols fn(col, board)
+  function solve(col, board) {
+    // define the case of termination
+    if (col === n) {
+      ans.push(board);
+      return;
+    }
+
+    // Invoke or check for all cols
+    for (let row = 0; row < n; row++) {
+      // If by chance the current row iteration.. assume it's 0th index or 1 row is safe in 1st call.
+      // We will fix a queen here and recursively move to next col. It's simple.
+      // If we don't find it safe we remove the queen back from and check for next rows.
+      if (
+        leftRow[row] === 0 &&
+        lowerDiagonal[row + col] === 0 &&
+        upperDiagonal[row + col] === 0
+      ) {
+        // Fill the current Row where Q is put.. the upperdiagonal and lowerdiagonal
+        leftRow[row] = "1";
+        upperDiagonal[n - 1 + col - row] = "1";
+        lowerDiagonal[row + col] = "1";
+
+        // Now fill the particular index in board with Q
+        board[row][col] = "Q";
+
+        solve(col + 1, board);
+
+        // If recursive call was by any chance unsuccessful. We remove the Queen. This is backtracking.
+        // Fill the current Row where Q is put.. the upperdiagonal and lowerdiagonal
+        leftRow[row] = "0";
+        upperDiagonal[n - 1 + col - row] = "0";
+        lowerDiagonal[row + col] = "0";
+
+        // Now fill the particular index in board with Q
+        board[row][col] = ".";
+      }
+    }
+  }
+  // invoking the solve function
+  solve(0, board);
+};
+
+// 17) Sukdoku Solver
+
+const solveSudoku = (board) => {
+  // define the identifiers required
+  let n = board.length; // The len of board.
+  let res; // It is a global variable which stores the answer.
+
+  // define the function to check if current number filled is valid sudoku or not
+  function isValid(board, row, col, c) {
+    // Calculate the blocks row and col for checking in the block
+    let blockRow = Math.floor(row / 3) * 3;
+    let blockCol = Math.floor(col / 3) * 3;
+    // Check for all rows if c exist.
+    // Check for all cols if c exist.
+    // if in the box c exist
+    for (let i = 0; i < n; i++) {
+      // Rows
+      if (board[i][col] === c) {
+        return false;
+      }
+      // Cols
+      if (board[row][i] === c) {
+        return false;
+      }
+      // Box
+      let curRow = blockRow + Math.floor(i / 3);
+      let curCol = blockCol + Math.floor(i % 3);
+      if (board[curRow][curCol] === c) return false;
+    }
+    return true;
+  }
+
+  // define the function to solve sudoku
+  function solve(board) {
+    // Loop for all the rows
+    for (let i = 0; i < n; i++) {
+      // Loop for all the cols
+      for (let j = 0; j < n; j++) {
+        // Check if current jth col in ith row is empty
+        if (board[i][j] === ".") {
+          // Check for all 1 to 9 characters in the particular empty index
+          for (let c = 1; c <= 9; c++) {
+            // convert c into string
+            c = c.toString();
+            // Pass it in the valid function
+            if (isValid(board, i, j, c)) {
+              // fill up the board with that number
+              board[i][j] = c;
+              // Recursively call for next empty
+              if (solve(board) === true) {
+                return true;
+              } else {
+                board[i][j] = ".";
+              }
+            }
+          }
+          // Return false in case no number satisfies the box.
+          // This will terminate the particular recursive call
+          return false;
+        }
+      }
+    }
+    // If all the rows traversed successfully by now we have the solution.
+    // It is also a termination case for recursion
+    return true;
+  }
+  // invoke the function call.
+  return solve(board);
+};
+
+// 18) Rat Maze
+// TC - O(4^n*m) SC-O(n) [Auxilary space of stack]
+
+function findPath(m, n) {
+  // define the identifiers required
+  let ans = []; // It will store the final answer.
+
+  // The visitedPath is kept in order to keep track of path visited
+  let visitedPath = new Array(n).fill().map((x) => Array(n).fill(0));
+
+  // define the func
+  function path(i, j, m, move, vis) {
+    // define the case of termination
+    if (i === n - 1 && j === n - 1) {
+      // push the move string into answer
+      ans.push(move);
+      return;
+    }
+
+    // Check if we can go downwards
+    if (i + 1 < n && vis[i + 1][j] !== 1 && m[i + 1][j] === 1) {
+      // Change the visited and put 1 instead of 0
+      vis[i][j] = 1;
+      // Change the string by adding downwards and recursively calling
+      path(i + 1, j, m, move + "D", vis);
+      // If by any chance the recursive call from downwards reaches dead end remove it
+      vis[i][j] = 0;
+    }
+
+    // Check if we can go left
+    if (j - 1 >= 0 && vis[i][j - 1] !== 1 && m[i][j - 1] === 1) {
+      // Change the visited and put 1 instead of 0
+      vis[i][j] = 1;
+      // Change the string by adding downwards and recursively calling
+      path(i, j - 1, m, move + "L", vis);
+      // If by any chance the recursive call from downwards reaches dead end remove it
+      vis[i][j] = 0;
+    }
+
+    // Check if we can go right
+    if (j + 1 < n && vis[i][j + 1] !== 1 && m[i][j + 1] === 1) {
+      // Change the visited and put 1 instead of 0
+      vis[i][j] = 1;
+      // Change the string by adding downwards and recursively calling
+      path(i, j + 1, m, move + "R", vis);
+      // If by any chance the recursive call from downwards reaches dead end remove it
+      vis[i][j] = 0;
+    }
+
+    // Check if we can go up
+    if (i - 1 >= 0 && vis[i - 1][j] !== 1 && m[i - 1][j] === 1) {
+      // Change the visited and put 1 instead of 0
+      vis[i][j] = 1;
+      // Change the string by adding downwards and recursively calling
+      path(i - 1, j, m, move + "U", vis);
+      // If by any chance the recursive call from downwards reaches dead end remove it
+      vis[i][j] = 0;
+    }
+  }
+
+  // Check if first index is 1. Mice exist
+  if (m[0][0] === 1) {
+    path(0, 0, m, "", visitedPath);
+  }
+
+  // Return the answer
+  return ans;
+}
+
+// Optimized TC, SC - (SAME)
+
+function findPath(m, n) {
+  // define the identifiers required
+  // It will store the final paths.
+  let ans = [];
+  // Let's store the change in value of i and j on moving in 4 directions. DLRU Respectively..
+  let di = [+1, 0, 0, -1];
+  let dj = [0, -1, +1, 0];
+
+  // The visitedPath is kept in order to keep track of path visited
+  let visitedPath = new Array(n).fill().map((x) => Array(n).fill(0));
+
+  // define the func
+  function path(i, j, m, move, vis) {
+    // define the case of termination
+    if (i === n - 1 && j === n - 1) {
+      // push the move string into answer
+      ans.push(move);
+      return;
+    }
+    // There is a possibility that the Rat can move in multiple directions.
+    // We can't write if statements for all
+    let dir = "DLRU";
+    // Loop for all the directions
+    for (let idx = 0; idx < n; idx++) {
+      // Inorder to find Next possible direction. Find is there is a path in next direction.
+      // If there is a path is it filled if not then move.
+      let nexti = i + di[idx];
+      let nextj = j + dj[idx];
+      // Now do the checks or validations
+      if (
+        nexti >= 0 &&
+        nextj >= 0 &&
+        nexti < n &&
+        nextj < n &&
+        !vis[nexti][nextj] &&
+        m[nexti][nextj] === 1
+      ) {
+        // Change the current i and j to be visited
+        vis[i][j] = 1;
+        // We recursively call for the next direction
+        path(nexti, nextj, m, move + dir[idx], vis);
+        // If unsuccessful
+        vis[i][j] = 0;
+      }
+    }
+  }
+
+  // Check if first index is 1. Mice exist
+  if (m[0][0] === 1) {
+    path(0, 0, m, "", visitedPath);
+  }
+
+  // Return the answer
+  return ans;
+}
