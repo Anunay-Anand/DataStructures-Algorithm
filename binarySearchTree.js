@@ -110,3 +110,317 @@ const searchBSTIterative = (root, val) => {
   }
   return root;
 };
+
+// 3) Create a Binary Search Tree
+
+// DFS edition TC - O(N) SC-O(N)
+
+const sortedArrayToBST = (nums) => {
+  // define the edge case
+  if (nums.length === 0) {
+    return null;
+  }
+  // define the identifiers required
+
+  // Find the mid of the array
+  let mid = Math.floor(nums.length / 2);
+  // build or create the root node using the mid
+  let root = new TreeNode(nums[mid]);
+
+  // Now recursively move left and right and find the nodes.. It doesn't include the last index itself (0,mid) === (0,mid-1)
+  root.left = sortedArrayToBST(nums.slice(0, mid));
+  root.right = sortedArrayToBST(nums.slice(mid + 1));
+
+  // Return the root
+  return root;
+};
+
+// 4) Construct binary search tree from preorder
+
+// TC - O(NLOGN + O(N)) SC - O(N) + O(N)
+const bstFromPreorder = (preorder) => {
+  // define the identifiers required
+  let inorder = preorder.sort((a, b) => a - b);
+
+  // defining a function to create tree
+  function buildTree(nums) {
+    // define the edge case
+    if (nums.length === 0) {
+      return null;
+    }
+    // define the identifiers required
+
+    // Find the mid of the array
+    let mid = Math.floor(nums.length / 2);
+    // build or create the root node using the mid
+    let root = new TreeNode(nums[mid]);
+
+    // Now recursively move left and right and find the nodes.. It doesn't include the last index itself (0,mid) === (0,mid-1)
+    root.left = buildTree(nums.slice(0, mid));
+    root.right = buildTree(nums.slice(mid + 1));
+
+    // Return the root
+    return root;
+  }
+  // invoking the function call
+  return buildTree(inorder);
+};
+
+// Optimized TC - O(3N) SC - O(N)
+
+const bstFromPreorderOpt = (preorder) => {
+  // define the identifiers required
+  let bound = +Infinity; // This is the upper bound by default
+  let index = 0; // idx for node to be inserted
+
+  // Define the function to find
+  function buildTree(preorder, idx, ub) {
+    // define the case of termination
+    if (idx === preorder.length || preorder[idx] > ub) {
+      return null;
+    }
+    // Building the current root node.. We increment after building the node
+    let root = new TreeNode(preorder[idx++]);
+    // we will traverse left and right
+    // The left will get the current root val as ub..
+    // The right will be passes the same ub as root.. Thus intially infinity for root node
+    root.left = buildTree(preorder, idx, root.val);
+    root.right = buildTree(preorder, idx, ub);
+
+    // Finally return the root node
+    return root;
+  }
+  // invoke the function
+  return buildTree(preorder, index, bound);
+};
+
+// 5) LCA IN BST
+
+// TC - O(logn) SC - O(1)
+
+const lowestCommonAncestor = (root, p, q) => {
+  // define the edge case
+  if (!root) root;
+
+  // define the main condition
+  if (p.val < root.val && q.val < root.val) {
+    return lowestCommonAncestor(root.left, p, q);
+  } else if (p.val > root.val && q.val > root.val) {
+    return lowestCommonAncestor(root.right, p, q);
+  } else {
+    return root;
+  }
+};
+
+// 6) FInding Successsor
+
+// Here both are nodes
+const findSucessor = (root, target) => {
+  // define the termination case
+  if (!root) {
+    return;
+  }
+  let succ = null;
+  // define the loop
+  while (root !== null) {
+    // If root is greater than target node
+    if (root.val > target.val) {
+      // for predeccsor root.val >= target.val = root.left
+      // update the succ
+      // Move left
+      succ = root.val;
+      root = root.left;
+    } else {
+      // if root.val < target.val (predeccor = root.val) then root = root.right;
+      root = root.right;
+    }
+  }
+  return succ;
+};
+
+// 7) Find the Floor in BST.
+// It means to find the greatest node in BST which is smaller than the given target value
+// target = 6 BST Inorder = [2,3,5,6,8,9]; (here 5 is answer)
+
+// Both are nodes
+// define the identifiers required
+// Iterative Solution TC - O(H) SC - O(1)
+let floor = -1;
+function findFloor(root, key) {
+  // Loop until the floor is found
+  while (root !== null) {
+    // if key is there in BSt
+    if (root.val === key) {
+      floor = root.val;
+      return root.val;
+    } else if (root.val < key) {
+      floor = root.val;
+      findFloor(root.left, key);
+    } else {
+      findFloor(root.right, key);
+    }
+  }
+  return floor;
+}
+
+// Recursive Solution
+// TC-O(N) SC-O(1)
+
+function floor(root, key) {
+  // If root does not exist.
+  if (root === null) {
+    return -1;
+  }
+
+  // If root.val is greater than key
+  if (root.val === key) {
+    floorValue = root.data;
+    return floorValue;
+  } else if (root.data > key) {
+    floor(root.left, key);
+  } else {
+    floorValue = root.data;
+    floor(root.right, key);
+  }
+  return floorValue;
+}
+
+// 8) Finding Floor and Ciel both in BST.
+
+// Iterative Approach
+// TC - O(log2N) SC - O(1)
+
+function floorCeilBSTHelper(root, key) {
+  while (root != null) {
+    if (root.data == key) {
+      ceil = root.data;
+      floor = root.data;
+      return;
+    }
+
+    if (key > root.data) {
+      floor = root.data;
+      root = root.right;
+    } else {
+      ceil = root.data;
+      root = root.left;
+    }
+  }
+  return;
+  // Once the function return print ciel and root
+}
+
+// 9) Kth Smallest ELement in BST
+
+// Recursive + Brute Force
+// TC - O(N) SC - O(N)
+
+const kthSmallest = (root, k) => {
+  // define the identifiers required
+  let list = [];
+  // recursively move left and right and store
+  function preorder(root) {
+    // define the termination case
+    if (!root) return;
+    // Traverse left
+    preorder(root.left);
+    // if root then store it in list
+    list.push(root.val);
+    // Now traverse right
+    preorder(root.right);
+  }
+  preorder(root);
+  // Using the list find the kth element
+  return list[k - 1];
+};
+
+// Iterative + BRute Force
+// Tc - O(N) SC - O(N)
+
+const kthSmallestIterative = (root, k) => {
+  // define the identifiers required
+  let ans = -1; // it will hold the final answer
+  let counter = 0; // it will increment with nodes visited
+  let stack = []; // inorder for iterative traversal
+
+  // Loop until root is empty
+  while (root !== null || stack.length !== 0) {
+    // Traverse to left and fill stack until null
+    while (root !== null) {
+      stack.push(root);
+      // traverse left
+      root = root.left;
+    }
+    // define the current root
+    root = stack.pop();
+    // increment counter
+    counter++;
+    // Check if counter is kth element
+    if (counter === k) {
+      ans = root.val;
+    }
+    // traverse to right
+    root = root.right;
+  }
+  return ans;
+};
+
+// Optimized solution
+// O(N) O(1) // if ignoring stack auxiliary space
+
+var kthSmallestRecursiveOptimized = function (root, k) {
+  let result;
+  // this will be used to see which smallest element is processed at the moment
+  let counter = 0;
+
+  let findSmallest = function findSmallest(head) {
+    // if the current processed node is null then the recursion will go back
+    if (head) {
+      // first drill down to the left child node (if it doesn't exist the recursion will continue to the next line)
+      findSmallest(head.left);
+
+      // if the current smallest number still hasn't reached k
+      if (counter < k) {
+        // save the value of the current node and increase counter
+        result = head.val;
+        counter++;
+
+        // continue drilling down using the right child node
+        findSmallest(head.right);
+      }
+    }
+  };
+
+  findSmallest(root);
+  return result;
+};
+
+// 10) Kth largest element
+
+// Tc - O(N) and O(N)
+// return the Kth largest element in the given BST rooted at 'root'
+function kthLargest(root, K) {
+  // Define the identifier required
+  let count = K;
+  let ans = -1;
+
+  // define the function
+  function findKthLargest(root) {
+    // define the termination case
+    if (!root) return;
+
+    // Traverse to the most right..until null
+    findKthLargest(root.right);
+    // decrement of counter
+    count--;
+    // check if count is 0
+    if (count === 0) {
+      ans = root.data;
+    }
+    // Traverse to left
+    findKthLargest(root.left);
+    return;
+  }
+  findKthLargest(root);
+  return ans;
+}
