@@ -424,3 +424,278 @@ function kthLargest(root, K) {
   findKthLargest(root);
   return ans;
 }
+
+// NOTE :- If we do inorder in reverse. i.e Right, Root and left... we will get list in descending order. Last element to first
+
+// 11) Two Sum in BST
+
+// Brute Force
+// TC - O(N) and SC - O(N)
+// i) Ans - Find the inorder list using inorder traversal on the given tree.
+// ii) Now in that list.. keep two pointer in start and end
+// iii) Apply the 2 sum logic and find it number1 + number2 = target exist or not
+
+// Optimized JS TC - O(N) SC-O(N)
+// Inorder traversal
+
+var findTarget = function (root, k) {
+  if (!root) return false;
+  const set = new Set();
+  const stack = [root];
+  while (stack.length) {
+    const node = stack.pop();
+    if (set.has(k - node.val)) return true;
+    set.add(node.val);
+    if (node.right) stack.push(node.right);
+    if (node.left) stack.push(node.left);
+  }
+  return false;
+};
+
+// 12) Binary Search Tree iterator
+
+// TC - O(N) SC - O(N)
+class BSTIterator {
+  // The constructor will take the initial root node passes
+  constructor(root) {
+    // the stack will hold the sequence of nodes in inorder format
+    this.root = root;
+    this.stack = [];
+  }
+
+  next() {
+    // Complete the preorder traversal to fill the stack
+    while (this.root !== null) {
+      this.stack.push(this.root);
+      this.root = this.root.left;
+    }
+    // find the root
+    const res = this.stack.pop();
+    // Iterate to right
+    this.root = res.right;
+    // return the res
+    return res.val;
+  }
+
+  hasNext() {
+    // Check if next exist
+    return this.root || this.stack.length;
+  }
+}
+
+// 13) Largest BST in a binary Tree
+
+// Brute Force TC - O(N^2) SC-O(N)
+// i) Use the validate BST for every node to find if it is BST.
+// ii) If bst do any recursion and traverse the tree and find number of nodes.
+
+// Optimized Approach
+// TC - O(N) and SC - O(1) ignoring recursion.
+
+// Defining the class NodeValue for each node in tree.
+class NodeValue {
+  constructor(sum, isBST, max, min) {
+    this.sum = sum;
+    this.isBST = isBST;
+    // the max in left. The largest in left.
+    this.max = max;
+    // the min in right. The smallest in right.
+    this.min = min;
+  }
+}
+
+// The main function maxSum Bst which returns the Bst having max sum
+const maxSumBST = (root) => {
+  // define the edge case
+  if (!root) return 0;
+
+  // define the identifiers required
+  // Keep track of maximum sum of any bst.
+  let maxSum = 0;
+
+  // defining function to find BST.
+  const search = (root) => {
+    // defining the edge case
+    if (!root) {
+      return new NodeValue(
+        0,
+        true,
+        Number.MIN_SAFE_INTEGER,
+        Number.MAX_SAFE_INTEGER
+      );
+    }
+
+    // Traverse left and right recursively
+    let left = search(root.left);
+    let right = search(root.right);
+
+    // Check if the current left and right is a valid BST
+    if (
+      left.isBST &&
+      right.isBST &&
+      root.val > left.max &&
+      root.val < right.min
+    ) {
+      // If it is a valid BST
+      let sum = root.val + left.sum + right.sum;
+      // Find the maximum Sum
+      maxSum = Math.max(maxSum, sum);
+      // Return NodeValue with new max of left and min of Right and updated sum.
+      // In truth we know whatever is coming from the left is the minimal and smaller than root.
+      // In truth we know whatever is coming from the right is the maximum and larger than root.
+      return new NodeValue(
+        sum,
+        true,
+        Math.max(root.val, right.max),
+        Math.min(root.val, left.min)
+      );
+    }
+    // In case not a valid BST
+    return new NodeValue(
+      0,
+      false,
+      Number.MIN_SAFE_INTEGER,
+      Number.MAX_SAFE_INTEGER
+    );
+  };
+  // Invoke the function call
+  search(root);
+  return maxSum;
+};
+
+// 14) Deserialize and serialize BT
+
+// TC - O(N) and SC - O(N)
+
+const serialize = (root) => {
+  // check if no root
+  if (!root) return "";
+  // define identifiers required
+  let queue = []; // needed for level order traversal.
+  let str = ""; // storing the tree in the form of string.
+  let node, size;
+
+  // Insert the root onto queue
+  queue.push(root);
+
+  // Loop until the queue is empty
+  while (queue.length !== 0) {
+    // calculate the curr queue size for the particular level
+    size = queue.length;
+    // Loop for the level
+    for (let i = 0; i < size; i++) {
+      // find the curr node
+      let node = queue.shift();
+      // Check if node ain't null
+      if (node === null) {
+        str += "#";
+        continue;
+      }
+      // push the left to curr root
+      queue.push(node.left);
+      // push the right to current root
+      queue.push(node.right);
+      // Add the root to string
+      str = str + node.val;
+    }
+    // Add a character to diff between levels
+    str += "*";
+  }
+  return str;
+};
+
+/**
+ * Decodes your encoded data to tree.
+ *
+ * @param {string} data
+ * @return {TreeNode}
+ */
+const deserialize = (data) => {
+  // define the edge case
+  if (data.length === 0) return null;
+  // define the identifiers required
+  let node, root;
+  // to keep trach of str traversed
+  let index = 1;
+  // define a queue to manage nodes
+  let queue = [];
+
+  // Build the root node
+  root = new TreeNode(data[0]);
+
+  // push the root onto queue
+  queue.push(root);
+
+  // Loop until string fully traversed
+  while (true) {
+    // increment index
+    index++;
+    // Check if binary Tree completed
+    if (index === data.length) {
+      break;
+    }
+    // Loop for the level
+    while (data[index] !== "*") {
+      // Find the curr node
+      let node = queue.shift();
+      // The left of curr node left exist
+      if (data[index] === "#") {
+        node.left = null;
+      } else {
+        node.left = new TreeNode(data[index]);
+        // push the node onto queue.
+        queue.push(node.left);
+      }
+      // increment index
+      index++;
+      // The right of curr node if right exist
+      if (data[index] === "#") {
+        node.right = null;
+      } else {
+        node.right = new TreeNode(data[index]);
+        // push the node onto queue.
+        queue.push(node.right);
+      }
+      // increment index
+      index++;
+    }
+  }
+  return root;
+};
+
+// Optimized
+// TC - O(N) and SC - O(N)
+{
+  // Serialize using Post Order Traversal
+  const serialize = function (root) {
+    // define the edge case
+    if (!root) return null;
+    // traverse left node
+    const leftSerialized = serialize(root.left);
+    // traverse the right node
+    const rightSerialized = serialize(root.right);
+    // return it in the form of string
+    return root.val + "," + leftSerialized + "," + rightSerialized;
+  };
+
+  // Deserialize the string or data
+  // Inorder traversal
+  const deserialize = function (data) {
+    // Strore all the nodes in a queue or basically split all and store it in array
+    const queue = data.split(",");
+    // pass it to helper function
+    return deserializeHelper(queue);
+  };
+
+  const deserializeHelper = (queue) => {
+    // get the node value
+    const nodeValue = queue.shift();
+    // if node value is null return
+    if (nodeValue === "x") return null;
+    // create the node
+    const newNode = new TreeNode(nodeValue);
+    newNode.left = deserializeHelper(queue);
+    newNode.right = deserializeHelper(queue);
+    return newNode;
+  };
+}
