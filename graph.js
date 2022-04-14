@@ -327,7 +327,7 @@ class Solution {
 
 // 8) Topological Sort using DFS
 // TC - O(N+E)
-// SC - O(N + N) + auxilary Space
+// SC - O(N+N) + auxilary Space
 
 class Solution {
   // Function to find the topo sort using DFS
@@ -362,3 +362,91 @@ class Solution {
     return stack.reverse();
   }
 }
+
+// 9) Bipartite Graph using BFS
+// A graph that can be coloured using 2 colors such that no two adjacent nodes have same colour.
+// If the cycle length in a graph is odd then it's not bipartite. If even then bipartite
+// TC - O(N+E) and SC-O(N+E) + O(N) + O(N)
+
+const bfsCheck = (s, colors, graph) => {
+  // define the identifiers required
+  let queue = [];
+  // push the root onto queue
+  queue.push(s);
+  // Mark it as coloured
+  colors[s] = 1;
+
+  // Loop for the first component
+  while (queue.length !== 0) {
+    // get the current node element and remove it from queue
+    let node = queue.shift();
+
+    // Loop for all adjacent vertices to current node
+    for (let i = 0; i < graph[node].length; i++) {
+      // if current node is coloured or not
+      if (colors[graph[node][i]] === -1) {
+        // fill it with color
+        colors[graph[node][i]] = 1 - colors[node];
+        // push it onto queue
+        queue.push(graph[node][i]);
+      } else if (colors[graph[node][i]] === colors[node]) {
+        return false;
+      }
+    }
+  }
+  return true;
+};
+
+const isBipartite = (graph) => {
+  // define the identifiers required
+  let colors = new Array(graph.length).fill(-1);
+  // define the color
+  let color = true;
+
+  // Loop for all vertices of graph
+  for (let i = 0; i < graph.length; i++) {
+    // check if current vertex is not colored
+    if (colors[i] === -1) {
+      if (!bfsCheck(i, colors, graph)) return false;
+    }
+  }
+  return true;
+};
+
+// 10) Bipartite Graph using DFS
+// A graph that can be coloured using 2 colors such that no two adjacent nodes have same colour.
+// If the cycle length in a graph is odd then it's not bipartite. If even then bipartite
+// TC - O(N+E) and SC-O(N+E) + O(N) + O(N)
+
+const dfsCheck = (node, colors, graph) => {
+  // Mark the current node as colored
+  if (colors[node] === -1) colors[node] = 1;
+  // Loop for the adjacent nodes
+  for (let i = 0; i < graph[node].length; i++) {
+    // If uncoloured color it
+    if (colors[graph[node][i]] === -1) {
+      // Change the colors
+      colors[graph[node][i]] = 1 - colors[node];
+      // Recursively call it to be colored
+      if (!dfsCheck(graph[node][i], colors, graph)) return false;
+    } else if (colors[graph[node][i]] === colors[node]) {
+      // if color of current adjacent node and parent node is same, Return false
+      return false;
+    }
+  }
+  return true;
+};
+
+const isBipartiteDfs = (graph) => {
+  // define the identifiers required
+  let colors = new Array(graph.length).fill(-1);
+
+  // Loop for all vertices of graph
+  for (let i = 0; i < graph.length; i++) {
+    // check if current vertex is not colored
+    if (colors[i] === -1) {
+      if (!dfsCheck(i, colors, graph)) return false;
+    }
+  }
+  return true;
+};

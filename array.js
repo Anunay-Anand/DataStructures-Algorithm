@@ -2274,6 +2274,74 @@ const lengthOfLongestSubstring = (s) => {
   return maxStr === 0 ? s.length : maxStr;
 };
 
+// Optimized solution
+// Time Complexity: O( 2*N ) (sometimes left and right both have to travel complete array)
+//Space Complexity: O(N) where N is the size of HashSet taken for storing the elements
+
+const lengthOfLongestSubstringOp = function (s) {
+  // define the edge case
+  if (s.length === 1) {
+    return 1;
+  }
+
+  // define the identifiers required
+  // Pointer to keep track of starting index of maximum non repeating subsequence
+  let left = 0;
+  // define the set to keep track of elements visited
+  let set = new Set();
+  // the maxstr length keep track of result
+  let maxStr = -Infinity;
+
+  // Loop for all indexes of string
+  for (let right = 0; right < s.length; right++) {
+    // Check if the element already exist in set
+    if (s[right]) {
+      // Loop until the set is empty of repeating character
+      while (left < right && set[s[right]]) {
+        // delete the element of the set
+        set.delete(s[left]);
+        // increment the left pointer
+        left++;
+      }
+    }
+    // insert the curr element on set
+    set.add(s[right]);
+    // Find the max length
+    maxStr = Math.max(maxStr, right - left + 1);
+  }
+  return maxStr;
+};
+
+// Ultra Optimized
+
+const lengthOfLongestSubstringOP = (s) => {
+  // define the edge case
+  if (s.length <= 1) {
+    return s.length;
+  }
+
+  // define the identfiers required
+  let maxStr = -Infinity;
+  // map holds the element and the index where it occured
+  let map = new Map();
+  // the left pointer
+  let left = 0;
+
+  // Loop for all the string characters
+  for (let right = 0; right < s.length; right++) {
+    // Check if right exist in map
+    if (map.has(s[right])) {
+      // change the left to the index of left whichever is greater
+      left = Math.max(left, map.get(s[right]) + 1);
+    }
+    // Change the index of element stored in map or create new element
+    map.set(s[right], right);
+    // find the maxStr length
+    maxStr = Math.max(maxStr, right - left + 1);
+  }
+  return maxStr;
+};
+
 // 49) Longest common substring (LCS)
 
 // Brute Force Approach TC - O(N) (if ordered list T(O(nlogn))) SC - O(n)
