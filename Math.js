@@ -907,3 +907,21 @@ function findPath(m, n) {
   // Return the answer
   return ans;
 }
+
+// 19) MAx One
+// Tc-O(N) and Sc-O(1)
+const findMaxConsecutiveOnes = function (nums) {
+  // define the identifiers required
+  let maxOne = 0;
+  let countOne = 0;
+  for (let i = 0; i < nums.length; i++) {
+    // Check if not one
+    if (nums[i] !== 1) {
+      maxOne = Math.max(maxOne, countOne);
+      countOne = 0;
+    } else {
+      countOne++;
+    }
+  }
+  return maxOne > countOne ? maxOne : countOne;
+};

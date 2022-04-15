@@ -265,6 +265,48 @@ const list = new Linkedlist(10);
 //   return head.next;
 // };
 
+// Optimized
+// Tc - O(N+M) SC-O(1)
+
+const mergeTwoLists = (list1, list2) => {
+  // define the edge case
+  if (!list1 && !list2) return null;
+  if (!list1 || !list2) return list1 || list2;
+
+  // define the identifiers required
+  let temp; // It will keep track of nodes traversed
+  let head; // It will be the head pointer of merged list
+
+  // find the list having smaller first node. Replace if list2.val is smaller.
+  if (list1.val > list2.val) {
+    temp = list1;
+    list1 = list2;
+    list2 = temp;
+  }
+
+  // head pointing to list1
+  head = list1;
+
+  // Loop until list1 && list2 exist
+  while (list1 !== null && list2 !== null) {
+    temp = null;
+    // Loop until list1 is smaller than that of list2
+    while (list1 !== null && list1.val <= list2.val) {
+      // Store curr node in temp
+      temp = list1;
+      // Traverse to next list node
+      list1 = list1.next;
+    }
+    temp.next = list2;
+
+    // Swap list1 and list2;
+    temp = list1;
+    list1 = list2;
+    list2 = temp;
+  }
+  return head;
+};
+
 // 5) Cycle in Linkedlist
 
 // var hasCycle = function (head) {
@@ -639,6 +681,46 @@ var addTwoNumbers = function (l1, l2) {
   return head.next;
 };
 
+// Optimized Solution
+// TC - Max(n,m) and SC-(m+n+1)
+const addTwoNumbers = (l1, l2) => {
+  // define the edge case
+  if (!l1 && !2) return null;
+  if (!l1 || !l2) return l1 || l2;
+
+  // define the identfiers required
+  let carry = 0; // it will store the carry
+  let sum; // it will hold the sum in each iteration
+  // Create a dummy list
+  let dummyHead = new ListNode();
+  let temp = dummyHead;
+
+  while (l1 || l2 || carry) {
+    // Reinitate the sum to 0
+    sum = 0;
+    // Add both the nodes onto the sum
+    if (l1 !== null) {
+      sum = l1.val;
+      l1 = l1.next;
+    }
+    if (l2 !== null) {
+      sum += l2.val;
+      l2 = l2.next;
+    }
+    // Add the current carry in sum
+    sum += carry;
+    // Find if there is carry
+    carry = Math.floor(sum / 10);
+    // Find the value of the node
+    let node = new ListNode(Math.floor(sum % 10));
+    // Add it to dummy list
+    temp.next = node;
+    // Move temp
+    temp = temp.next;
+  }
+  return dummyHead.next;
+};
+
 // 12) Intersection between linkedlist
 
 // Finding length difference and then using it to find intersection method
@@ -695,7 +777,7 @@ const getIntersectionNode = (headA, headB) => {
 };
 
 // Exchanging head or over turning head method
-const getIntersectionNode = (headA, headB) => {
+const getIntersectionNodeOP = (headA, headB) => {
   if (!headA && !headB) {
     return null;
   }
@@ -745,7 +827,7 @@ const flatten = (head) => {
 
 // 1st it is the O(n^2) solution in O(1) space
 
-const rotateRight = (head, k) => {
+const rotateRight2 = (head, k) => {
   // Check for edge cases
   if (!head || !head.next) {
     return head;
@@ -957,7 +1039,7 @@ const sortList = (head) => {
 };
 
 // O(nlogn) and O(1)
-const sortList = (head) => {
+const sortList2 = (head) => {
   // Check for edge cases/ end of recursion
   if (!head || !head.next) {
     return head;
@@ -1007,3 +1089,59 @@ const mergeList = (l1, l2) => {
   }
   return list.next;
 };
+
+// 18) Flatten A linked list
+// TC-O(N)  SC-O(1)
+
+class Solution {
+  mergeList(l1, l2) {
+    // define the identifiers required
+    // define a temp node to start
+    let temp = new Node(0);
+    // to return the head of flattned list
+    let dummyHead = temp;
+
+    // Loop for all nodes of list
+    while (l1 !== null && l2 !== null) {
+      // Check if l1 is smaller than l2
+      if (l1.data < l2.data) {
+        // Add l1 to temo bottom
+        temp.bottom = l1;
+        // increment temp
+        temp = temp.bottom;
+        // increment l1 to next
+        l1 = l1.bottom;
+      } else {
+        // Add l2 to temp bottom
+        temp.bottom = l2;
+        // increment temp
+        temp = temp.bottom;
+        // increment l2 to next
+        l2 = l2.bottom;
+      }
+    }
+
+    // Check if l1 is not null
+    if (l1 !== null) {
+      temp.bottom = l1;
+    }
+    if (l2 !== null) {
+      temp.bottom = l2;
+    }
+    // Return the dummyHead's bottom or head
+    return dummyHead.bottom;
+  }
+
+  flatten(head) {
+    // define the edge case
+    if (head === null || head.next === null) return head;
+
+    // Recursively call flatten for each node;
+    head.next = this.flatten(head.next);
+
+    // Invoke the merge function for list
+    head = this.mergeList(head, head.next);
+
+    return head;
+  }
+}
