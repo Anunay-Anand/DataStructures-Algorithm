@@ -563,119 +563,103 @@ const permute = (nums) => {
 // 16)  N Queen Problem
 // Brute Force TC - O(N^3) SC-O(N^2)
 
-const solveNQueens = (n) => {
+const solveNQueensJs = (n) => {
   // define the edge case
   if (n === 1) return [["Q"]];
 
   // Define the identifiers required
-  let ans = []; // it will hold all the possible boards with right queen sequence.
-
-  // 1) Form a string of n length which will represent each row of col
-  let str = ".".repeat(n);
-  // 2) Now create an array of length n.
-  let board = new Array(n);
-  // 3) Now complete the board by filling each index(i) of array with n length string(.)
-  for (let i = 0; i < board.length; i++) {
-    board[i] = str;
-  }
+  let res = []; // it will hold all the possible boards with right queen sequence.
+  // The chessBoard is an n * n matrix will queen will be filled
+  let chessBoard = [...new Array(n)].map((x) => Array(n).fill("."));
+  // Required in checking is Safe cycle
+  let dupRow, dupCol;
 
   // Define the function to check if the current row in ith col is safe to place Queen
-  function isSafe(row, col, board) {
-    // define the identifiers required
-    let dupRow = row;
-    let dupCol = col;
-
-    // Check for the upper left diagonal
+  function isSafe(row, col, chessBoard) {
+    // Create a copy of row and col
+    dupRow = row;
+    dupCol = col;
+    // Loop to find if the upper diagonal is safe or not
     while (row >= 0 && col >= 0) {
-      if (board[row][col] === "Q") return false;
+      if (chessBoard[row][col] === "Q") return false;
       row--;
       col--;
     }
-
-    row = dupRow;
-    col = dupCol;
-    // Check for the left side
-    while (row >= 0) {
-      if (board[row][col] === "Q") return false;
-      row--;
+    (row = dupRow), (col = dupCol);
+    // Loop to find if the row is safe or not
+    while (col >= 0) {
+      if (chessBoard[row][col] === "Q") return false;
+      col--;
     }
-
-    row = dupRow;
     col = dupCol;
-    // Check for the left lower diagonal
-    while (row >= 0 && col >= 0) {
-      if (board[row][col] === "Q") return false;
+    // Loop to find if the lower diagonal is safe or not
+    while (col >= 0 && row < n) {
+      if (chessBoard[row][col] === "Q") return false;
       row++;
       col--;
     }
+    // If no condition is satisfied return true
     return true;
   }
 
-  // Define the main recursive function for N Queens.. it iterates cols fn(col, board)
-  function solve(col, board) {
-    // define the case of termination
-    if (col === n) {
-      ans.push(board);
+  // Function to find the Queen placements of Board
+  function findQueen(chessBoard, col, res) {
+    // the termination case in order to stop recursion and fill solution
+    if (n === col) {
+      // Convert row arrays into string
+      let board = chessBoard.map((x) => x.join(""));
+      res.push(board);
       return;
     }
 
-    // Invoke or check for all cols
+    // Check for all row in a particular cols wether placement possible
     for (let row = 0; row < n; row++) {
-      // If by chance the current row iteration.. assume it's 0th index or 1 row is safe in 1st call.
-      // We will fix a queen here and recursively move to next col. It's simple.
-      // If we don't find it safe we remove the queen back from and check for next rows.
-      if (isSafe(row, col, board)) {
-        // place the queen at current col and row.
-        // Col remain constant in a particular recursive call while row iterates until safe
-        board[row][col] = "Q";
-        // Call the function for next col
-        solve(col + 1, board);
-        // If recursive call was by any chance unsuccessful. We remove the Queen. This is backtracking.
-        board[row][col] = ".";
+      // Check if placement of Queen is safe or not
+      if (isSafe(row, col, chessBoard)) {
+        chessBoard[row][col] = "Q";
+        // Recursively call the function to check for next col/Queen
+        findQueen(chessBoard, col + 1, res);
+        // Backtrack or remove the Queen from board in case result not found or cycle completed
+        chessBoard[row][col] = ".";
       }
     }
   }
-  // invoking the solve function
-  solve(0, board);
-  return ans;
+  // Invoke the function call to find Queen
+  findQueen(chessBoard, 0, res);
+  // Return the result
+  return res;
 };
 
 // Optimized Approach
 // TC-O(N^2) SC-O(N^2)
 
-const solveNQueens2 = (n) => {
+const solveNQueens = (n) => {
   // define the edge case
   if (n === 1) return [["Q"]];
 
   // Define the identifiers required
-  let ans = []; // it will hold all the possible boards with right queen sequence.
+  let res = []; // it will hold all the possible boards with right queen sequence.
 
   // Define the diagonals array to check if Queen there or not.
-  let arrSize = 2n;
-  arrSize--;
+  let arrSize = 2n - 1;
+  // List or vector to check if placement in upper or lower diagonal is safe
   let upperDiagonal = new Array(arrSize).fill(0);
   let lowerDiagonal = new Array(arrSize).fill(0);
-
-  // Define the row side array
+  // In order to check if placement safe in row
   let leftRow = new Array(n).fill(0);
 
-  // 1) Form a string of n length which will represent each row of col
-  let str = ".".repeat(n);
-  // 2) Now create an array of length n.
-  let board = new Array(n);
-  // 3) Now complete the board by filling each index(i) of array with n length string(.)
-  for (let i = 0; i < board.length; i++) {
-    board[i] = str;
-  }
+  // Define the chessBoard and fill it with empty spaces
+  let chessBoard = [...new Array(n)].map((x) => Array(n).fill("."));
 
-  // Define the main recursive function for N Queens.. it iterates cols fn(col, board)
-  function solve(col, board) {
-    // define the case of termination
-    if (col === n) {
-      ans.push(board);
+  // define the function to find placements
+  function findQueen(chessBoard, col, leftRow, upper, lower, res) {
+    // the termination case
+    if (n === col) {
+      // Convert row arrays into string
+      let board = chessBoard.map((x) => x.join(""));
+      res.push(board);
       return;
     }
-
     // Invoke or check for all cols
     for (let row = 0; row < n; row++) {
       // If by chance the current row iteration.. assume it's 0th index or 1 row is safe in 1st call.
@@ -683,32 +667,29 @@ const solveNQueens2 = (n) => {
       // If we don't find it safe we remove the queen back from and check for next rows.
       if (
         leftRow[row] === 0 &&
-        lowerDiagonal[row + col] === 0 &&
-        upperDiagonal[row + col] === 0
+        lower[row + col] === 0 &&
+        upper[n - 1 + col - row] === 0
       ) {
         // Fill the current Row where Q is put.. the upperdiagonal and lowerdiagonal
-        leftRow[row] = "1";
-        upperDiagonal[n - 1 + col - row] = "1";
-        lowerDiagonal[row + col] = "1";
+        chessBoard[row][col] = "Q";
+        leftRow[row] = 1;
+        lower[row + col] = 1;
+        upper[n - 1 + col - row] = 1;
 
-        // Now fill the particular index in board with Q
-        board[row][col] = "Q";
-
-        solve(col + 1, board);
+        findQueen(chessBoard, col + 1, leftRow, upper, lower, res);
 
         // If recursive call was by any chance unsuccessful. We remove the Queen. This is backtracking.
         // Fill the current Row where Q is put.. the upperdiagonal and lowerdiagonal
-        leftRow[row] = "0";
-        upperDiagonal[n - 1 + col - row] = "0";
-        lowerDiagonal[row + col] = "0";
-
-        // Now fill the particular index in board with Q
-        board[row][col] = ".";
+        chessBoard[row][col] = ".";
+        leftRow[row] = 0;
+        lower[row + col] = 0;
+        upper[n - 1 + col - row] = 0;
       }
     }
   }
-  // invoking the solve function
-  solve(0, board);
+  // Invoke the function
+  findQueen(chessBoard, 0, leftRow, upperDiagonal, lowerDiagonal, res);
+  return res;
 };
 
 // 17) Sukdoku Solver

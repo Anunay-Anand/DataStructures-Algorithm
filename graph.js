@@ -104,7 +104,7 @@ class Solution {
           // mark it as visited
           vis[adj[curr][j]] = 1;
           // Push the current node onto queue with parent
-          queue.push([adj[curr][j], node]);
+          queue.push([adj[curr][j], curr]);
         } else if (parent !== adj[curr][j]) {
           return true;
         }
