@@ -906,3 +906,44 @@ const findMaxConsecutiveOnes = function (nums) {
   }
   return maxOne > countOne ? maxOne : countOne;
 };
+
+// 19) M colouring Problem
+
+class Solution {
+    
+  isSafe(node, color, graph, N, col) {
+      // Check that if color exist in any adjacent node
+      for(let j = 0; j < graph[node].length; j++) {
+          if(color[graph[node][j]] === col) return false;
+      }
+      return true;
+  }
+  
+  solve(node, color, m, N, graph) {
+      // Check if all nodes coloured. Termination case
+      if(node === N) return true;
+      // Traverse through all colors to check if node can be coloured
+      for(let i = 1; i <= m; i++) {
+          // Check if it is safe to fill current node with color i
+          if(this.isSafe(node, color, graph, N, i)) {
+              // Color the current Node
+              color[node] = i;
+              // Recursively call solve for all colors
+              if(this.solve(node+1, color, m, N, graph)){ return true }
+              // If did not work then backtrack
+              color[node] = 0;
+          }
+      }
+      return false;
+  }
+  
+  // Function to determine if graph can be coloured with m colors
+  graphColoring(graph, m, V)
+  {
+      // define the identifiers required
+      let color = new Array(V).fill(0); // to color all nodes
+      // Now check by passing it to solve
+      if(this.solve(0, color, m, V, graph)){ return true }
+      return false;
+  }
+}
