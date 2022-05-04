@@ -57,3 +57,46 @@ var searchInsert = function (nums, target) {
   }
   return nums[mid] < target ? mid + 1 : mid;
 };
+
+// 4) Find the nth Root of m
+
+// Brute Force O(n*m) // SC O(1)
+function NthRoot(n, m) {
+  //define the identifiers required
+  let x = 1;
+  while (x <= m) {
+    if (x ** n === m) {
+      return x;
+    }
+    x++;
+  }
+  return -1;
+}
+
+// Optimized approach for NoN decimal approach
+// Tc - O(n*logm) Sc-O(1)
+function NthRootOp(n, m) {
+  // define the identifiers required
+  let low = 0; // start of the range
+  let high = m; // end of the range
+
+  // Apply Binary search over the range
+  while (low <= high) {
+    // find the middle
+    let mid = Math.floor(low + high / 2);
+    // Check if the nth root of middle is equal to target
+    if (Math.pow(mid, n) === m) return mid;
+    else if (Math.pow(mid, n) < m) {
+      low = mid + 1;
+    } else if (Math.pow(mid, n) > m) {
+      high = mid - 1;
+    }
+  }
+  return -1;
+}
+
+// Optimized approach for decimal
+// TC - O(n*log(m * 10^d)) SC - O(1)
+// i) We will run for a range of high - low > 10^-6 (for upto 5th decimal place)
+// ii) Our range will be changed including mid instead of mid + 1 or nid - 1.
+// iii) If mid^n < m then low = mid else high = mid.
