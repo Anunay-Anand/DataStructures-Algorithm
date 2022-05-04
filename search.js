@@ -100,3 +100,99 @@ function NthRootOp(n, m) {
 // i) We will run for a range of high - low > 10^-6 (for upto 5th decimal place)
 // ii) Our range will be changed including mid instead of mid + 1 or nid - 1.
 // iii) If mid^n < m then low = mid else high = mid.
+
+// 5) Single Element in a Sorted Array
+
+// Brute Force (linear search)
+// TC - O(n/2)... SC - O(1)
+// We will simply run loop from i = 0 and check the consequetive elements.
+// We will increment i by 2. If the elements are not same. We will return ith element.
+
+// Optimized using XOR
+// TC - O(N)... SC - O(1)
+// We will run the loop from 0 and enumerate with xor operator.
+// We know p ^ p = 0 and p ^ 0 = p. Thus the element that remains will be p.
+// It will have only one occurence.
+const singleNonDuplicate = (nums) => {
+  // Define the edge case
+  if (nums.length === 1) {
+    return nums[0];
+  }
+
+  // We will use JavaScript reducer function.
+  // It keeps on iterating for each element until the end
+  // Here we know 0^p = p. Thus 0 being initial value.
+  // p ^ p = 0 thus all repeated nums are enumerated to 0
+  return nums.reduce((prev, curr) => prev ^ curr, 0);
+};
+
+// Optimized Binary Search
+// TC - O(nlogn)
+// i) We know that element on the left subarray will have 1st occurence on even index and second on odd.
+// ii) Similarly the element on right subarray will have 1st occurence on odd index and second on even.
+const singleNonDuplicateOptimized = (nums) => {
+  // Define the edge case
+  if (nums.length === 1) return nums[0];
+
+  // Define the identifiers required
+  let low = 0;
+  let high = nums.length - 2;
+  let mid;
+
+  // Iterate through the entire search space
+  while (low <= high) {
+    // Find the mid element of search space
+    mid = Math.floor((low + high) / 2);
+    // Check if mid and mid^1 element are same. That means we are in left half. Otherwise we are in right half.
+    if (nums[mid] === nums[mid ^ 1]) {
+      low = mid + 1;
+    } else {
+      high = mid - 1;
+    }
+  }
+  return nums[low];
+};
+
+// 6) Search Element in a Rotated Sorted Array
+// Brute Force (Linear Search)  TC - O(N) SC - O(1)
+// Simply loop until you find the target.
+
+// Optimized (Binary Search) TC - O(nlogn) SC - O(1)
+// i) We know that both left and right subarray are sorted.
+// ii) Thus we will check if in the left subarray. Then check if target in range.
+// iii) Similarly we will check if in the right subarray. Then check if the target in range.
+const search = (nums, target) => {
+  // define the edge case
+  if (nums.length === 1) {
+    return nums[0] === target ? 0 : -1;
+  }
+
+  // define the identifiers required
+  let low = 0;
+  let high = nums.length - 1;
+
+  // Loop for the entire search space
+  while (low <= high) {
+    // Find the mid of the search space
+    let mid = Math.floor((low + high) / 2);
+    // Check if target is at mid index
+    if (target === nums[mid]) return mid;
+
+    // If target not at mid check we are in left sorted array
+    if (nums[low] <= nums[mid]) {
+      // Now check if target lies in Range.
+      if (nums[low] <= target && target <= nums[mid]) {
+        high = mid - 1;
+      } else {
+        low = mid + 1;
+      }
+    } else {
+      if (nums[high] >= target && target >= nums[mid]) {
+        low = mid + 1;
+      } else {
+        high = mid - 1;
+      }
+    }
+  }
+  return -1;
+};
