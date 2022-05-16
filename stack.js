@@ -342,7 +342,7 @@
 
 // O(n^2) Solution
 
-const dailyTemperatures = (temp) => {
+const dailyTemperaturesBrute = (temp) => {
   let countOfDays = 0;
   var curr = 0;
   let next;
@@ -460,3 +460,108 @@ class Solution {
     return output;
   }
 }
+
+// 9) Area of largest rectangle in Histogram
+
+// Brute Force TC - O(N*N) SC - O(1)
+const largestRectangleAreaBrute = (heights) => {
+  // define the identifiers required
+  // max area holds the final result
+  let maxArea = 0;
+  let minHeight;
+  // loop for the entire histogram
+  for (let i = 0; i < heights.length; i++) {
+    minHeight = Infinity;
+    // loop from curr index to the end.
+    // We do this as min height can be different for a particular portion of histogram
+    for (let j = i; j < heights.length; j++) {
+      // find the min height
+      minHeight = Math.min(heights[j], minHeight);
+      // Find the area
+      // We want to calculate from start of j to end each iteration.
+      // This is why we multiply minHeight with j - i = 0 then add 1
+      maxArea = Math.max(maxArea, minHeight * (j - i + 1));
+    }
+  }
+  return maxArea;
+};
+
+// Optimized one TC - O(N + N) SC - O(N)
+
+const largestRectangleArea = (heights) => {
+  // define the identifiers required
+
+  // left and right will hold the left and right smaller at each index respectively
+  let left = [];
+  let right = [];
+  // Helper stack to find left and right smaller
+  let stack = [];
+  let max = 0;
+
+  // Produce the first Loop to find left smaller
+  for (let i = 0; i < heights.length; i++) {
+    // Check if current index is smaller than prev elements using stored indexes
+    while (stack.length !== 0 && heights[i] <= heights[stack[stack.length - 1]])
+      stack.pop();
+    // Push the current stack top (index) onto left array
+    left[i] = stack.length === 0 ? 0 : stack[stack.length - 1] + 1;
+    // Now push the current index onto stack
+    stack.push(i);
+  }
+
+  stack = [];
+  max = 0;
+
+  // Produce the Second Loop to find Right smaller
+  for (let i = heights.length - 1; i >= 0; i--) {
+    // Check if current index is smaller than prev elements using stored indexes
+    while (stack.length !== 0 && heights[i] <= heights[stack[stack.length - 1]])
+      stack.pop();
+    // Push the current stack top (index) onto left array
+    right[i] =
+      stack.length === 0 ? heights.length - 1 : stack[stack.length - 1] - 1;
+    // Find the max as left and right smaller are now found
+    // An iteration is reduced
+    max = Math.max(max, heights[i] * (right[i] - left[i] + 1));
+    // Now push the current index onto stack
+    stack.push(i);
+  }
+
+  return max;
+};
+
+// Optimized 2
+
+const largestRectangleAreaUltra = (heights) => {
+  // define the identifiers required
+  // To keep track of result
+  let maxArea = 0;
+  // to hold the left smaller and right smaller
+  let stack = [];
+  let n = heights.length;
+
+  // Loop for the entire histogram
+  for (let i = 0; i <= n; i++) {
+    // Loop and pop element until greater than current element
+    while (
+      stack.length !== 0 &&
+      (i === n || heights[stack[stack.length - 1]] >= heights[i])
+    ) {
+      // The current element will be right smaller of the height on stack top
+      let height = heights[stack[stack.length - 1]];
+      stack.pop();
+
+      // Find the width wrt to height
+      // If stack is empty that means Left Smaller is index 0.. Thus 'i' is the width
+      // Here 'i' being the right smaller and new stack top after pop is the left smaller
+      let width = stack.length === 0 ? i : i - stack[stack.length - 1] - 1;
+
+      // Find the max Area since height and width are known
+      maxArea = Math.max(maxArea, height * width);
+    }
+    // Push the current i onto stack
+    stack.push(i);
+  }
+  // Return the maxArea
+  return maxArea;
+};

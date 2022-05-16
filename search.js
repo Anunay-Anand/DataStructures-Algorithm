@@ -19,7 +19,7 @@ const search = (nums, target) => {
 
 // 2) First Bad Version
 
-return function (n) {
+function bad(n) {
   // Here n is total version simply call mid version everytime to check
   let left = 1;
   let right = n;
@@ -37,7 +37,7 @@ return function (n) {
     }
   }
   return ans;
-};
+}
 
 // 3) Search Insert Positiom
 
@@ -127,7 +127,7 @@ const singleNonDuplicate = (nums) => {
 };
 
 // Optimized Binary Search
-// TC - O(nlogn)
+// TC - O(logn)
 // i) We know that element on the left subarray will have 1st occurence on even index and second on odd.
 // ii) Similarly the element on right subarray will have 1st occurence on odd index and second on even.
 const singleNonDuplicateOptimized = (nums) => {
@@ -157,11 +157,11 @@ const singleNonDuplicateOptimized = (nums) => {
 // Brute Force (Linear Search)  TC - O(N) SC - O(1)
 // Simply loop until you find the target.
 
-// Optimized (Binary Search) TC - O(nlogn) SC - O(1)
+// Optimized (Binary Search) TC - O(logn) SC - O(1)
 // i) We know that both left and right subarray are sorted.
 // ii) Thus we will check if in the left subarray. Then check if target in range.
 // iii) Similarly we will check if in the right subarray. Then check if the target in range.
-const search = (nums, target) => {
+const searchOptimized = (nums, target) => {
   // define the edge case
   if (nums.length === 1) {
     return nums[0] === target ? 0 : -1;
